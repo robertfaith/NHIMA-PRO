@@ -1,10 +1,61 @@
+import React, { useState, useEffect } from 'react'
+import './Hero.scss'
+import img1 from '../../assets/p3.png'
+import img4 from '../../assets/p2.png'
 
+interface Slide {
+  image: string
+  title: string
+  text: string
+}
 
-const HeroSection = () => {
+const slides: Slide[] = [
+  {
+    image: img4,
+    title: 'Affordable Health Insurance for Every Zambian',
+    text: 'Access quality healthcare services nationwide through the National Health Insurance Scheme.'
+  },
+  {
+    image: img1,
+    title: 'Welcome to NHIMA',
+    text: 'NHIMA is committed to providing accessible, affordable, and quality healthcare services to all Zambians.'
+  }
+]
+
+const HeroSection: React.FC = () => {
+  const [current, setCurrent] = useState<number>(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent(prev => (prev + 1) % slides.length)
+    }, 4000)
+
+    return () => clearInterval(timer)
+  }, [])
+
   return (
-    <div>
-      
-    </div>
+    <section className="hero">
+      <div
+        key={current}   // for animation reset
+        className="hero-slide"
+        style={{ backgroundImage: `url(${slides[current].image})` }}
+      >
+        <div className="hero-text">
+          <h1>{slides[current].title}</h1>
+          <p>{slides[current].text}</p>
+        </div>
+      </div>
+
+      <div className="hero-dots">
+        {slides.map((_, index) => (
+          <span
+            key={index}
+            className={index === current ? 'dot active' : 'dot'}
+            onClick={() => setCurrent(index)}
+          />
+        ))}
+      </div>
+    </section>
   )
 }
 

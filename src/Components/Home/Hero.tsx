@@ -15,13 +15,13 @@ const slides = [
   },
   {
     image: img1,
-    title: 'Welcome to AB BANK',
-    text: 'AB Bank is committed to empowering individuals, small businesses, and entrepreneurs in Zambia with reliable, affordable, and accessible financial services. Our mission is to provide innovative banking solutions that help you grow and achieve your goals.'
+    title: 'Welcome to NHIMA',
+    text: 'NHIMA is committed to providing accessible, affordable, and quality healthcare services to all Zambians through the National Health Insurance Scheme.'
   },
   {
     image: img2,
-    title: 'Fast & Secure Loans',
-    text: 'Get approved quickly and securely'
+    title: 'Realiable for you Health Needs',
+    text: 'Your health is our priority. We provide comprehensive coverage for a wide range of medical services, ensuring you have access to the care you need when you need it.'
   },
   {
     image: img3,

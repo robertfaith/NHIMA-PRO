@@ -1,11 +1,11 @@
 import Navbar from '../Home/Navbar'
-
+import HeroSection from './Hero/HeroSection'
 
 const AboutSection = () => {
   return (
     <div>
         <Navbar  />
-        <h1>About Us</h1>
+        <HeroSection />
     </div>
   )
 }
