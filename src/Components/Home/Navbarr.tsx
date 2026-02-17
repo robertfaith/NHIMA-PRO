@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
   // Sticky scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
+      if (window.scrollY > 180) {
         setSticky(true);
       } else {
         setSticky(false);

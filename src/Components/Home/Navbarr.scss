@@ -3,7 +3,7 @@
 .navbar {
   width: 100%;
   height: 60px;
-  background: #699de0;
+  //background: #699de0;
   position: fixed;
   top: 0;
   left: 0;
@@ -20,7 +20,7 @@
 
 /* Sticky version */
 .dark-nav {
-  background: #ffffff;
+  background: #699de0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
@@ -45,7 +45,7 @@
   font-family: 'Montserrat', sans-serif;
   font-size: 0.95rem;
   font-weight: 500;
-  color: #2f3e50;
+  color: #f0f4f8;
   padding: 0.6rem 0.8rem;
   border-radius: 6px;
   transition: all 0.25s ease;

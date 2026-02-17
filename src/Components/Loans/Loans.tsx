@@ -1,6 +1,6 @@
 import './Loans.scss'
 import img1 from '../../assets/GlobalMarket.jfif'
-import Navbar from '../Home/Navbar';
+import Navbar from '../Home/Navbarr';
 
 const Loans = () => {
   return (

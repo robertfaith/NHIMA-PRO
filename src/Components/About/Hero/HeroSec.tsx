@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './HeroSec.scss'
-import img1 from "../../../assets/about1.jpeg";
+import img1 from "../../../assets/hero2.png";
 import img4 from "../../../assets/p2.png";
 interface Slide {
   image: string
@@ -16,7 +16,7 @@ const slides: Slide[] = [
   },
   {
     image: img1,
-    title: 'Welcome to NHIMA',
+    title: 'About NHIMA',
     text: 'NHIMA is committed to providing accessible, affordable, and quality healthcare services to all Zambians.'
   }
 ]

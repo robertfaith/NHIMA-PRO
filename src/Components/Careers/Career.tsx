@@ -1,6 +1,6 @@
 import './Career.scss';
 import img1 from '../../Assets/CR.jpg';
-import Navbar from '../Home/Navbar';
+import Navbar from '../Home/Navbarr';
 
 const Career = () => {
   return (
