@@ -1,0 +1,35 @@
+.loans {
+  width: 100%;
+}
+
+/* Banner */
+.loans-banner {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.loans-banner-overlay {
+  background: rgba(0, 0, 0, 0.5); /* dark overlay */
+  padding: 30px;
+  border-radius: 8px;
+  text-align: left;
+  color: #fff;
+}
+
+.loans-banner-overlay h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.loans-banner-overlay p {
+  font-size: 1.2rem;
+  color: #ddd;
+}
+
+

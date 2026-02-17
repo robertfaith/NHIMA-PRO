@@ -1,0 +1,235 @@
+    
+:root{
+   --primaryColor: hsl(205, 75%, 11%); 
+  --hoverColor: hsl(229, 65%, 36%);
+  --paleGreen: hsl(187, 68%, 26%);
+  --whiteColor: hsl(0,0%,100%);
+  --blackColor: hsl(0,0%,18%);
+  --greyText: hsl(0,0%,75%);
+  --bgColor: hsl(113,11%,85%);
+  --inputColor: hsl(330,12%,97%);
+  --inputColor: hsl(154,14%,90%);
+
+  /*Font for Typography*/
+  --biggestFontSize:2.5rem;
+  --h1FontSize:1.5rem;
+  --h2FontSize:1.25rem;
+  --h3FontSize: 1rem;
+  --normalFontSize: .918rem;
+  --smalltFontSize: .813rem;
+  --smallestFontSize: .75rem;
+}
+
+    
+    html{
+        font-size: 90%;
+    }
+    a{
+        text-decoration: none;
+    }
+    li{
+        list-style: none;
+    }
+    .icon{
+        font-size: var(--h2FontSize);
+    }
+    img{
+        height: auto;
+        width: 100%
+    }
+
+    .flex{
+        display: flex;
+        align-items: center;
+    }
+
+    .grid{
+        display: grid;
+        align-items: center;
+    }
+
+    .btn{
+        border: none;
+        outline: none; 
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px var(--inputColor);
+        padding: .8rem 1rem;
+        color: var(--greyText);
+    }   
+    .btn .icon{
+        margin-left: .5rem;
+    }
+    .btn:hover{
+        background: var(--paleGreen);
+        color: var(--primaryColor);
+    }
+
+
+    .body{
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+
+  }
+
+  .Container{
+    position: relative;
+    height: 95vh;
+    width: 95vw;
+    display: flex;
+    align-items: center;
+    border-radius: 1rem;
+    background: var(--bgColor);
+    overflow: hidden;
+    box-shadow: 2px 2px 0px var(--greyText);
+  }
+@media screen and (max-width: 990px) {
+  .heading{
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  } 
+}
+@media screen and (max-width: 990px) {
+  .heading{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  } 
+}
+
+@media screen and (max-width: 927px) {
+    .loginPage, .registerPage{
+      .container{
+        width: 85%;
+    }
+  }
+}
+.Dashboard{
+    background: #4caf50;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+}
+.dashboardContainer{
+  display: grid;
+  height: 97%;
+  width: 97%;
+  border-radius: 2rem;
+  background-color: var(--paleGreen);
+  overflow: hidden;
+  grid-template-columns: 11rem auto 20rem;
+  align-items: center;
+  
+}
+.sideBar{
+  background: var(--whiteColor);
+  box-shadow: 1px 0 4px var(--greyText);
+  width: 15rem;
+  max-width: 15rem;
+  height: 100%;
+  gap: 3rem;
+  overflow: auto;
+
+  .logoDiv{
+    padding: 1.5rem 1.5rem 0;
+    cursor: pointer;
+
+    img{
+      max-width: 100px;
+      margin-left: .5rem;
+      background: var(--inputColor);
+      border-radius: 2px;
+      padding: .3rem;
+    }
+   
+  }
+}
+.menuDev, settingsDev{
+  .divTitle{
+    padding: 0 1.5rem;
+    font-size: var(--h2FontSize);
+    color: var(--primaryColor);
+    margin-bottom: 1rem;
+  } 
+}
+.menuDev{
+  .listItem{
+    padding: .2rem 1.5rem;
+    width:100%;
+    color: var(--greyText);
+    position: relative;
+
+    &::before{
+      position: absolute;
+      content: '';
+      height: 0%;
+      width: 4px;
+      left: 0;
+      bottom: 0;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      background: var(--paleGreen);
+    }
+
+  .menuLink{
+    color: var(--greyText);
+    font-weight: 500;
+    transition: 0;
+    .icon{
+      margin-right: .5rem;
+    }
+  }
+  &:hover, .menuLink{
+    color: var(--paleGreen);
+    transition: 0;
+  }
+
+  &:hover::before{
+    height: 100%;
+    transition: .3s ease;
+    background: var(--paleGreen);
+}
+.sideBarCard{
+  background: var(--whiteColor);
+  box-shadow: 0 2px 4px var(--greyText);
+  border-radius: .5rem;
+  padding: 1rem;
+  margin: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  position: relative;
+
+  .sideBarCard{
+   width: 100%;
+   padding: 1rem;
+   text-align: center;
+   position: relative;
+
+    .sideBarCard{
+    position: absolute;
+    background: var(--hoverColor);
+    border: 10px solid var(--whiteColor);
+    font-size: 3rem;
+    border-radius: 50%;
+    top: -8px;
+    right: 50%;
+    transform: translate(50%);
+    z-index: 100;
+   }
+   .cardContent{
+    position: relative;
+    padding: 1rem;
+    background: var(--whiteColor);
+   }
+  }
+}
+}
+}
