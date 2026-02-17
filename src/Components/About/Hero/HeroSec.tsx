@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import './Hero.scss'
-import img1 from '../../assets/p3.png'
-import img4 from '../../assets/p2.png'
-
+import './HeroSec.scss'
+import img1 from "../../../assets/about1.jpeg";
+import img4 from "../../../assets/p2.png";
 interface Slide {
   image: string
   title: string
@@ -22,7 +21,7 @@ const slides: Slide[] = [
   }
 ]
 
-const HeroSection: React.FC = () => {
+const HeroSec: React.FC = () => {
   const [current, setCurrent] = useState<number>(0)
 
   useEffect(() => {
@@ -59,4 +58,4 @@ const HeroSection: React.FC = () => {
   )
 }
 
-export default HeroSection
+export default HeroSec

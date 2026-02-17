@@ -1,126 +1,112 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap');
-
 .hero {
+  position: relative;
   width: 100%;
-  min-height: 50vh;
+  min-height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
   color: #fff;
+}
 
-  /* Dark overlay */
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(8, 0, 58, 0.7),
-      rgba(8, 0, 58, 0.5)
-    );
-    z-index: 1;
+/* Slide background */
+.hero-slide {
+  position: relative;
+  width: 100%;
+  min-height: 60vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-image 0.8s ease-in-out;
+}
+
+/* Dark overlay */
+.hero-slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 32, 96, 0.75),
+    rgba(0, 32, 96, 0.6)
+  );
+  z-index: 1;
+}
+
+/* Text container */
+.hero-text {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 2rem 3rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  animation: fadeUp 0.9s ease;
+}
+
+.hero-text h1 {
+  font-size: clamp(1.5rem, 4vw, 2.8rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.hero-text p {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+/* Smooth fade animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .hero {
+    min-height: 55vh;
   }
 
   .hero-slide {
-    width: 100%;
-    min-height: 50vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    animation: slideFade 0.9s ease forwards;
-    transform: scale(1.05); /* subtle zoom */
-    transition: transform 6s ease;
-  }
-
-  &:hover .hero-slide {
-    transform: scale(1.1);
+    min-height: 55vh;
   }
 
   .hero-text {
-    position: relative;
-    z-index: 2;
-    padding: 1.5rem 2rem;
-    border-radius: 14px;
-    backdrop-filter: blur(6px);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    max-width: 90%;
-    animation: fadeUp 1s ease;
-
-    h1 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: clamp(1.4rem, 5vw, 2.8rem);
-      font-weight: 700;
-      margin-bottom: 0.8rem;
-      letter-spacing: 0.5px;
-    }
-
-    p {
-      font-size: clamp(0.95rem, 2.5vw, 1.2rem);
-      font-weight: 400;
-      opacity: 0.95;
-      margin-bottom: 0;
-    }
-  }
-
-  @media (min-width: 768px) {
-    min-height: 60vh;
-
-    .hero-slide {
-      min-height: 60vh;
-    }
-
-    .hero-text {
-      padding: 2.5rem 3.5rem;
-      max-width: 750px;
-    }
+    padding: 1.8rem 2rem;
   }
 }
 
-/* Smooth slide + fade animation */
-@keyframes slideFade {
-  from {
-    transform: translateX(40px) scale(1.05);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0) scale(1.05);
-    opacity: 1;
-  }
-}
-
-/* Text fade up */
-@keyframes fadeUp {
-  from {
-    transform: translateY(25px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Mobile Optimization */
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .hero {
-    min-height: 40vh;
+    min-height: 45vh;
+  }
+
+  .hero-slide {
+    min-height: 45vh;
   }
 
   .hero-text {
-    padding: 1.2rem;
+    padding: 1.3rem;
     border-radius: 10px;
   }
 
   .hero-text h1 {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
 
   .hero-text p {

@@ -1,5 +1,5 @@
 
-import Navbar from "./Navbar"
+import Navbar from "./Navbarr";
 import Hero from './Hero'
 import Footer from "./Footer"
 import Programs from "./Programs";
