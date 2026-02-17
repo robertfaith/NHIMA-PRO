@@ -2,16 +2,15 @@
 
 .tittle{
     text-align: center;
-    margin: 70px 0 30px;
+    margin: 40px 0 20px;
     color: #212EA0;
-    font-size: 15px;
+    font-size: 0.85rem;
     font-weight: 600;
-    text-transform: Uppercase;
+    text-transform: uppercase;
 }
-.tittle h2 {
-    font-size: 32px;
-    color: #000f38;
-    margin-top: 5px;
-    font-size: 24px;
-    text-transform: none;
+.tittle h2{ font-size: clamp(1.25rem, 5vw, 2rem); color: #000f38; margin-top: 6px; text-transform: none; }
+
+@media (min-width: 768px){
+    .tittle{ margin: 70px 0 30px; font-size: 0.95rem; }
+    .tittle h2{ font-size: 2rem; }
 }

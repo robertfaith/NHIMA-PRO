@@ -19,7 +19,7 @@ return (
     <div className="navbar-header">
       <img src={ABLogo} alt="AB Bank" />
     </div>
-    <ul className={isOpen ? "nav-link active" : "nav-links"}>
+    <ul className={isOpen ? "nav-links active" : "nav-links"} role="menu" aria-hidden={!isOpen}>
       <li className="nav-item"><a className="nav-link" href="/Home">Home</a></li>
       <li className="nav-item"><a className="nav-link" href="/About">About</a></li>
       <li className="nav-item"><a className="nav-link" href="/Career">Benefits</a></li>
@@ -28,9 +28,9 @@ return (
       <li className="nav-item">
         <a className="nav-link btn-primary" href="/Register">Register</a>
       </li>
-      <div className="icon" onClick={toggleMenu}>
+      <button className="icon" onClick={toggleMenu} aria-label="Toggle menu" aria-expanded={isOpen}>
         <FaBars/>
-      </div>
+      </button>
     </ul>
   </nav>
 )

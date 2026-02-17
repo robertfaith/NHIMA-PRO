@@ -1,24 +1,29 @@
 import './About.scss'
 import about_img from '../../assets/site_imgs3.jpg'
+import { Link } from "react-router-dom";
+
 const About = () => {
   return (
     <div className='about'>
         <div className='about-left'>
-            <img src={about_img} alt="" />
+          <img className="about-img" src={about_img} alt="NHIMA overview" />
         </div>
         <div className='about-right'>
             <h3>About Us</h3>
-            <h2>Empowering Financial Inclusion</h2>
+            <h2>Advancing Universal Health Coverage</h2>
             <p>
-               AB Bank Zambia is a member of AccessHolding, a global banking group focused on serving micro, small, and medium enterprises. Since our establishment, we have been dedicated to promoting financial inclusion by providing simple, affordable, and transparent banking services to communities across Zambia.
+               The National Health Insurance Management Authority (NHIMA) is mandated to provide sustainable healthcare financing through the National Health Insurance Scheme. Our purpose is to safeguard citizens from the financial risks associated with medical care while ensuring access to quality healthcare services.
             </p>
             <p>
-               Our mission is to empower individuals and businesses by offering a range of financial products, including savings accounts, loans, and digital banking solutions. We believe in fostering economic growth and improving the quality of life for our customers through responsible banking practices.
+               By registering members and employers, accrediting healthcare providers, and efficiently managing contributions and claims, NHIMA strengthens the foundation of universal health coverage. We are driven by integrity, service excellence, and a commitment to improving health outcomes nationwide.
             </p>
             <p>
-               At AB Bank Zambia, we are committed to innovation and excellence, continuously adapting to the evolving needs of our customers. Our team of experienced professionals is passionate about delivering personalized service and building long-term relationships with our clients.
+              Through innovation and responsible governance, NHIMA continues to expand access, enhance operational efficiency, and build a healthcare system that serves every citizen with fairness and dignity.
             </p>
-            <button className='btn-primary'>Read More</button>
+            <Link to="/About" className="btn-primary">
+                Read More
+            </Link>
+
         </div>
     </div>
   )

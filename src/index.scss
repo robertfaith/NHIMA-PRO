@@ -7,6 +7,10 @@
   font-family: "Montserrat", sans-serif;
 }
 
+html {
+  font-size: clamp(14px, 1.2vw, 16px);
+}
+
 :root{
   --primaryColor: hsl(94,55%,56%);
   --hoverColor: hsl(93,75%,76%);
@@ -44,6 +48,26 @@
 }
 .li{
   list-style: none;
+}
+
+/* Responsive container used across the app */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Utility: stack columns on small screens */
+.stack-mobile{
+  display: flex;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .stack-mobile{ flex-direction: column; }
+  .btn{ padding: 12px 14px; font-size: 0.95rem }
 }
 
 .icon{

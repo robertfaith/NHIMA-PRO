@@ -11,6 +11,7 @@ import Dashboard from './src/Dashboard/Dashboard';// Update the path to the actu
 import Career from './src/Components/Careers/Career'; // Update the path to the actual location of your Career component
 import Loans from './src/Components/Loans/Loans';
 import MemDashboard from './src/MemDashboard/MemDashboard';
+import AboutSection from './src/Components/About/AboutSection';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: '/MemDashboard',
     element: <MemDashboard/>
+  },
+  {
+    path: '/About',
+    element: <AboutSection />
   }
   
 ]);
