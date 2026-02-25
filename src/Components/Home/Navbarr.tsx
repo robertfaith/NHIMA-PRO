@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
       <ul className={isOpen ? "nav-links active" : "nav-links"}>
         <li><a href="/Home">Home</a></li>
         <li><a href="/About">About</a></li>
-        <li><a href="/Career">Benefits</a></li>
+        <li><a href="/Benefits">Benefits</a></li>
         <li><a href="/Facility">Facilities</a></li>
         <li><a href="/Contact">Contact Us</a></li>
         <li>
@@ -48,7 +48,6 @@ const Navbar: React.FC = () => {
         </li>
       </ul>
 
-      {/* Hamburger Icon */}
       <button 
         className="menu-icon" 
         onClick={toggleMenu} 

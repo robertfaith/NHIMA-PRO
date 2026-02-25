@@ -4,14 +4,16 @@ import {
   RouterProvider
 } from 'react-router-dom';
 import Login from './src/Components/Auth/Login/Login';
-import Register from './src/Components/Auth/Register/Register'; // Update the path to the actual location of your Register component
-import Home from './src/Components/Home/Home'; // Update the path to the actual location of your Home component
+import Register from './src/Components/Auth/Register/Register'; 
+import Home from './src/Components/Home/Home'; 
 // Import the necessary components for routing
-import Dashboard from './src/Dashboard/Dashboard';// Update the path to the actual location of your Login component
-import Career from './src/Components/Careers/Career'; // Update the path to the actual location of your Career component
+import Dashboard from './src/Dashboard/Dashboard';
 import Loans from './src/Components/Loans/Loans';
 import MemDashboard from './src/MemDashboard/MemDashboard';
 import AboutSection from './src/Components/About/AboutSection';
+import Benefits from './src/Components/Careers/Benefits';
+import Facility from './src/Components/Facility/Facility';
+import Contact from './src/Components/Contact/Contact';
 
 const router = createBrowserRouter([
   {
@@ -31,8 +33,8 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: '/Career',
-    element: <Career />,
+    path: '/Benefits',
+    element: <Benefits />,
   },
   {
     path: '/Loans',
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
   {
     path: '/About',
     element: <AboutSection />
+  },
+  {
+    path: '/Facility',
+    element: <Facility />
+  },
+  {
+    path: '/Contact',
+    element: <Contact />
   }
   
 ]);

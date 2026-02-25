@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react'
 
 // Import your images
 import img1 from '../../assets/furniture.png'
-import img2 from '../../assets/slide2.jpg'
-import img3 from '../../assets/regist.jpg'
-import img4 from '../../assets/Our_ATM.jfif'
+import img2 from '../../assets/Q5.jpg'
+import img3 from '../../assets/Q4.jpeg'
+import img4 from '../../assets/p321.webp'
 
 const slides = [
   {

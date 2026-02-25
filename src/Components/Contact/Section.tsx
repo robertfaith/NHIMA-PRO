@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import './HeroSec.scss'
-import img1 from "../../../assets/Q121.jpg";
-import img4 from "../../../assets/Q4.jpeg";
+import './Section.scss'
+import img1 from "../../assets/Careers-Thumbnails2.jpg";
+import img4 from "../../assets/Careers-Thumbnails3.jpg";
 interface Slide {
   image: string
   title: string
@@ -11,17 +11,17 @@ interface Slide {
 const slides: Slide[] = [
   {
     image: img4,
-    title: 'Affordable Health Insurance for Every Zambian',
-    text: 'Access quality healthcare services nationwide through the National Health Insurance Scheme.'
+    title: 'Contact Us.',
+    text: 'Home / Contact'
   },
   {
     image: img1,
-    title: 'About NHIMA',
-    text: 'NHIMA is committed to providing accessible, affordable, and quality healthcare services to all Zambians.'
+    title: 'Careers',
+    text: 'NHIMA cares about your career and we are ready to provide professional Careers.'
   }
 ]
 
-const HeroSec: React.FC = () => {
+const HeroSect: React.FC = () => {
   const [current, setCurrent] = useState<number>(0)
 
   useEffect(() => {
@@ -58,4 +58,4 @@ const HeroSec: React.FC = () => {
   )
 }
 
-export default HeroSec
+export default HeroSect

@@ -31,7 +31,7 @@
   object-fit: contain;
 }
 
-/* Links container */
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@
   list-style: none;
 }
 
-/* Links */
+
 .nav-links li a {
   text-decoration: none;
   font-family: 'Montserrat', sans-serif;
@@ -52,14 +52,14 @@
 }
 
 .nav-links li a:hover {
-  background: #f0f4f8;
-  color: #005fa3;
+  background: #9cc3e9;
+  color: #064877;
 }
 
 /* Button */
 .btn-primary {
-  background: #005fa3;
-  color: #fff !important;
+  background: #1c8ee0;
+  color: #f3f4f5 !important;
   padding: 0.6rem 1.2rem;
   border-radius: 6px;
   font-weight: 600;
