@@ -16,8 +16,8 @@ const slides: Slide[] = [
   },
   {
     image: img1,
-    title: 'Careers',
-    text: 'NHIMA cares about your career and we are ready to provide professional Careers.'
+    title: 'Contact',
+    text: 'Talk to us about your needs and we will get back to you as soon as possible.'
   }
 ]
 
