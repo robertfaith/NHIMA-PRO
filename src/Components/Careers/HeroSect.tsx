@@ -11,13 +11,13 @@ interface Slide {
 const slides: Slide[] = [
   {
     image: img4,
-    title: 'We care about your Career.',
+    title: 'Benefits.',
     text: 'Home / Benefits'
   },
   {
     image: img1,
-    title: 'Careers',
-    text: 'NHIMA cares about your career and we are ready to provide professional Careers.'
+    title: '',
+    text: '.'
   }
 ]
 

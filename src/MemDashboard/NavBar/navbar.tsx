@@ -14,7 +14,7 @@ const Navbar = () => {
           <img src={logo} alt="Logo" />
         </div>
 
-        {/* wrap icon in a button for reliable clicks & accessibility */}
+        
         <button
           type="button"
           className="hamburgerBtn"

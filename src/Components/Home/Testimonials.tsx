@@ -1,12 +1,12 @@
 import './testimonials.scss';
 import { GrFormNextLink } from "react-icons/gr";
-import { GrFormPreviousLink } from "react-icons/gr"; // replace with a real back icon if available
+import { GrFormPreviousLink } from "react-icons/gr"; 
 import User_1 from '../../assets/reg.jpg';
 import User_2 from '../../assets/regist.jpg';
 import User_3 from '../../assets/simbeye.jpg';
 import User_4 from '../../assets/hero.png';
 
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 
 const Testimonials = () => {
   const slider = useRef<HTMLUListElement>(null);
@@ -21,14 +21,16 @@ const Testimonials = () => {
     }
   };
 
-  const slideForward = () => {
-    let newTx = tx + step;
-    if (newTx >= totalSlides * step) {
-      newTx = 0; // loop to first
-    }
-    setTx(newTx);
-    updateSlider(newTx);
-  };
+  const slideForward = useCallback(() => {
+    setTx((currentTx) => {
+      let newTx = currentTx + step;
+      if (newTx >= totalSlides * step) {
+        newTx = 0; // loop to first
+      }
+      updateSlider(newTx);
+      return newTx;
+    });
+  }, [step, totalSlides]);
 
   const slideBackward = () => {
     let newTx = tx - step;
@@ -46,7 +48,7 @@ const Testimonials = () => {
     }, 5000); // slide every 5 seconds
 
     return () => clearInterval(interval); // cleanup on unmount
-  }, [tx]); // re-run when tx changes
+  }, [slideForward]); 
 
   return (
     <div className="testimonials">
