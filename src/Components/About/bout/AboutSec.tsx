@@ -9,7 +9,6 @@ const AboutSec = () => {
           <img className="about-img" src={about_img} alt="NHIMA overview" />
         </div>
         <div className='about-right'>
-            <h2>About Us</h2>
             <h1>Advancing Universal Health Coverage</h1>
             <p>
                The National Health Insurance Management Authority (NHIMA) is a statutory body established by the Government of the Republic of Zambia under the National Health Insurance Act No. 2 of 2018. The Authority is mandated to administer and manage the National Health Insurance Scheme (NHIS), a national initiative designed to provide sustainable healthcare financing and protect citizens from the financial burden associated with illness.
