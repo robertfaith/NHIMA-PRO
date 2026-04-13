@@ -46,7 +46,7 @@
   color: #f0f4f8;
   padding: 0.6rem 0.8rem;
   border-radius: 6px;
-  transition: all 0.25s ease;
+  transition: all 0.35s ease;
 }
 
 .nav-links li a:hover {
@@ -75,7 +75,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #2f3e50;
+  color: #fff4f5;
 }
 
 /* ================= MOBILE ================= */
@@ -93,12 +93,12 @@
     width: 100%;          
     max-width: 320px;     
     height: calc(100vh - 60px);
-    background: #ffffff;
-    justify-content: space-evenly;
+    background: #699de0;
+    justify-content: space-around;
     flex-direction: column;
     align-items: flex-start;
-    padding: 2rem 1.5rem;
-    gap: 1rem;
+    padding: 1rem 1.5rem; ;
+    gap: 0.5rem;
     box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
     transition: right 0.3s ease-in-out;
   }

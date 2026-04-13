@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './MemSideBar.scss';
+import { Link, useLocation } from "react-router-dom";
 
-//icons 
+// icons
 import { SiHomebridge } from "react-icons/si";
 import { PiUserCircleCheckDuotone } from "react-icons/pi";
 import { GrVolumeControl } from "react-icons/gr";
@@ -18,22 +19,90 @@ interface MemSideBarProps {
 }
 
 const MemSideBar: React.FC<MemSideBarProps> = ({ show }) => {
+  const {pathname} = useLocation()
+  const [userName, setUserName] = React.useState('')
+  const [mobileOpen, setMobileOpen] = React.useState(false)
+
+  useEffect(() => {
+    // Simulate fetching user name
+    setUserName('ROBTECH')
+  }, [])
+
+  //close mobile sidebar on route change
+  useEffect(()=>{
+    setMobileOpen(false)
+  },[pathname])
+
   return (
     <aside className={`sideBar ${show ? 'action' : ''}`} aria-hidden={!show}>
+      <>
+      <button onClick={()=>setMobileOpen(true)} className = 'lg:hidden fixed top-4 left-4 z-50 p-2 bg-slate-900-te'
+      </>
       <ul>
-        <li><a href="/MemDashboard"><SiHomebridge /> Home</a></li>
-        <li><a href="/Profile"><PiUserCircleCheckDuotone /> My Profile</a></li>
-        <li><a href="/Contribution"><GiMoneyStack /> Contribution</a></li>
-        <li><a href="/Claims"><GrVolumeControl /> Claims</a></li>
-        <li><a href="/facility"><MdAddHomeWork /> Facilities</a></li>
-        <li><a href="/Benefits"><FaUsers /> Benefits</a></li>
-        <li><a href="/Notifications"> <AiOutlineNotification /> Notifications</a></li>
-        <li><a href="/Documents"><TbReport /> Documents</a></li>
-        <li><a href="/Support"><MdPolicy /> Support</a></li>
-        <li><a href="/MemSettings"><MdOutlineSettingsSuggest /> Settings</a></li>
+
+        <li>
+          <Link to="/memdashboard">
+            <SiHomebridge /> Home
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/memdashboard/profile">
+            <PiUserCircleCheckDuotone /> My Profile
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/memdashboard/contributions">
+            <GiMoneyStack /> Contributions
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/memdashboard/claims">
+            <GrVolumeControl /> Claims
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/memdashboard/facilities">
+            <MdAddHomeWork /> Facilities
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/memdashboard/benefits">
+            <FaUsers /> Benefits
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/memdashboard/notifications">
+            <AiOutlineNotification /> Notifications
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/memdashboard/documents">
+            <TbReport /> Documents
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/memdashboard/support">
+            <MdPolicy /> Support
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/memdashboard/settings">
+            <MdOutlineSettingsSuggest /> Settings
+          </Link>
+        </li>
+
       </ul>
     </aside>
   );
-}
+};
 
 export default MemSideBar;

@@ -1,28 +1,44 @@
 
 import {
   createBrowserRouter,
-  RouterProvider
+  RouterProvider,
+  Navigate
 } from 'react-router-dom';
 import Login from './src/Components/Auth/Login/Login';
-import Register from './src/Components/Auth/Register/Register'; 
-import Home from './src/Components/Home/Home'; 
+import Register from './src/Components/Auth/Register/Register';
+import Home from './src/Components/Home/Home';
 // Import the necessary components for routing
 import Dashboard from './src/Dashboard/Dashboard';
 import Loans from './src/Components/Loans/Loans';
 import MemDashboard from './src/MemDashboard/MemDashboard';
+import MemDashboardHome from './src/MemDashboard/Pages/Dashboard';
+import MemProfile from './src/MemDashboard/Pages/Profile';
+import MemContributions from './src/MemDashboard/Pages/Contributions';
+import MemNotifications from './src/MemDashboard/Pages/Notifications';
+import MemSettings from './src/MemDashboard/Pages/Settings';
+import MemSupport from './src/MemDashboard/Pages/Support';
+import MemClaims from './src/MemDashboard/Pages/Claims';
+import MemFacilities from './src/MemDashboard/Pages/Facilities';
+import MemBenefits from './src/MemDashboard/Pages/Benefits';
+import MemDocuments from './src/MemDashboard/Pages/Documents';
 import AboutSection from './src/Components/About/AboutSection';
 import Benefits from './src/Components/Careers/Benefits';
 import Facility from './src/Components/Facility/Facility';
 import Contact from './src/Components/Contact/Contact';
+import EmployerDashboard from './src/EmployerDashboard/EmployerDashboard';
 
 const router = createBrowserRouter([
   {
     path: '/Login',
-    element: <Login />, // Use the Login component here
+    element: <Login />,
   },
   {
     path: '/Register',
     element: <Register />,
+  },
+  {
+    path: '/EmployerDashboard/',
+    element: <EmployerDashboard />
   },
   {
     path: '/Dashboard',
@@ -38,11 +54,61 @@ const router = createBrowserRouter([
   },
   {
     path: '/Loans',
-    element: <Loans/>
+    element: <Loans />
   },
   {
-    path: '/MemDashboard',
-    element: <MemDashboard/>
+    path: '/memdashboard',
+    element: <MemDashboard />,
+    children: [
+      {
+        index: true,
+        element: <MemDashboardHome />,
+      },
+      {
+        path: 'dashboard',
+        element: <MemDashboardHome />,
+      },
+      {
+        path: 'profile',
+        element: <MemProfile />,
+      },
+      {
+        path: 'contributions',
+        element: <MemContributions />,
+      },
+      {
+        path: 'notifications',
+        element: <MemNotifications />,
+      },
+      {
+        path: 'settings',
+        element: <MemSettings />,
+      },
+      {
+        path: 'support',
+        element: <MemSupport />,
+      },
+      {
+        path: 'claims',
+        element: <MemClaims />,
+      },
+      {
+        path: 'facilities',
+        element: <MemFacilities />,
+      },
+      {
+        path: 'benefits',
+        element: <MemBenefits />,
+      },
+      {
+        path: 'documents',
+        element: <MemDocuments />,
+      },
+      {
+        path: '*',
+        element: <Navigate to="/memdashboard" replace />,
+      },
+    ],
   },
   {
     path: '/About',
@@ -55,8 +121,11 @@ const router = createBrowserRouter([
   {
     path: '/Contact',
     element: <Contact />
+  },
+  {
+    path: '*',
+    element: <Navigate to="/Home" replace />
   }
-  
 ]);
 
 export default function App() {

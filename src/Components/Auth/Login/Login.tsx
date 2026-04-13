@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import './Login.css'
+import './Login.scss'
 import video from '../../../assets/video.mp4'
 import { Link, useNavigate } from 'react-router-dom'
-import Logo from '../../../assets/AB_Bank_Logo.png'
+import Logo from '../../../assets/2.png'
 import { FaUserShield } from "react-icons/fa6"
 import { BsFillShieldLockFill } from "react-icons/bs"
 import { AiOutlineSwapRight } from "react-icons/ai"
