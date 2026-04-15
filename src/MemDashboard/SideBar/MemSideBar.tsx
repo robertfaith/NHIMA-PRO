@@ -20,12 +20,10 @@ interface MemSideBarProps {
 
 const MemSideBar: React.FC<MemSideBarProps> = ({ show }) => {
   const {pathname} = useLocation()
-  const [userName, setUserName] = React.useState('')
-  const [mobileOpen, setMobileOpen] = React.useState(false)
+  const [, setMobileOpen] = React.useState(false)
 
-  useEffect(() => {
-    // Simulate fetching user name
-    setUserName('ROBTECH')
+  useEffect(()=>{
+    // Sidebar initialization if needed
   }, [])
 
   //close mobile sidebar on route change
@@ -35,9 +33,8 @@ const MemSideBar: React.FC<MemSideBarProps> = ({ show }) => {
 
   return (
     <aside className={`sideBar ${show ? 'action' : ''}`} aria-hidden={!show}>
-      <>
-      <button onClick={()=>setMobileOpen(true)} className = 'lg:hidden fixed top-4 left-4 z-50 p-2 bg-slate-900-te'
-      </>
+      <button onClick={()=>setMobileOpen(true)} className='lg:hidden fixed top-4 left-4 z-50 p-2 bg-slate-900 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-inset'>
+      </button>
       <ul>
 
         <li>
