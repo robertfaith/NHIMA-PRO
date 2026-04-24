@@ -1,22 +1,26 @@
-import {Pool} from 'pg';
+import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const dbPool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.ABBank_db,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
+const pool = new Pool({
+  host:     process.env.DB_HOST     || 'localhost',
+  port:     parseInt(process.env.DB_PORT || '5432'),
+  database: process.env.DB_NAME     || 'ABBank_db',
+  user:     process.env.DB_USER     || 'postgres',
+  password: process.env.DB_PASSWORD || '',
+  max: 20,                  // max pool connections
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
 });
 
-dbPool.on("connect", () => {
-    console.log("Connected to the database");
-})
-
-dbPool.on("error", (err) => {
-    console.error("Unexpected error on idle client", err);
+pool.on('connect', () => {
+  console.log('PostgreSQL connected');
 });
 
-export default dbPool;
+pool.on('error', (err) => {
+  console.error('PostgreSQL pool error:', err);
+  process.exit(-1);
+});
+
+export default pool;

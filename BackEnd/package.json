@@ -8,7 +8,7 @@
   "main": "backend.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon backend.js"
+    "start": "nodemon --exec ts-node-esm backend.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -17,18 +17,25 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "express-oauth2-jwt-bearer": "^1.7.4",
+    "express-rate-limit": "^8.3.2",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.2",
     "morgan": "^1.10.1",
+    "nodemailer": "^8.0.5",
     "pg": "^8.20.0",
     "postgre": "^0.1.8",
     "postgres": "^3.4.8",
+    "qrcode": "^1.5.4",
+    "speakeasy": "^2.0.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.5.0",
     "@types/pg": "^8.20.0",

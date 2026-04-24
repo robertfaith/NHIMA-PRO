@@ -222,6 +222,8 @@ a{
       .text {
         color: var(--whiteColor);
         font-size: 0.95rem;
+        text-align: center;
+        justify-content: center;
       }
       .btn {
         background: #eafbe7;
@@ -245,8 +247,7 @@ a{
     background: var(--whiteColor);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+
     border-radius: 0 20px 20px 0;
     padding: 15px;
     justify-content: center; // Center form vertically
@@ -280,6 +281,8 @@ a{
           outline: none;
           border: none;
           width: 250px;
+          justify-content: center;
+          align-items: center;
         }
         .input{
           gap: 25px;
@@ -288,6 +291,8 @@ a{
           padding: 15px;
           background: var(--inputColor);
           border-radius: 10px;
+          justify-content: center;
+          align-items: center;
           
         }
       }

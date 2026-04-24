@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import authRoutes from "./routes/auth.js";
-import adminRoutes from "./routes/AdminRoutes.js";
+import authRoutes from "./routes/auth.ts";
+import adminRoutes from "./routes/users.ts";
 import pool from "./config/db.js";
 
 dotenv.config();
