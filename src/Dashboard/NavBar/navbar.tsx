@@ -2,10 +2,10 @@ import './navbar.scss'
 import { useState } from "react"
 import logo from '../../assets/2.png'
 import { GiHamburgerMenu } from "react-icons/gi"
-import MemSideBar from "../SideBar/MemSideBar"
+import MemSideBar from '../SideBar/SideBar'
 
 const Navbar = () => {
-  const [showSideBar, setShowSideBar] = useState(false)
+  const [showSideBar, setShowSideBar] = useState(true)
 
   return (
     <div>

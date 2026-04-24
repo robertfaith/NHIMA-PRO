@@ -1,7 +1,7 @@
 import './SideBar.scss';
 
 //images
-import logo from '../../assets/AB_Bank_Logo.png';
+import logo from '../../assets/ABLogo.jfif'
 
 //icons
 import { AiTwotoneDashboard } from "react-icons/ai";
@@ -19,7 +19,9 @@ import { BsQuestionCircle } from "react-icons/bs";
 
 
 
-function SideBar() {
+function SideBar({ show }: { show: boolean }) {
+  if (!show) return null;
+
   return (
     <div className='sideBar grid'>
 
