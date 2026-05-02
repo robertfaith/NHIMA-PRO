@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './MemSideBar.scss';
 import { Link, useLocation } from "react-router-dom";
 
 // icons
@@ -8,97 +7,151 @@ import { PiUserCircleCheckDuotone } from "react-icons/pi";
 import { GrVolumeControl } from "react-icons/gr";
 import { TbReport } from "react-icons/tb";
 import { AiOutlineNotification } from "react-icons/ai";
-import { MdOutlineSettingsSuggest } from "react-icons/md";
-import { MdPolicy } from "react-icons/md";
-import { FaUsers } from "react-icons/fa";
+import { MdOutlineSettingsSuggest, MdPolicy, MdAddHomeWork, MdOutlineLogout } from "react-icons/md";
+import { FaUsers, FaChevronRight } from "react-icons/fa";
 import { GiMoneyStack } from "react-icons/gi";
-import { MdAddHomeWork } from "react-icons/md";
+import Logo from "../../assets/2.png";
 
 interface MemSideBarProps {
   show: boolean;
 }
 
+const sidebarBaseStyles: React.CSSProperties = {
+  width: '240px',
+  background: '#011627',
+  position: 'fixed',
+  top: 0,
+  height: '100vh',
+  padding: 0,
+  transition: 'left .3s ease',
+  zIndex: 1000,
+  boxSizing: 'border-box',
+  overflowY: 'auto',
+};
+
+const logoImageStyles: React.CSSProperties = {
+  maxWidth: '100px',
+  height: 'auto',
+  marginLeft: '8px',
+  borderRadius: '2px',
+  padding: '6px',
+};
+
 const MemSideBar: React.FC<MemSideBarProps> = ({ show }) => {
-  const {pathname} = useLocation()
-  const [, setMobileOpen] = React.useState(false)
+  const { pathname } = useLocation();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  useEffect(()=>{
-    // Sidebar initialization if needed
-  }, [])
+  useEffect(() => {
+    // optional init
+  }, []);
 
-  //close mobile sidebar on route change
-  useEffect(()=>{
-    setMobileOpen(false)
-  },[pathname])
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  const handleLogout = () => {
+    // Clear user session/token
+    localStorage.removeItem('authToken');
+    // Redirect to login page
+    window.location.href = '/login';
+  };
+
+  const role = "Admin"; // This should ideally come from user data or context
+  const userName = "RobTech Innovation";
+
+  const navLinks = [
+    { to: "/memdashboard",               icon: <SiHomebridge />,             label: "Home" },
+    { to: "/memdashboard/profile",       icon: <PiUserCircleCheckDuotone />, label: "My Profile" },
+    { to: "/memdashboard/contributions", icon: <GiMoneyStack />,             label: "Contributions" },
+    { to: "/memdashboard/claims",        icon: <GrVolumeControl />,          label: "Claims" },
+    { to: "/memdashboard/facilities",    icon: <MdAddHomeWork />,            label: "Facilities" },
+    { to: "/memdashboard/benefits",      icon: <FaUsers />,                  label: "Benefits" },
+    { to: "/memdashboard/notifications", icon: <AiOutlineNotification />,    label: "Notifications" },
+    { to: "/memdashboard/documents",     icon: <TbReport />,                 label: "Documents" },
+    { to: "/memdashboard/support",       icon: <MdPolicy />,                 label: "Support" },
+    { to: "/memdashboard/settings",      icon: <MdOutlineSettingsSuggest />, label: "Settings" },
+  ];
 
   return (
-    <aside className={`sideBar ${show ? 'action' : ''}`} aria-hidden={!show}>
-      <button onClick={()=>setMobileOpen(true)} className='lg:hidden fixed top-4 left-4 z-50 p-2 bg-slate-900 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-inset'>
-      </button>
-      <ul>
+    <>
+      {/* Overlay for mobile */}
+      {mobileOpen && (
+        <div
+          onClick={() => setMobileOpen(false)}
+          className="fixed inset-0 bg-black/40 z-[999] lg:hidden"
+        />
+      )}
 
-        <li>
-          <Link to="/memdashboard">
-            <SiHomebridge /> Home
-          </Link>
-        </li>
+      <aside
+        style={{
+          ...sidebarBaseStyles,
+          left: show || mobileOpen ? '0' : '-240px',
+        }}
+      >
 
-        <li>
-          <Link to="/memdashboard/profile">
-            <PiUserCircleCheckDuotone /> My Profile
-          </Link>
-        </li>
+        {/* Logo */}
+        <div className="px-5 pt-8 pb-6 border-b border-white/10 flex justify-between items-center">
+          <img
+            src={Logo}
+            alt="Logo"
+            style={logoImageStyles}
+          />
 
-        <li>
-          <Link to="/memdashboard/contributions">
-            <GiMoneyStack /> Contributions
-          </Link>
-        </li>
+          <button
+            onClick={() => setMobileOpen(false)}
+            className="lg:hidden text-slate-400 hover:text-white"
+          >
+            ✕
+          </button>
+        </div>
 
-        <li>
-          <Link to="/memdashboard/claims">
-            <GrVolumeControl /> Claims
-          </Link>
-        </li>
+        {/* User Card */}
+        <div className="mx-3 mt-5 mb-4 p-4 rounded-xl border border-white/10 bg-white/5">
+          <div className="flex items-center gap-3">
+            <span className="w-9 h-9 flex items-center justify-center rounded-full bg-indigo-600 text-white font-bold">
+              {userName.charAt(0)}
+            </span>
+            <div>
+              <p className="text-sm text-slate-200 font-semibold">{userName}</p>
+              <p className="text-xs text-slate-400">
+                {role === "Admin" ? "Administrator" : "Employee"}
+              </p>
+            </div>
+          </div>
+        </div>
 
-        <li>
-          <Link to="/memdashboard/facilities">
-            <MdAddHomeWork /> Facilities
-          </Link>
-        </li>
+        {/* Navigation Label */}
+        <div className="px-5 pb-3">
+          <p className="text-xs text-slate-500 uppercase tracking-widest">
+            NAVIGATIONS
+          </p>
+        </div>
 
-        <li>
-          <Link to="/memdashboard/benefits">
-            <FaUsers /> Benefits
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/memdashboard/notifications">
-            <AiOutlineNotification /> Notifications
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/memdashboard/documents">
-            <TbReport /> Documents
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/memdashboard/support">
-            <MdPolicy /> Support
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/memdashboard/settings">
-            <MdOutlineSettingsSuggest /> Settings
-          </Link>
-        </li>
-
-      </ul>
-    </aside>
+        {/* Navigation Links */}
+        <div className='flex-1 px-3 space-y-1 overflow-y-auto'>
+          {navLinks.map((item)=>{
+            const isActive = pathname.startsWith(item.to)
+            return(
+              <Link key={item.label} to={item.to} className={`group flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-medium transition-all duration-150 relative ${isActive ? "bg-indigo-500/12 text-indigo-300": "text-slate-300 hover:text-white hover:bg-white/4" }`}>
+                {isActive && <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-indigo-500'/>}
+                <span className={`w-5 h-5 shrink-0 inline-flex items-center justify-center ${isActive ? "text-indigo-300": "text-slate-400 group-hover:text-slate-300"}`}>
+                  {item.icon}
+                </span>
+                <span className='flex-1 min-w-0 text-left truncate'>{item.label}</span>
+                {isActive && <FaChevronRight className='w-3.5 h-5 text-indigo-500/50'/>}
+              </Link>
+            )
+          })}
+          </div>
+       {/* Logout */}
+       <div className='p-3 border-t border-white/6'>
+         <button onClick={handleLogout} className='flex items-center gap-3 w-full px-3 py-2.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-rose-400 hover:bg-rose-500/8 transition-all duration-150'>
+           <MdOutlineLogout className='w-[17px] h-[17px]' />
+           <span>Logout</span>
+         </button>
+       </div>
+      </aside>
+    </>
   );
 };
 
