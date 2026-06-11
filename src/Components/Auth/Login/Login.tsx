@@ -12,299 +12,189 @@ const API = import.meta.env.VITE_API_URL ?? 'http://localhost:1999'
 
 const Login: React.FC = () => {
 
-  const [values,setValues] = useState({
-    email:'',
-    password:''
+  const [values, setValues] = useState({
+    email: '',
+    password: ''
   })
 
-  const [message,setMessage] = useState('')
-  const [step,setStep] = useState<'credentials'|'otp'>('credentials')
-  const [tempToken,setTempToken] = useState('')
-  const [otp,setOtp] = useState('')
+  const [message, setMessage] = useState('')
+  const [step, setStep] = useState<'credentials' | 'otp'>('credentials')
+  const [tempToken, setTempToken] = useState('')
+  const [otp, setOtp] = useState('')
 
   const navigate = useNavigate()
 
-
-  const handleLogin = (e:React.FormEvent)=>{
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
 
-    Axios.post(`${API}/api/users/login`,{
-      email:values.email,
-      password:values.password
-    },
-    {
-      withCredentials:true
+    Axios.post(`${API}/api/users/login`, {
+      email: values.email,
+      password: values.password
+    }, {
+      withCredentials: true
     })
-    .then((response)=>{
-      setTempToken(response.data.tempToken)
-      setStep('otp')
-    })
-    .catch((error)=>{
-      setMessage(
-        error.response?.data?.error ||
-        "Invalid email or password"
-      )
-    })
-
+      .then((response) => {
+        setTempToken(response.data.tempToken)
+        setStep('otp')
+      })
+      .catch((error) => {
+        setMessage(
+          error.response?.data?.error ||
+          "Invalid email or password"
+        )
+      })
   }
 
-
-  const handleOtp=(e:React.FormEvent)=>{
+  const handleOtp = (e: React.FormEvent) => {
     e.preventDefault()
 
-    Axios.post(`${API}/api/users/verify-otp`,
-    {
+    Axios.post(`${API}/api/users/verify-otp`, {
       tempToken,
       otp
-    },
-    {
-      withCredentials:true
+    }, {
+      withCredentials: true
     })
-    .then(()=>{
-      navigate('/memdashboard')
-    })
-    .catch(()=>{
-      setMessage("Invalid OTP")
-    })
-
+      .then(() => {
+        navigate('/memdashboard')
+      })
+      .catch(() => {
+        setMessage("Invalid OTP")
+      })
   }
 
+  return (
+    <div className="loginPage">
+      <div className="container">
 
-return(
+        {/* VIDEO SECTION */}
+        <div className="videoDev">
+          <video
+            src={video}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+          <div className="videoOverlay">
+            <div className="overlayContent">
+              <img src={Logo} alt="NHIMA Logo" />
+              <h2>NHIMA Digital Health Portal</h2>
+              <p>Access your health insurance services anywhere, anytime.</p>
+              <div className="overlayBadge">
+                <span className="dot" />
+                Secure &amp; Encrypted
+              </div>
+            </div>
+          </div>
+        </div>
 
-<div className="loginPage">
+        {/* FORM SECTION */}
+        <div className="formDiv">
 
+          <div className="headerDiv">
+            <div className="logoRing">
+              <img src={Logo} alt="NHIMA Logo" />
+            </div>
+            <h3>
+              {step === 'credentials' ? 'Welcome Back' : 'Verify Identity'}
+            </h3>
+            <p className="subheading">
+              {step === 'credentials'
+                ? 'Sign in to your NHIMA account'
+                : 'Enter the OTP sent to your registered contact'}
+            </p>
+          </div>
 
-<div className="container">
+          {step === 'credentials' && (
+            <form className="form" onSubmit={handleLogin}>
 
+              {message && (
+                <div className="notice">
+                  <span>⚠</span> {message}
+                </div>
+              )}
 
-{/* VIDEO SECTION */}
+              <div className="inputDiv">
+                <label>NHIMA ID</label>
+                <div className="input">
+                  <FaUserShield className="icon" />
+                  <input
+                    type="text"
+                    placeholder="Enter your NHIMA ID"
+                    value={values.email}
+                    onChange={(e) => setValues({ ...values, email: e.target.value })}
+                  />
+                </div>
+              </div>
 
-<div className="videoDev">
+              <div className="inputDiv">
+                <label>Password</label>
+                <div className="input">
+                  <BsFillShieldLockFill className="icon" />
+                  <input
+                    type="password"
+                    placeholder="Enter your password"
+                    value={values.password}
+                    onChange={(e) => setValues({ ...values, password: e.target.value })}
+                  />
+                </div>
+              </div>
 
-<video 
-src={video}
-autoPlay
-muted
-loop
-/>
+              <button type="submit" className="btn">
+                Sign In
+                <AiOutlineSwapRight className="btnIcon" />
+              </button>
 
-<div className="videoOverlay">
+            </form>
+          )}
 
-<img src={Logo}/>
+          {step === 'otp' && (
+            <form className="form" onSubmit={handleOtp}>
 
-<h2>
-NHIMA Digital Health Portal
-</h2>
+              {message && (
+                <div className="notice">
+                  <span>⚠</span> {message}
+                </div>
+              )}
 
-<p>
-Access your health insurance services anywhere, anytime.
-</p>
+              <div className="inputDiv">
+                <label>One-Time Password</label>
+                <input
+                  className="otp"
+                  placeholder="Enter 6-digit OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  maxLength={6}
+                />
+              </div>
 
-</div>
+              <button type="submit" className="btn">
+                Verify &amp; Continue
+                <AiOutlineSwapRight className="btnIcon" />
+              </button>
 
-</div>
+              <button
+                type="button"
+                className="btn ghost"
+                onClick={() => { setStep('credentials'); setMessage('') }}
+              >
+                ← Back to Login
+              </button>
 
+            </form>
+          )}
 
+          <div className="footerDiv">
+            <span>Don't have an account?</span>
+            <Link to="/register">
+              <button className="btn signup">Create Account</button>
+            </Link>
+          </div>
 
-{/* FORM SECTION */}
-
-<div className="formDiv">
-
-
-<div className="headerDiv">
-
-<img src={Logo}/>
-
-<h3>
-{
-step==='credentials'
-?
-"Welcome Back"
-:
-"Verify Identity"
+        </div>
+      </div>
+    </div>
+  )
 }
-</h3>
-
-</div>
-
-
-
-{
-step==='credentials' &&
-
-<form 
-className="form"
-onSubmit={handleLogin}
->
-
-
-{
-message &&
-<p className="notice">
-{message}
-</p>
-}
-
-
-
-<div className="inputDiv">
-
-<div className="input">
-
-
-<FaUserShield className="icon"/>
-
-<input
-
-type="email"
-
-placeholder="Enter NHIMA Email"
-
-value={values.email}
-
-onChange={(e)=>
-
-setValues({
-...values,
-email:e.target.value
-})
-
-}
-
-/>
-
-
-</div>
-
-
-</div>
-
-
-
-
-<div className="inputDiv">
-
-
-<div className="input">
-
-<BsFillShieldLockFill className="icon"/>
-
-
-<input
-
-type="password"
-
-placeholder="Password"
-
-value={values.password}
-
-
-onChange={(e)=>
-
-setValues({
-...values,
-password:e.target.value
-})
-
-}
-
-/>
-
-
-</div>
-
-
-</div>
-
-
-
-<button className="btn">
-
-Login
-
-<AiOutlineSwapRight/>
-
-</button>
-
-
-</form>
-
-}
-
-
-
-{
-step==='otp' &&
-
-<form 
-className="form"
-onSubmit={handleOtp}
->
-
-
-<input
-
-className="otp"
-
-placeholder="Enter OTP"
-
-value={otp}
-
-onChange={(e)=>setOtp(e.target.value)}
-
-/>
-
-
-<button className="btn">
-
-Verify OTP
-
-</button>
-
-
-</form>
-
-}
-
-
-
-
-<div className="footerDiv">
-
-
-<span>
-Don't have an account?
-</span>
-
-
-<Link to="/register">
-
-<button className="btn signup">
-
-Register
-
-</button>
-
-</Link>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-)
-
-}
-
 
 export default Login

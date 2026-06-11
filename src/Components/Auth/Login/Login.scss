@@ -1,416 +1,427 @@
-.loginPage{
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-min-height:100vh;
+/* ── Tokens ─────────────────────────────────────────────── */
+$teal-dark:   #005f58;
+$teal:        #00857c;
+$teal-light:  #e6f4f3;
+$navy:        #003b5c;
+$navy-light:  #e8f0f6;
+$white:       #ffffff;
+$grey-50:     #f4f8fb;
+$grey-100:    #eaf1f6;
+$grey-300:    #c4d4df;
+$grey-600:    #5a7080;
+$error:       #c62828;
+$radius-lg:   20px;
+$radius-md:   12px;
+$radius-sm:   8px;
+$shadow-card: 0 24px 60px rgba(0, 40, 70, .14);
+$shadow-btn:  0 4px 14px rgba(0, 133, 124, .35);
 
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-background:#f4f8fb;
-
-padding:20px;
-
-font-family:'Inter',sans-serif;
-
-
+/* ── Page Shell ─────────────────────────────────────────── */
+.loginPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e8f4f8 0%, #d6eae7 100%);
+  padding: 24px;
+  font-family: 'Inter', sans-serif;
 }
 
-
-.container{
-
-width:100%;
-
-max-width:1100px;
-
-display:flex;
-
-background:white;
-
-border-radius:25px;
-
-overflow:hidden;
-
-box-shadow:0 20px 40px rgba(0,0,0,.12);
-
-
+/* ── Card ───────────────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  background: $white;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+  min-height: 620px;
 }
 
+/* ── Video Panel ────────────────────────────────────────── */
+.videoDev {
+  width: 48%;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: $navy; // fallback if video fails to load
 
-
-/* VIDEO */
-
-.videoDev{
-
-width:45%;
-
-position:relative;
-
-overflow:hidden;
-
-
-video{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
+  video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 0;
+  }
 }
 
-
+.videoOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2; // sits above the video
+  background: linear-gradient(
+    160deg,
+    rgba(0, 40, 80, .70) 0%,
+    rgba(0, 133, 124, .75) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
 }
 
+.overlayContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: $white;
+  gap: 18px;
 
+  img {
+    width: 96px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,.25));
+    animation: fadeDown .6s ease both;
+  }
 
-.videoOverlay{
+  h2 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -.3px;
+    animation: fadeDown .7s ease both;
+  }
 
-position:absolute;
-
-inset:0;
-
-background:linear-gradient(
-rgba(0,60,100,.55),
-rgba(0,150,120,.65)
-);
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:center;
-
-text-align:center;
-
-color:white;
-
-
-img{
-
-width:90px;
-
-margin-bottom:20px;
-
+  p {
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 280px;
+    opacity: .88;
+    animation: fadeDown .8s ease both;
+  }
 }
 
+.overlayBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  backdrop-filter: blur(6px);
+  border-radius: 50px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .3px;
+  animation: fadeDown .9s ease both;
 
-h2{
-
-font-size:30px;
-
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4cffb0;
+    box-shadow: 0 0 6px #4cffb0;
+    animation: pulse 2s ease-in-out infinite;
+  }
 }
 
-
-p{
-
-max-width:300px;
-
-line-height:1.6;
-
+/* ── Form Panel ─────────────────────────────────────────── */
+.formDiv {
+  width: 52%;
+  padding: 52px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+/* ── Header ─────────────────────────────────────────────── */
+.headerDiv {
+  text-align: center;
+  margin-bottom: 32px;
+
+  .logoRing {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: $teal-light;
+    border: 2px solid rgba(0,133,124,.2);
+    margin-bottom: 18px;
+
+    img {
+      width: 52px;
+    }
+  }
+
+  h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: $navy;
+    margin: 0 0 6px;
+  }
+
+  .subheading {
+    font-size: 14px;
+    color: $grey-600;
+    margin: 0;
+  }
 }
 
-
-
-/* FORM */
-
-
-.formDiv{
-
-width:55%;
-
-padding:45px;
-
-
+/* ── Form ───────────────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
+.inputDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
 
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: $navy;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
 
-.headerDiv{
+  .input {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: $grey-100;
+    border: 1.5px solid transparent;
+    border-radius: $radius-md;
+    padding: 14px 16px;
+    transition: border-color .2s, background .2s;
 
-text-align:center;
+    &:focus-within {
+      border-color: $teal;
+      background: $white;
+      box-shadow: 0 0 0 3px rgba(0,133,124,.1);
+    }
 
+    .icon {
+      color: $teal;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
 
-img{
+    input {
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 100%;
+      font-size: 15px;
+      color: #1a2e3b;
+      font-family: 'Inter', sans-serif;
 
-width:90px;
-
+      &::placeholder {
+        color: $grey-300;
+      }
+    }
+  }
 }
 
+/* ── OTP input ──────────────────────────────────────────── */
+.otp {
+  width: 100%;
+  padding: 16px;
+  border-radius: $radius-md;
+  border: 1.5px solid $grey-300;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 10px;
+  text-align: center;
+  color: $navy;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  transition: border-color .2s, box-shadow .2s;
 
-h3{
-
-font-size:28px;
-
-color:#003b5c;
-
-margin-top:15px;
-
+  &:focus {
+    outline: none;
+    border-color: $teal;
+    box-shadow: 0 0 0 3px rgba(0,133,124,.1);
+  }
 }
 
+/* ── Buttons ────────────────────────────────────────────── */
+.btn {
+  width: 100%;
+  border: none;
+  padding: 15px 20px;
+  border-radius: $radius-md;
+  background: $teal;
+  color: $white;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  box-shadow: $shadow-btn;
+  margin-top: 8px;
+
+  .btnIcon {
+    font-size: 20px;
+    transition: transform .2s;
+  }
+
+  &:hover {
+    background: $teal-dark;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0,133,124,.40);
+
+    .btnIcon {
+      transform: translateX(4px);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &.signup {
+    background: $navy;
+    box-shadow: 0 4px 14px rgba(0, 59, 92, .3);
+
+    &:hover {
+      background: darken($navy, 8%);
+      box-shadow: 0 6px 20px rgba(0, 59, 92, .38);
+    }
+  }
+
+  &.ghost {
+    background: transparent;
+    color: $grey-600;
+    border: 1.5px solid $grey-300;
+    box-shadow: none;
+
+    &:hover {
+      background: $grey-100;
+      transform: translateY(-1px);
+      box-shadow: none;
+    }
+  }
 }
 
-
-
-
-.form{
-
-
-margin-top:30px;
-
-
-.inputDiv{
-
-
-margin-bottom:20px;
-
-
-.input{
-
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-
-background:#f0f6fa;
-
-border-radius:12px;
-
-padding:14px;
-
-
-.icon{
-
-color:#00857c;
-
-font-size:22px;
-
+/* ── Notice ─────────────────────────────────────────────── */
+.notice {
+  background: #fdecea;
+  border: 1px solid #f5c6c4;
+  color: $error;
+  border-radius: $radius-sm;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
+/* ── Footer ─────────────────────────────────────────────── */
+.footerDiv {
+  margin-top: 28px;
+  text-align: center;
+  border-top: 1px solid $grey-100;
+  padding-top: 24px;
 
-input{
+  span {
+    font-size: 14px;
+    color: $grey-600;
+  }
 
-border:none;
+  a {
+    text-decoration: none;
+  }
 
-outline:none;
-
-background:none;
-
-width:100%;
-
-font-size:16px;
-
+  .signup {
+    margin-top: 12px;
+  }
 }
 
-
+/* ── Animations ─────────────────────────────────────────── */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .6; transform: scale(.8); }
 }
 
+/* ── Responsive: Tablet / Mobile ────────────────────────── */
+@media (max-width: 800px) {
+  .loginPage {
+    padding: 0;
+    align-items: stretch;
+    background: $white;
+  }
 
+  .container {
+    flex-direction: column;
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 100vh;
+  }
 
+  /* Video goes on TOP, taller on mobile */
+  .videoDev {
+    width: 100%;
+    height: 340px;
+    order: 0;
+  }
+
+  .formDiv {
+    width: 100%;
+    padding: 36px 28px 40px;
+    order: 1;
+    border-radius: $radius-lg $radius-lg 0 0;
+    margin-top: -20px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 -8px 30px rgba(0,0,0,.10);
+  }
+
+  .overlayContent {
+    h2 { font-size: 24px; }
+    img { width: 76px; }
+    p   { font-size: 14px; }
+  }
 }
 
-
-
-
-
-.btn{
-
-
-width:100%;
-
-border:none;
-
-padding:15px;
-
-border-radius:12px;
-
-background:#00857c;
-
-color:white;
-
-font-size:16px;
-
-cursor:pointer;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-gap:10px;
-
-
-transition:.3s;
-
-
-
-&:hover{
-
-background:#00695c;
-
-}
-
-
-}
-
-
-
-
-.notice{
-
-color:#d32f2f;
-
-text-align:center;
-
-}
-
-
-
-
-
-.footerDiv{
-
-margin-top:25px;
-
-text-align:center;
-
-
-.signup{
-
-margin-top:15px;
-
-background:#003b5c;
-
-}
-
-}
-
-
-
-
-
-.otp{
-
-width:100%;
-
-padding:15px;
-
-border-radius:12px;
-
-border:1px solid #ddd;
-
-}
-
-
-
-
-
-/* MOBILE */
-
-@media(max-width:800px){
-
-
-.container{
-
-flex-direction:column;
-
-
-}
-
-
-
-.videoDev{
-
-
-width:100%;
-
-height:260px;
-
-
-}
-
-
-
-.formDiv{
-
-width:100%;
-
-padding:30px;
-
-
-}
-
-
-.videoOverlay{
-
-
-h2{
-
-font-size:22px;
-
-}
-
-
-img{
-
-width:65px;
-
-}
-
-
-}
-
-
-
-
-}
-
-
-
-
-@media(max-width:450px){
-
-
-.loginPage{
-
-padding:10px;
-
-}
-
-
-.videoDev{
-
-height:220px;
-
-}
-
-
-.formDiv{
-
-padding:20px;
-
-}
-
-
-
-.headerDiv h3{
-
-font-size:22px;
-
-}
-
-
-
+@media (max-width: 450px) {
+  .videoDev {
+    height: 290px;
+  }
+
+  .formDiv {
+    padding: 28px 20px 36px;
+  }
+
+  .headerDiv {
+    h3 { font-size: 24px; }
+
+    .logoRing {
+      width: 68px;
+      height: 68px;
+
+      img { width: 44px; }
+    }
+  }
 }
