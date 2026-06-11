@@ -11,146 +11,300 @@ import Axios from 'axios'
 const API = import.meta.env.VITE_API_URL ?? 'http://localhost:1999'
 
 const Login: React.FC = () => {
-  const [values, setValues] = useState({ email: '', password: '' })
-  const [message, setMessage] = useState('')
-  const [step, setStep] = useState<'credentials' | 'otp'>('credentials')
-  const [tempToken, setTempToken] = useState('')
-  const [otp, setOtp] = useState('')
+
+  const [values,setValues] = useState({
+    email:'',
+    password:''
+  })
+
+  const [message,setMessage] = useState('')
+  const [step,setStep] = useState<'credentials'|'otp'>('credentials')
+  const [tempToken,setTempToken] = useState('')
+  const [otp,setOtp] = useState('')
+
   const navigate = useNavigate()
 
-  const handleLogin = (e: React.FormEvent) => {
+
+  const handleLogin = (e:React.FormEvent)=>{
     e.preventDefault()
-    Axios.post<{ tempToken: string }>(`${API}/api/users/login`, {
-      email: values.email,
-      password: values.password
-    }, { withCredentials: true })
-      .then((response) => {
-        setTempToken(response.data.tempToken)
-        setMessage('')
-        setStep('otp')
-      })
-      .catch((error) => {
-        setMessage(error.response?.data?.error || 'Invalid email or password.')
-      })
+
+    Axios.post(`${API}/api/users/login`,{
+      email:values.email,
+      password:values.password
+    },
+    {
+      withCredentials:true
+    })
+    .then((response)=>{
+      setTempToken(response.data.tempToken)
+      setStep('otp')
+    })
+    .catch((error)=>{
+      setMessage(
+        error.response?.data?.error ||
+        "Invalid email or password"
+      )
+    })
+
   }
 
-  const handleOtp = (e: React.FormEvent) => {
+
+  const handleOtp=(e:React.FormEvent)=>{
     e.preventDefault()
-    Axios.post(`${API}/api/users/verify-otp`, {
+
+    Axios.post(`${API}/api/users/verify-otp`,
+    {
       tempToken,
       otp
-    }, { withCredentials: true })
-      .then(() => {
-        navigate('/memdashboard')
-      })
-      .catch(() => {
-        setMessage('Invalid or expired code. Please try again.')
-      })
+    },
+    {
+      withCredentials:true
+    })
+    .then(()=>{
+      navigate('/memdashboard')
+    })
+    .catch(()=>{
+      setMessage("Invalid OTP")
+    })
+
   }
 
-  return (
-    <div className='loginPage flex'>
-      <div className="container flex">
-        <div className="videoDev">
-          <video src={video} autoPlay muted loop />
-          <div className="textDiv">
-            <h2 className='title'>Your partner in growth and security.</h2>
-            <p>Live your Dream</p>
-          </div>
-        </div>
 
-        <div className="formDiv flex">
-          <div className="headerDiv">
-            <img src={Logo} alt="Logo" />
-            <h3>{step === 'credentials' ? 'Welcome back!' : 'Verify your identity'}</h3>
-          </div>
+return(
 
-          {step === 'credentials' && (
-            <form className='form grid' onSubmit={handleLogin}>
-              {message && <p className="notice">{message}</p>}
-              <div className="inputDiv">
-                <div className="input flex">
-                  <FaUserShield className='icon' />
-                  <input
-                    type="email"
-                    placeholder='Enter your Email'
-                    value={values.email}
-                    onChange={(e) => setValues({ ...values, email: e.target.value })}
-                    required
-                  />
-                </div>
-              </div>
-              <div className="inputDiv">
-                <div className="input flex">
-                  <BsFillShieldLockFill className='icon' />
-                  <input
-                    type="password"
-                    placeholder='Enter Password'
-                    value={values.password}
-                    onChange={(e) => setValues({ ...values, password: e.target.value })}
-                    required
-                  />
-                </div>
-              </div>
-              <button type='submit' className='btn flex items-center gap-2'>
-                <span>Login</span>
-                <AiOutlineSwapRight className='icon' />
-              </button>
-            </form>
-          )}
+<div className="loginPage">
 
-          {step === 'otp' && (
-            <form className='form grid' onSubmit={handleOtp}>
-              {message && <p className="notice">{message}</p>}
-              <p style={{ fontSize: '0.85rem', color: '#888', marginBottom: '0.5rem' }}>
-                A 6-digit code was sent to your email. It expires in 5 minutes.
-              </p>
-              <div className="inputDiv">
-                <div className="input flex">
-                  <BsFillShieldLockFill className='icon' />
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={6}
-                    placeholder='Enter 6-digit code'
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-                    required
-                    autoFocus
-                  />
-                </div>
-              </div>
-              <button type='submit' className='btn flex items-center gap-2'>
-                <span>Verify Code</span>
-                <AiOutlineSwapRight className='icon' />
-              </button>
-              <span
-                className='forgotPassword'
-                style={{ cursor: 'pointer' }}
-                onClick={() => { setStep('credentials'); setMessage(''); setOtp('') }}
-              >
-                ← Back to login
-              </span>
-            </form>
-          )}
 
-          {step === 'credentials' && (
-            <>
-              <span className='forgotPassword'>
-                Forgot Password? <Link to="/register">Click here</Link>
-              </span>
-              <div className="footerDiv">
-                <span className='text'>Don&apos;t have an account?</span>
-                <Link to={'/register'}>
-                  <button className='btn'>Sign up</button>
-                </Link>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  )
+<div className="container">
+
+
+{/* VIDEO SECTION */}
+
+<div className="videoDev">
+
+<video 
+src={video}
+autoPlay
+muted
+loop
+/>
+
+<div className="videoOverlay">
+
+<img src={Logo}/>
+
+<h2>
+NHIMA Digital Health Portal
+</h2>
+
+<p>
+Access your health insurance services anywhere, anytime.
+</p>
+
+</div>
+
+</div>
+
+
+
+{/* FORM SECTION */}
+
+<div className="formDiv">
+
+
+<div className="headerDiv">
+
+<img src={Logo}/>
+
+<h3>
+{
+step==='credentials'
+?
+"Welcome Back"
+:
+"Verify Identity"
 }
+</h3>
+
+</div>
+
+
+
+{
+step==='credentials' &&
+
+<form 
+className="form"
+onSubmit={handleLogin}
+>
+
+
+{
+message &&
+<p className="notice">
+{message}
+</p>
+}
+
+
+
+<div className="inputDiv">
+
+<div className="input">
+
+
+<FaUserShield className="icon"/>
+
+<input
+
+type="email"
+
+placeholder="Enter NHIMA Email"
+
+value={values.email}
+
+onChange={(e)=>
+
+setValues({
+...values,
+email:e.target.value
+})
+
+}
+
+/>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div className="inputDiv">
+
+
+<div className="input">
+
+<BsFillShieldLockFill className="icon"/>
+
+
+<input
+
+type="password"
+
+placeholder="Password"
+
+value={values.password}
+
+
+onChange={(e)=>
+
+setValues({
+...values,
+password:e.target.value
+})
+
+}
+
+/>
+
+
+</div>
+
+
+</div>
+
+
+
+<button className="btn">
+
+Login
+
+<AiOutlineSwapRight/>
+
+</button>
+
+
+</form>
+
+}
+
+
+
+{
+step==='otp' &&
+
+<form 
+className="form"
+onSubmit={handleOtp}
+>
+
+
+<input
+
+className="otp"
+
+placeholder="Enter OTP"
+
+value={otp}
+
+onChange={(e)=>setOtp(e.target.value)}
+
+/>
+
+
+<button className="btn">
+
+Verify OTP
+
+</button>
+
+
+</form>
+
+}
+
+
+
+
+<div className="footerDiv">
+
+
+<span>
+Don't have an account?
+</span>
+
+
+<Link to="/register">
+
+<button className="btn signup">
+
+Register
+
+</button>
+
+</Link>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+)
+
+}
+
 
 export default Login

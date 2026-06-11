@@ -1,33 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 
 // icons
 import { SiHomebridge } from "react-icons/si";
 import { PiUserCircleCheckDuotone } from "react-icons/pi";
-import { GrVolumeControl } from "react-icons/gr";
-import { TbReport } from "react-icons/tb";
+import { TbLayoutSidebarLeftCollapse, TbReport } from "react-icons/tb";
 import { AiOutlineNotification } from "react-icons/ai";
 import { MdOutlineSettingsSuggest, MdPolicy, MdAddHomeWork, MdOutlineLogout } from "react-icons/md";
 import { FaUsers, FaChevronRight } from "react-icons/fa";
 import { GiMoneyStack } from "react-icons/gi";
+import { FaUsersCog } from "react-icons/fa";
 import Logo from "../../assets/2.png";
 
 interface MemSideBarProps {
   show: boolean;
 }
 
-const sidebarBaseStyles: React.CSSProperties = {
-  width: '240px',
-  background: '#011627',
-  position: 'fixed',
-  top: 0,
-  height: '100vh',
-  padding: 0,
-  transition: 'left .3s ease',
-  zIndex: 1000,
-  boxSizing: 'border-box',
-  overflowY: 'auto',
-};
+const navLinks = [
+  { label: "Dashboard", icon: <SiHomebridge />, to: "/dashboard" },
+  { label: "Profile", icon: <PiUserCircleCheckDuotone />, to: "/profile" },
+  { label: "Contributions", icon: <MdAddHomeWork />, to: "/jobs" },
+  { label: "Claims", icon: <AiOutlineNotification />, to: "/claims" },
+  { label: "Reports", icon: <TbReport />, to: "/reports" },
+  { label: "Policies", icon: <MdPolicy />, to: "/policies" },
+  { label: "Applicants", icon: <FaUsersCog />, to: "/applicants" },
+  { label: "Users", icon: <FaUsers />, to: "/users" },
+  { label: "Payments", icon: <GiMoneyStack />, to: "/payments" },
+  { label: "Benefits", icon: <MdOutlineSettingsSuggest />, to: "/benefits" },
+  { label: "Settings", icon: <MdOutlineSettingsSuggest />, to: "/settings" },
+];
 
 const logoImageStyles: React.CSSProperties = {
   maxWidth: '100px',
@@ -39,38 +40,20 @@ const logoImageStyles: React.CSSProperties = {
 
 const MemSideBar: React.FC<MemSideBarProps> = ({ show }) => {
   const { pathname } = useLocation();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  useEffect(() => {
-    // optional init
-  }, []);
+  const [open, setOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
   const handleLogout = () => {
-    // Clear user session/token
     localStorage.removeItem('authToken');
-    // Redirect to login page
     window.location.href = '/login';
   };
 
-  const role = "Admin"; // This should ideally come from user data or context
+  const role = "Administrator"; // Replace with actual user context
   const userName = "RobTech Innovation";
-
-  const navLinks = [
-    { to: "/memdashboard",               icon: <SiHomebridge />,             label: "Home" },
-    { to: "/memdashboard/profile",       icon: <PiUserCircleCheckDuotone />, label: "My Profile" },
-    { to: "/memdashboard/contributions", icon: <GiMoneyStack />,             label: "Contributions" },
-    { to: "/memdashboard/claims",        icon: <GrVolumeControl />,          label: "Claims" },
-    { to: "/memdashboard/facilities",    icon: <MdAddHomeWork />,            label: "Facilities" },
-    { to: "/memdashboard/benefits",      icon: <FaUsers />,                  label: "Benefits" },
-    { to: "/memdashboard/notifications", icon: <AiOutlineNotification />,    label: "Notifications" },
-    { to: "/memdashboard/documents",     icon: <TbReport />,                 label: "Documents" },
-    { to: "/memdashboard/support",       icon: <MdPolicy />,                 label: "Support" },
-    { to: "/memdashboard/settings",      icon: <MdOutlineSettingsSuggest />, label: "Settings" },
-  ];
 
   return (
     <>
@@ -83,20 +66,12 @@ const MemSideBar: React.FC<MemSideBarProps> = ({ show }) => {
       )}
 
       <aside
-        style={{
-          ...sidebarBaseStyles,
-          left: show || mobileOpen ? '0' : '-240px',
-        }}
+        className="fixed top-0 left-0 h-screen w-[240px] bg-[#011627] z-[1000] flex flex-col transition-all duration-300 overflow-y-auto"
+        style={{ left: show || mobileOpen ? '0' : '-240px' }}
       >
-
         {/* Logo */}
         <div className="px-5 pt-8 pb-6 border-b border-white/10 flex justify-between items-center">
-          <img
-            src={Logo}
-            alt="Logo"
-            style={logoImageStyles}
-          />
-
+          <img src={Logo} alt="Logo" style={logoImageStyles} />
           <button
             onClick={() => setMobileOpen(false)}
             className="lg:hidden text-slate-400 hover:text-white"
@@ -114,7 +89,7 @@ const MemSideBar: React.FC<MemSideBarProps> = ({ show }) => {
             <div>
               <p className="text-sm text-slate-200 font-semibold">{userName}</p>
               <p className="text-xs text-slate-400">
-                {role === "Admin" ? "Administrator" : "Employee"}
+                {role === "Administrator" ? "Administrator" : role === "Employer" ? "Employer" : "User"}
               </p>
             </div>
           </div>
@@ -128,28 +103,46 @@ const MemSideBar: React.FC<MemSideBarProps> = ({ show }) => {
         </div>
 
         {/* Navigation Links */}
-        <div className='flex-1 px-3 space-y-1 overflow-y-auto'>
-          {navLinks.map((item)=>{
-            const isActive = pathname.startsWith(item.to)
-            return(
-              <Link key={item.label} to={item.to} className={`group flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-medium transition-all duration-150 relative ${isActive ? "bg-indigo-500/12 text-indigo-300": "text-slate-300 hover:text-white hover:bg-white/4" }`}>
-                {isActive && <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-indigo-500'/>}
-                <span className={`w-5 h-5 shrink-0 inline-flex items-center justify-center ${isActive ? "text-indigo-300": "text-slate-400 group-hover:text-slate-300"}`}>
+        <div className="flex-1 px-3 space-y-1 overflow-y-auto">
+          {navLinks.map((item) => {
+            const isActive = pathname.startsWith(item.to);
+            return (
+              <Link
+                key={item.label}
+                to={item.to}
+                className={`group flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-medium transition-all duration-150 relative ${
+                  isActive
+                    ? "bg-indigo-500/20 text-indigo-300"
+                    : "text-slate-300 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                {isActive && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-indigo-500" />
+                )}
+                <span
+                  className={`w-5 h-5 shrink-0 inline-flex items-center justify-center ${
+                    isActive ? "text-indigo-300" : "text-slate-400 group-hover:text-slate-300"
+                  }`}
+                >
                   {item.icon}
                 </span>
-                <span className='flex-1 min-w-0 text-left truncate'>{item.label}</span>
-                {isActive && <FaChevronRight className='w-3.5 h-5 text-indigo-500/50'/>}
+                <span className="flex-1 min-w-0 text-left truncate">{item.label}</span>
+                {isActive && <FaChevronRight className="w-3.5 h-3.5 text-indigo-500/50" />}
               </Link>
-            )
+            );
           })}
-          </div>
-       {/* Logout */}
-       <div className='p-3 border-t border-white/6'>
-         <button onClick={handleLogout} className='flex items-center gap-3 w-full px-3 py-2.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-rose-400 hover:bg-rose-500/8 transition-all duration-150'>
-           <MdOutlineLogout className='w-[17px] h-[17px]' />
-           <span>Logout</span>
-         </button>
-       </div>
+        </div>
+
+        {/* Logout */}
+        <div className="p-3 border-t border-white/10">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all duration-150"
+          >
+            <MdOutlineLogout className="w-[17px] h-[17px]" />
+            <span>Logout</span>
+          </button>
+        </div>
       </aside>
     </>
   );

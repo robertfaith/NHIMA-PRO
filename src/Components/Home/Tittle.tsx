@@ -5,14 +5,14 @@ interface TittleProps {
   tittle: string;
 }
 
-const Tittle = ({subTittle, tittle}: TittleProps) => {
+const Tittle = ({ subTittle, tittle }: TittleProps) => {
   return (
-    <div className='tittle'>
-       <p>{subTittle}</p>
-       <h2>{tittle}</h2>
-
+    <div className="tittle">
+      <span className="star">✦</span>
+      <p>{subTittle}</p>
+      <h2>{tittle}</h2>
     </div>
-  )
-}
+  );
+};
 
-export default Tittle
+export default Tittle;

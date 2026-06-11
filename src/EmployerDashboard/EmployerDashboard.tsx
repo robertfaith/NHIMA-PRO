@@ -1,21 +1,21 @@
 import { Outlet } from "react-router-dom"
-import Navbar from "./NavBar/navbar"
+import Sidebar from "./SideBar/Sidebar"
+
 /*import HeaderSection from "./HeaderSection"*/
 
-function MemDashboard() {
+function EmployerDashboard() {
   return (
-    <section className="home">
-      <div className="home-content">
-        <div className="home-header">
-           <Navbar />
+    <div className="flex h-screen bg-linear-to-br from-slate-50 via-white to-indigo-50/50">
+           <Sidebar />
          {/*<HeaderSection type = "greeting" title = "Welcome" user = {loggrdIn?.firstName || 'Guest} subtext = "Access and manage your account Efficiently"/> */}
-        </div>
-        <div className="memdashboard-body">
+        
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-4 pt-16 sm:pt-6 lg:p-8 max-w-400 mx-auto">
           <Outlet />
-        </div>
-      </div>
-    </section>
+          </div>
+        </main>
+    </div>
   )
 }
 
-export default MemDashboard
+export default EmployerDashboard

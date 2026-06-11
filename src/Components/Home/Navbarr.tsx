@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './Navbarr.scss';
 import ABLogo from '../../assets/2.png';
-import { FaBars } from "react-icons/fa6";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
-
   const [sticky, setSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Sticky scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 180) {
-        setSticky(true);
-      } else {
-        setSticky(false);
-      }
+      setSticky(window.scrollY > 180);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -25,35 +19,44 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
-  // Toggle mobile menu
   const toggleMenu = () => {
-    setIsOpen(prev => !prev);
+    setIsOpen(!isOpen);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
   };
 
   return (
     <nav className={`navbar ${sticky ? 'dark-nav' : ''}`}>
-      
+
       <div className="navbar-header">
-        <img src={ABLogo} alt="AB Bank" />
+        <img src={ABLogo} alt="NHIMA Logo" />
       </div>
 
-      <ul className={isOpen ? "nav-links active" : "nav-links"}>
-        <li><a href="/Home">Home</a></li>
-        <li><a href="/About">About</a></li>
-        <li><a href="/Benefits">Benefits</a></li>
-        <li><a href="/Facility">Facilities</a></li>
-        <li><a href="/Contact">Contact Us</a></li>
+      <ul className={isOpen ? 'nav-links active' : 'nav-links'}>
+        <li><a href="/Home" onClick={closeMenu}>Home</a></li>
+        <li><a href="/About" onClick={closeMenu}>About</a></li>
+        <li><a href="/Benefits" onClick={closeMenu}>Benefits</a></li>
+        <li><a href="/Facility" onClick={closeMenu}>Facilities</a></li>
+        <li><a href="/Contact" onClick={closeMenu}>Contact Us</a></li>
         <li>
-          <a className="btn-primary" href="/Register">Register</a>
+          <a
+            href="/Register"
+            className="btn-primary"
+            onClick={closeMenu}
+          >
+            Register
+          </a>
         </li>
       </ul>
 
-      <button 
-        className="menu-icon" 
-        onClick={toggleMenu} 
-        aria-label="Toggle menu"
+      <button
+        className="menu-icon"
+        onClick={toggleMenu}
+        aria-label="Toggle Menu"
       >
-        <FaBars />
+        {isOpen ? <FaTimes /> : <FaBars />}
       </button>
 
     </nav>

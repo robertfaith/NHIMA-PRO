@@ -8,7 +8,7 @@ import Login from './src/Components/Auth/Login/Login';
 import Register from './src/Components/Auth/Register/Register';
 import Home from './src/Components/Home/Home';
 // Import the necessary components for routing
-import Dashboard from './src/Dashboard/Dashboard';
+import Dashboard from './src/EmployerDashboard/Pages/Dashboard';
 import Loans from './src/Components/Loans/Loans';
 import MemDashboard from './src/MemDashboard/MemDashboard';
 import MemDashboardHome from './src/MemDashboard/Pages/Dashboard';
@@ -26,19 +26,28 @@ import Benefits from './src/Components/Careers/Benefits';
 import Facility from './src/Components/Facility/Facility';
 import Contact from './src/Components/Contact/Contact';
 import EmployerDashboard from './src/EmployerDashboard/EmployerDashboard';
+import Loginlanding from './src/Components/Auth/Loginlanding';
+
 
 const router = createBrowserRouter([
   {
     path: '/Login',
     element: <Login />,
   },
+    {
+    path: '/Loginlanding',
+    element: <Loginlanding />,
+  },
   {
     path: '/Register',
     element: <Register />,
   },
   {
-    path: '/EmployerDashboard/',
-    element: <EmployerDashboard />
+    path: '/EmployerDashboard',
+    element: <EmployerDashboard />,
+    children: [
+      { index: true, element: <Dashboard /> },
+    ]
   },
   {
     path: '/Dashboard',

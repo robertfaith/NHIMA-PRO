@@ -1,130 +1,139 @@
 import './testimonials.scss';
-import { GrFormNextLink } from "react-icons/gr";
-import { GrFormPreviousLink } from "react-icons/gr"; 
+import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
+
 import User_1 from '../../assets/reg.jpg';
 import User_2 from '../../assets/regist.jpg';
 import User_3 from '../../assets/simbeye.jpg';
 import User_4 from '../../assets/hero.png';
 
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+
+const testimonials = [
+  {
+    image: User_1,
+    name: "Naomi Nyirongo",
+    location: "LBTC, Lusaka",
+    text: "Choosing to run my business with a bank that empowers youths and women has been one of my best decisions. AB Bank has provided excellent services and support that continue to help my business grow."
+  },
+  {
+    image: User_2,
+    name: "Racheal Phiri",
+    location: "LBTC, Lusaka",
+    text: "AB Bank has given me confidence and financial support to expand my business. Their customer service and commitment to empowering women are truly remarkable."
+  },
+  {
+    image: User_3,
+    name: "Nicholas Pikiti",
+    location: "Libala, Lusaka",
+    text: "Working with AB Bank has helped me improve cash flow management and grow my small business. I highly recommend their services to entrepreneurs."
+  },
+  {
+    image: User_4,
+    name: "Blessings Makasa",
+    location: "Woodlands, Lusaka",
+    text: "The support and financial products offered by AB Bank have enabled me to achieve my business goals faster than I expected. Their service is exceptional."
+  }
+];
 
 const Testimonials = () => {
-  const slider = useRef<HTMLUListElement>(null);
-  const [tx, setTx] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [cardsPerPage, setCardsPerPage] = useState(2);
 
-  const totalSlides = 4; // 4 testimonials
-  const step = 25; // 100% / 4 slides = 25%
-
-  const updateSlider = (newTx: number) => {
-    if (slider.current) {
-      slider.current.style.transform = `translateX(-${newTx}%)`;
-    }
-  };
-
-  const slideForward = useCallback(() => {
-    setTx((currentTx) => {
-      let newTx = currentTx + step;
-      if (newTx >= totalSlides * step) {
-        newTx = 0; // loop to first
-      }
-      updateSlider(newTx);
-      return newTx;
-    });
-  }, [step, totalSlides]);
-
-  const slideBackward = () => {
-    let newTx = tx - step;
-    if (newTx < 0) {
-      newTx = (totalSlides - 1) * step; // loop to last
-    }
-    setTx(newTx);
-    updateSlider(newTx);
-  };
-
-  // Auto-slide effect
   useEffect(() => {
-    const interval = setInterval(() => {
-      slideForward();
-    }, 5000); // slide every 5 seconds
+    const handleResize = () => {
+      setCardsPerPage(window.innerWidth < 768 ? 1 : 2);
+    };
 
-    return () => clearInterval(interval); // cleanup on unmount
-  }, [slideForward]); 
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const totalPages = Math.ceil(testimonials.length / cardsPerPage);
+
+  const nextSlide = () => {
+    setCurrentPage(prev =>
+      prev === totalPages - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrentPage(prev =>
+      prev === 0 ? totalPages - 1 : prev - 1
+    );
+  };
+
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 5000);
+    return () => clearInterval(interval);
+  }, [currentPage, totalPages]);
 
   return (
     <div className="testimonials">
-      <GrFormNextLink className="next-btn" onClick={slideForward} />
-      <GrFormPreviousLink className="back-btn" onClick={slideBackward} />
+
+      <GrFormPreviousLink
+        className="back-btn"
+        onClick={prevSlide}
+      />
+
+      <GrFormNextLink
+        className="next-btn"
+        onClick={nextSlide}
+      />
+
       <div className="slider">
-        <ul ref={slider}>
-          <li>
-            <div className="slide">
-              <div className="user-info">
-                <img src={User_1} alt="Naomi Nyirongo" />
-                <div>
-                  <h3>Naomi Nyirongo</h3>
-                  <span>LBTC, Lusaka</span>
-                </div>
-              </div>
-              <p>
-                Choosing to run my Business with the bank that is willing to empower youths and
-                women in the society, Excellence is a mandate if you run your business with AB Bank,
-                It has served me to my satisfaction
-              </p>
+        <div
+          className="slider-track"
+          style={{
+            transform: `translateX(-${currentPage * 100}%)`
+          }}
+        >
+          {Array.from({ length: totalPages }).map((_, pageIndex) => (
+            <div className="slide-page" key={pageIndex}>
+              {testimonials
+                .slice(
+                  pageIndex * cardsPerPage,
+                  pageIndex * cardsPerPage + cardsPerPage
+                )
+                .map((item, index) => (
+                  <div className="slide" key={index}>
+                    <div className="user-info">
+                      <img src={item.image} alt={item.name} />
+
+                      <div>
+                        <h3>{item.name}</h3>
+                        <span>{item.location}</span>
+                      </div>
+                    </div>
+
+                    <p>{item.text}</p>
+
+                    <div className="rating">
+                      ⭐⭐⭐⭐⭐
+                    </div>
+                  </div>
+                ))}
             </div>
-          </li>
-          <li>
-            <div className="slide">
-              <div className="user-info">
-                <img src={User_2} alt="Racheal Phiri" />
-                <div>
-                  <h3>Racheal Phiri</h3>
-                  <span>LBTC, Lusaka</span>
-                </div>
-              </div>
-              <p>
-                Choosing to run my Business with the bank that is willing to empower youths and
-                women in the society, Excellence is a mandate if you run your business with AB Bank,
-                It has served me to my satisfaction
-              </p>
-            </div>
-          </li>
-          <li>
-            <div className="slide">
-              <div className="user-info">
-                <img src={User_3} alt="Nicholas Pikiti" />
-                <div>
-                  <h3>Nicholas Pikiti</h3>
-                  <span>Libala, Lusaka</span>
-                </div>
-              </div>
-              <p>
-                Choosing to run my Business with the bank that is willing to empower youths and
-                women in the society, Excellence is a mandate if you run your business with AB Bank,
-                It has served me to my satisfaction
-              </p>
-            </div>
-          </li>
-          <li>
-            <div className="slide">
-              <div className="user-info">
-                <img src={User_4} alt="Blessings Makasa" />
-                <div>
-                  <h3>Blessings Makasa</h3>
-                  <span>Woodlands, Lusaka</span>
-                </div>
-              </div>
-              <p>
-                Choosing to run my Business with the bank that is willing to empower youths and
-                women in the society, Excellence is a mandate if you run your business with AB Bank,
-                It has served me to my satisfaction
-              </p>
-            </div>
-          </li>
-        </ul>
+          ))}
+        </div>
       </div>
+
+      <div className="dots">
+        {Array.from({ length: totalPages }).map((_, index) => (
+          <span
+            key={index}
+            className={
+              currentPage === index
+                ? 'dot active'
+                : 'dot'
+            }
+          />
+        ))}
+      </div>
+
     </div>
   );
 };
 
 export default Testimonials;
-export { Testimonials };
