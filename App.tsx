@@ -4,8 +4,8 @@ import {
   RouterProvider,
   Navigate
 } from 'react-router-dom';
-import Login from './src/Components/Auth/Login/Login';
-import Register from './src/Components/Auth/Register/Register';
+
+
 import Home from './src/Components/Home/Home';
 // Import the necessary components for routing
 import Dashboard from './src/EmployerDashboard/Pages/Dashboard';
@@ -22,25 +22,23 @@ import MemFacilities from './src/MemDashboard/Pages/Facilities';
 import MemBenefits from './src/MemDashboard/Pages/Benefits';
 import MemDocuments from './src/MemDashboard/Pages/Documents';
 import AboutSection from './src/Components/About/AboutSection';
-import Benefits from './src/Components/Careers/Benefits';
+import Benefits from './src/Components/Benefits/Benefits';
 import Facility from './src/Components/Facility/Facility';
 import Contact from './src/Components/Contact/Contact';
 import EmployerDashboard from './src/EmployerDashboard/EmployerDashboard';
 import Loginlanding from './src/Components/Auth/Loginlanding';
+import Registerlanding from './src/Components/Auth/Register/Registerlanding';
 
 
 const router = createBrowserRouter([
-  {
-    path: '/Login',
-    element: <Login />,
-  },
+ 
     {
-    path: '/Loginlanding',
+    path: '/Login',
     element: <Loginlanding />,
   },
-  {
+   {
     path: '/Register',
-    element: <Register />,
+    element: <Registerlanding />,
   },
   {
     path: '/EmployerDashboard',

@@ -1,0 +1,262 @@
+// ── Variables ─────────────────────────────────────────────────────
+$bg:          linear-gradient(to bottom, #0f172a, #0f172a, #020617);
+$border:      rgba(255, 255, 255, 0.06);
+$text-muted:  #94a3b8;
+$text-dim:    #64748b;
+$active-bg:   rgba(99, 102, 241, 0.2);
+$active-text: #a5b4fc;
+$hover-bg:    rgba(255, 255, 255, 0.05);
+$sidebar-w:   260px;
+$mobile-w:    288px;
+
+// ── Shared sidebar base ───────────────────────────────────────────
+%sidebar-base {
+  display:        flex;
+  flex-direction: column;
+  height:         100vh;        // ← was 100%, changed to 100vh
+  background:     $bg;
+  color:          #fff;
+  border-right:   1px solid $border;
+  overflow:       hidden;       // ← added
+}
+
+// ── Desktop sidebar ───────────────────────────────────────────────
+.sb-desktop {
+  @extend %sidebar-base;
+  width:      $sidebar-w;
+  flex-shrink: 0;
+  position:   sticky;           // ← added
+  top:        0;                // ← added
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
+}
+
+// ── Mobile sidebar ────────────────────────────────────────────────
+.sb-mobile {
+  @extend %sidebar-base;
+  position:  fixed;
+  inset-block: 0;
+  left:      0;
+  width:     $mobile-w;
+  z-index:   50;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+
+  &--open {
+    transform: translateX(0);
+  }
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+// ── Mobile overlay ────────────────────────────────────────────────
+.sb-overlay {
+  position:        fixed;
+  inset:           0;
+  background:      rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index:         40;
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+// ── Mobile hamburger ──────────────────────────────────────────────
+.sb-hamburger {
+  position:     fixed;
+  top:          1rem;
+  left:         1rem;
+  z-index:      50;
+  padding:      8px;
+  background:   transparent;
+  border:       1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color:        #fff;
+  cursor:       pointer;
+  box-shadow:   0 2px 8px rgba(0, 0, 0, 0.3);
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+// ── Header ────────────────────────────────────────────────────────
+.sb-header {
+  padding:      24px 20px 20px;
+  border-bottom: 1px solid $border;
+  flex-shrink:  0;              // ← never shrinks
+}
+
+.sb-header__inner {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+}
+
+.sb-logo {
+  max-width:    100px;
+  height:       auto;
+  border-radius: 2px;
+  padding:      4px;
+}
+
+.sb-close {
+  background: none;
+  border:     none;
+  color:      $text-muted;
+  cursor:     pointer;
+  padding:    4px;
+  display:    flex;
+  align-items: center;
+  transition: color 0.2s;
+
+  &:hover { color: #fff; }
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+// ── Profile card ──────────────────────────────────────────────────
+.sb-profile {
+  display:      flex;
+  align-items:  center;
+  gap:          12px;
+  margin:       12px 10px 4px;
+  padding:      12px 14px;
+  border-radius: 10px;
+  background:   rgba(255, 255, 255, 0.03);
+  border:       1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink:  0;              // ← never shrinks
+}
+
+.sb-profile__avatar {
+  width:         36px;
+  height:        36px;
+  border-radius: 8px;
+  background:    #1e293b;
+  border:        1px solid rgba(255, 255, 255, 0.07);
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  font-size:     14px;
+  font-weight:   700;
+  color:         #fff;
+  flex-shrink:   0;
+}
+
+.sb-profile__info {
+  min-width: 0;
+}
+
+.sb-profile__name {
+  font-size:     13px;
+  font-weight:   500;
+  color:         #e2e8f0;
+  white-space:   nowrap;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+}
+
+.sb-profile__role {
+  font-size:      11px;
+  font-weight:    500;
+  color:          $text-dim;
+  text-transform: capitalize;
+}
+
+// ── Section label ─────────────────────────────────────────────────
+.sb-section-label {
+  padding:        16px 20px 8px;
+  font-size:      10px;
+  font-weight:    600;
+  color:          $text-dim;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  flex-shrink:    0;            // ← never shrinks
+}
+
+// ── Navigation ────────────────────────────────────────────────────
+.sb-nav {
+  flex:           1;            // ← takes all remaining height
+  padding:        0 10px 16px; // ← added bottom padding
+  display:        flex;
+  flex-direction: column;
+  gap:            2px;
+  overflow-y:     auto;         // ← scrolls if links overflow
+  min-height:     0;            // ← critical: allows flex child to shrink
+
+  &::-webkit-scrollbar       { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+}
+
+.sb-nav__item {
+  position:       relative;
+  display:        flex;
+  align-items:    center;
+  gap:            10px;
+  padding:        10px 12px;
+  border-radius:  8px;
+  font-size:      13px;
+  font-weight:    500;
+  color:          $text-muted;
+  text-decoration: none;
+  transition:     all 0.15s ease;
+  flex-shrink:    0;
+
+  &:hover {
+    color:      #fff;
+    background: $hover-bg;
+  }
+
+  &--active {
+    background: $active-bg;
+    color:      $active-text;
+  }
+}
+
+.sb-nav__indicator {
+  position:      absolute;
+  left:          0;
+  top:           50%;
+  transform:     translateY(-50%);
+  width:         3px;
+  height:        20px;
+  border-radius: 0 4px 4px 0;
+  background:    #6366f1;
+}
+
+.sb-nav__icon {
+  width:        18px;
+  height:       18px;
+  flex-shrink:  0;
+  display:      inline-flex;
+  align-items:  center;
+  justify-content: center;
+  font-size:    15px;
+
+  .sb-nav__item--active &             { color: $active-text; }
+  .sb-nav__item:not(.sb-nav__item--active) & { color: #64748b; }
+}
+
+.sb-nav__label {
+  flex:          1;
+  min-width:     0;
+  text-align:    left;
+  white-space:   nowrap;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+}
+
+.sb-nav__chevron {
+  width:       12px;
+  height:      12px;
+  color:       rgba(99, 102, 241, 0.5);
+  flex-shrink: 0;
+}

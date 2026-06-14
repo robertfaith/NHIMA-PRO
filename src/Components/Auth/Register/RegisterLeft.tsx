@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
-import Logo from '../../assets/2.png'
-import slide1 from '../../assets/p4.jpg'
-import slide2 from '../../assets/p6.jpg'
-import slide3 from '../../assets/p7.webp'
-import slide4 from '../../assets/p3.png'
-import slide5 from '../../assets/p21.jpg'
+import Logo from '../../../assets/2.png'
+import slide1 from '../../../assets/p4.jpg'
+import slide2 from '../../../assets/p6.jpg'
+import slide3 from '../../../assets/p7.webp'
+import slide4 from '../../../assets/p3.png'
+import slide5 from '../../../assets/p21.jpg'
 
 // icons for the slides
 import { BsHospital } from "react-icons/bs"
@@ -64,7 +64,7 @@ const slides = [
   },
 ]
 
-const LoginLeft = () => {
+const RegisterLeft = () => {
   const [current, setCurrent] = useState(0)
   const [fading, setFading] = useState(false)
 
@@ -262,4 +262,4 @@ const LoginLeft = () => {
   )
 }
 
-export default LoginLeft
+export default RegisterLeft

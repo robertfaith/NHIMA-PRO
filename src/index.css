@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap");
-@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 *{
   margin: 0;
@@ -20,16 +23,13 @@ html {
   --blackColor: hsl(0,0%,18%);
   --greyText: hsl(0,0%,75%);
   --bgColor: hsl(113,11%,85%);
-  --inputColor: hsl(330,12%,97%);
   --inputColor: hsl(154,14%,90%);
-
-  /*Font for Typography*/
-  --biggestFontSize:2.5rem;
-  --h1FontSize:1.5rem;
-  --h2FontSize:1.25rem;
+  --biggestFontSize: 2.5rem;
+  --h1FontSize: 1.5rem;
+  --h2FontSize: 1.25rem;
   --h3FontSize: 1rem;
   --normalFontSize: .918rem;
-  --smalltFontSize: .813rem;
+  --smallFontSize: .813rem;
   --smallestFontSize: .75rem;
 }
 
@@ -44,15 +44,11 @@ html {
   gap: 1.5rem;
 }
 
-.html{
-  font: 90%;
-}
 .li{
   list-style: none;
 }
 
-/* Responsive container used across the app */
-.container {
+.container{
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -60,28 +56,35 @@ html {
   padding-right: 1rem;
 }
 
-/* Utility: stack columns on small screens */
 .stack-mobile{
   display: flex;
   gap: 1rem;
 }
 
 @media (max-width: 768px) {
-  .stack-mobile{ flex-direction: column; }
-  .btn{ padding: 12px 14px; font-size: 0.95rem }
+  .stack-mobile{
+    flex-direction: column;
+  }
+  .btn{
+    padding: 12px 14px;
+    font-size: 0.95rem;
+  }
 }
 
 .icon{
   font-size: var(--h2FontSize);
   cursor: pointer;
 }
-img,video{
+
+img, video{
   height: auto;
   width: 100%;
 }
+
 .message{
   display: none;
 }
+
 .showMessage{
   display: block;
   color: var(--whiteColor);
@@ -89,28 +92,19 @@ img,video{
   background: rgb(255,0,0);
   border-radius: 3px;
   text-align: center;
+}
 
-}
-.showMessage{
-  display: block;
-  color: var(--whiteColor);
-  background: rgb(255,0,0);
-  border-radius: 3px;
-  text-align: center;
-}
 body{
   background: #f5f5f5;
 }
+
 a{
   text-decoration: none;
   color: inherit;
   line-height: 1;
   cursor: pointer;
 }
-/*.container{
-  padding-left: 10%;
-  padding-right: 10%;
-}*/
+
 .btn{
   background: var(--whiteColor);
   color: #212121;
@@ -125,20 +119,23 @@ a{
   gap: 25px;
   justify-content: center;
 }
+
 .btn .icon{
   margin-left: .5rem;
 }
+
 .btn img{
   width: 20px;
   margin-left: 10px;
 }
+
 .btn:hover{
- color: var(--primaryColor);
- background: var(--paleGreen);
+  color: var(--primaryColor);
+  background: var(--paleGreen);
 }
 
-
-.loginPage, .registerPage {
+.loginPage,
+.registerPage{
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -146,7 +143,8 @@ a{
   padding: 15px;
 }
 
-.loginPage .container, .registerPage .container {
+.loginPage .container,
+.registerPage .container{
   display: flex;
   flex-direction: row;
   width: 900px;
@@ -160,7 +158,7 @@ a{
 }
 
 .loginPage .container .videoDev,
-.registerPage .container .videoDev {
+.registerPage .container .videoDev{
   position: relative;
   width: 55%;
   min-width: 350px;
@@ -175,7 +173,7 @@ a{
 }
 
 .loginPage .container .videoDev video,
-.registerPage .container .videoDev video {
+.registerPage .container .videoDev video{
   position: absolute;
   width: 100%;
   height: 100%;
@@ -186,7 +184,7 @@ a{
 }
 
 .loginPage .container .videoDev .textDiv,
-.registerPage .container .videoDev .textDiv {
+.registerPage .container .videoDev .textDiv{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -197,23 +195,23 @@ a{
 }
 
 .loginPage .container .videoDev .textDiv .title,
-.registerPage .container .videoDev .textDiv .title {
+.registerPage .container .videoDev .textDiv .title{
   color: var(--whiteColor);
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .loginPage .container .videoDev .textDiv p,
-.registerPage .container .videoDev .textDiv p {
+.registerPage .container .videoDev .textDiv p{
   color: var(--whiteColor);
   font-size: 1rem;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .loginPage .container .videoDev .footerDiv,
-.registerPage .container .videoDev .footerDiv {
+.registerPage .container .videoDev .footerDiv{
   position: absolute;
   bottom: 20px;
   left: 0;
@@ -223,13 +221,13 @@ a{
   align-items: center;
   padding: 0 15px;
   z-index: 2;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255,255,255,0.18);
   backdrop-filter: blur(2px);
   border-radius: 0 0 0 20px;
 }
 
 .loginPage .container .videoDev .footerDiv .text,
-.registerPage .container .videoDev .footerDiv .text {
+.registerPage .container .videoDev .footerDiv .text{
   color: var(--whiteColor);
   font-size: 0.95rem;
   text-align: center;
@@ -237,7 +235,7 @@ a{
 }
 
 .loginPage .container .videoDev .footerDiv .btn,
-.registerPage .container .videoDev .footerDiv .btn {
+.registerPage .container .videoDev .footerDiv .btn{
   background: #eafbe7;
   color: #4caf50;
   padding: 15px;
@@ -249,12 +247,12 @@ a{
 }
 
 .loginPage .container .videoDev .footerDiv .btn:hover,
-.registerPage .container .videoDev .footerDiv .btn:hover {
+.registerPage .container .videoDev .footerDiv .btn:hover{
   background: #c8f7c5;
 }
 
 .loginPage .container .formDiv,
-.registerPage .container .formDiv {
+.registerPage .container .formDiv{
   width: 50%;
   min-width: 350px;
   background: var(--whiteColor);
@@ -264,47 +262,47 @@ a{
   padding: 15px;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 7px 50px rgba(214, 223, 213, 0.3);
+  box-shadow: 0 7px 50px rgba(214,223,213,0.3);
 }
 
 .loginPage .container .formDiv .headerDiv,
-.registerPage .container .formDiv .headerDiv {
+.registerPage .container .formDiv .headerDiv{
   text-align: center;
   padding: 1.5rem;
 }
 
 .loginPage .container .formDiv .headerDiv img,
-.registerPage .container .formDiv .headerDiv img {
+.registerPage .container .formDiv .headerDiv img{
   width: 90px;
   padding-bottom: 0.7rem;
 }
 
 .loginPage .container .formDiv .headerDiv h3,
-.registerPage .container .formDiv .headerDiv h3 {
+.registerPage .container .formDiv .headerDiv h3{
   font-size: 25px;
   color: var(--blackColor);
   font-weight: 600;
 }
 
 .loginPage .container .formDiv .form,
-.registerPage .container .formDiv .form {
+.registerPage .container .formDiv .form{
   gap: 2rem;
 }
 
 .loginPage .container .formDiv .form .inputDiv,
-.registerPage .container .formDiv .form .inputDiv {
+.registerPage .container .formDiv .form .inputDiv{
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
 .loginPage .container .formDiv .form .inputDiv .icon,
-.registerPage .container .formDiv .form .inputDiv .icon {
+.registerPage .container .formDiv .form .inputDiv .icon{
   color: var(--greyText);
 }
 
 .loginPage .container .formDiv .form .inputDiv input,
-.registerPage .container .formDiv .form .inputDiv input {
+.registerPage .container .formDiv .form .inputDiv input{
   background: none;
   outline: none;
   border: none;
@@ -312,7 +310,7 @@ a{
 }
 
 .loginPage .container .formDiv .form .inputDiv .input,
-.registerPage .container .formDiv .form .inputDiv .input {
+.registerPage .container .formDiv .form .inputDiv .input{
   display: flex;
   gap: 25px;
   font-size: 16px;
@@ -325,7 +323,7 @@ a{
 }
 
 .loginPage .container .formDiv .btn,
-.registerPage .container .formDiv .btn {
+.registerPage .container .formDiv .btn{
   padding: 15px;
   background: var(--primaryColor);
   border-radius: 10px;
@@ -341,24 +339,24 @@ a{
 }
 
 .loginPage .container .formDiv .btn .icon,
-.registerPage .container .formDiv .btn .icon {
+.registerPage .container .formDiv .btn .icon{
   font-size: 25px;
   transition: 0.3s ease;
 }
 
 .loginPage .container .formDiv .btn:hover,
-.registerPage .container .formDiv .btn:hover {
+.registerPage .container .formDiv .btn:hover{
   background: var(--hoverColor);
   color: var(--blackColor);
 }
 
 .loginPage .container .formDiv .btn:hover .icon,
-.registerPage .container .formDiv .btn:hover .icon {
+.registerPage .container .formDiv .btn:hover .icon{
   color: var(--blackColor);
 }
 
 .loginPage .container .formDiv .forgotPassword,
-.registerPage .container .formDiv .forgotPassword {
+.registerPage .container .formDiv .forgotPassword{
   gap: 2rem;
   font-size: 13px;
   color: var(--blackColor);
@@ -369,10 +367,9 @@ a{
 }
 
 .loginPage .container .formDiv .forgotPassword a,
-.registerPage .container .formDiv .forgotPassword a {
+.registerPage .container .formDiv .forgotPassword a{
   text-decoration: underline;
   cursor: pointer;
   opacity: 1;
   padding: 15px;
 }
-
