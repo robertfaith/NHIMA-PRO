@@ -1,8 +1,10 @@
-  
+import './Loading.scss'
 
 const Loading = () => {
   return (
-    <div className='flex justify-center h-screen'><div className='animate-spin size-8 border-2 border-indigo-600 border-t-transparent rounded-full'/></div>
+    <div className="loading-screen">
+      <div className="loading-screen__spinner" />
+    </div>
   )
 }
 

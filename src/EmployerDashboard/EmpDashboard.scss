@@ -1,0 +1,234 @@
+.emp-dashboard {
+  // ─── Header ───────────────────────────────────────────────────────────────
+  .page-header {
+    margin-bottom: 2rem;
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0f172a; // slate-900
+    }
+
+    .page-subtitle {
+      font-size: 0.875rem;
+      color: #64748b; // slate-500
+      margin-top: 0.25rem;
+    }
+  }
+
+  // ─── Stats Grid ───────────────────────────────────────────────────────────
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+
+    @media (min-width: 640px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1280px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  // ─── Stat Card ────────────────────────────────────────────────────────────
+  .stat-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0; // slate-200
+    border-radius: 1rem;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+    @media (min-width: 640px) {
+      padding: 1.5rem;
+    }
+
+    &:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+
+      .stat-card__accent {
+        background-color: rgba(99, 102, 241, 0.7); // indigo-500/70
+      }
+
+      .stat-card__icon {
+        background-color: #eef2ff; // indigo-50
+        color: #4f46e5;            // indigo-600
+      }
+    }
+
+    &__accent {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: 0 9999px 9999px 0;
+      background-color: rgba(100, 116, 139, 0.7); // slate-500/70
+      transition: background-color 0.2s ease;
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    &__title {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #475569; // slate-600
+    }
+
+    &__value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0f172a; // slate-900
+      margin-top: 0.25rem;
+    }
+
+    &__subtitle {
+      font-size: 0.75rem;
+      color: #64748b; // slate-500
+      margin-top: 0.25rem;
+    }
+
+    &__icon {
+      flex-shrink: 0;
+      width: 3rem;
+      height: 3rem;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      background-color: #f1f5f9; // slate-100
+      color: #475569;             // slate-600
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+  }
+
+  // ─── Quick Actions ────────────────────────────────────────────────────────
+  .quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  // ─── Recent Activity Grid ─────────────────────────────────────────────────
+  .activity-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  // ─── Activity Card ────────────────────────────────────────────────────────
+  .activity-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 1.5rem;
+
+    &__title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 1rem;
+    }
+
+    // Contributions list
+    .contribution-row {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #f1f5f9; // slate-100
+      font-size: 0.875rem;
+      color: #334155; // slate-700
+
+      &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      span + span {
+        font-weight: 600;
+      }
+    }
+
+    // Pending actions list
+    .pending-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      li {
+        font-size: 0.875rem;
+        color: #475569; // slate-600
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        &::before {
+          content: '';
+          display: inline-block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: #6366f1; // indigo-500
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}
+
+// ─── Shared button helpers (if not already global) ────────────────────────────
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background-color: #4f46e5; // indigo-600
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #4338ca; // indigo-700
+  }
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background-color: #ffffff;
+  color: #374151; // slate-700
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0; // slate-200
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    background-color: #f8fafc; // slate-50
+    border-color: #cbd5e1;     // slate-300
+  }
+}

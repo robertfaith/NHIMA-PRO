@@ -1,0 +1,163 @@
+// ─── Design tokens (same as Member) ──────────────────────────────
+$navy:       #0f1f3d;
+$navy-mid:   #1a2f52;
+$gold:       #f5a623;
+$gold-light: #ffd07a;
+$gold-pale:  #fff8ec;
+$green:      #22c55e;
+$green-pale: #f0fdf4;
+$red:        #ef4444;
+$red-pale:   #fef2f2;
+$amber:      #f59e0b;
+$amber-pale: #fffbeb;
+$blue:       #3b82f6;
+$blue-pale:  #eff6ff;
+$purple:     #8b5cf6;
+$purple-pale:#f5f3ff;
+$white:      #ffffff;
+$slate-50:   #f8fafc;
+$slate-100:  #f1f5f9;
+$slate-200:  #e2e8f0;
+$slate-400:  #94a3b8;
+$slate-500:  #64748b;
+$slate-600:  #475569;
+$slate-700:  #374151;
+$slate-800:  #1e293b;
+$slate-900:  #0f172a;
+
+.admin-claims {
+  display:        flex;
+  flex-direction: column;
+  gap:            1.75rem;
+
+  .claims-hero {
+    background:    linear-gradient(135deg, $navy 0%, $navy-mid 100%);
+    border-radius: 1.5rem;
+    padding:       2rem 2.5rem;
+    position:      relative;
+    overflow:      hidden;
+    display:       flex;
+    align-items:   center;
+    justify-content: space-between;
+    gap:           1.5rem;
+
+    &::before {
+      content:''; position:absolute; top:-80px; right:-80px;
+      width:280px; height:280px; border-radius:50%;
+      background:rgba(245,166,35,0.07); pointer-events:none;
+    }
+
+    &__left    { z-index:1; }
+    &__eyebrow { font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:$gold; margin-bottom:0.5rem; }
+    &__title   { font-size:1.75rem; font-weight:800; color:$white; line-height:1.2; }
+    &__subtitle{ font-size:0.875rem; color:rgba(255,255,255,0.5); margin-top:0.375rem; }
+
+    &__badge {
+      z-index:1; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+      border-radius:1rem; padding:1rem 1.5rem; text-align:center; flex-shrink:0;
+      @media (max-width:640px) { display:none; }
+      &-value { font-size:1.5rem; font-weight:800; color:$gold; }
+      &-label { font-size:0.7rem; color:rgba(255,255,255,0.5); margin-top:0.25rem; }
+    }
+  }
+
+  .stats-strip {
+    display:grid; grid-template-columns:repeat(2,1fr); gap:1rem;
+    @media (min-width:768px) { grid-template-columns:repeat(4,1fr); }
+  }
+
+  .stat-card {
+    background:$white; border:1px solid $slate-200; border-radius:1.25rem; padding:1.25rem;
+    position:relative; overflow:hidden; transition:box-shadow 0.2s, transform 0.2s;
+    &:hover { box-shadow:0 4px 20px rgba(0,0,0,0.07); transform:translateY(-2px); }
+
+    &__accent {
+      position:absolute; top:0; left:0; right:0; height:3px; border-radius:1.25rem 1.25rem 0 0;
+      &--gold   { background:linear-gradient(to right,$gold,$gold-light); }
+      &--green  { background:linear-gradient(to right,$green,#4ade80);   }
+      &--amber  { background:linear-gradient(to right,$amber,#fbbf24);   }
+      &--red    { background:linear-gradient(to right,$red,#f87171);     }
+      &--blue   { background:linear-gradient(to right,$blue,#60a5fa);    }
+      &--purple { background:linear-gradient(to right,$purple,#a78bfa);  }
+    }
+    &__value { font-size:1.5rem; font-weight:800; color:$slate-900; margin-top:0.375rem; line-height:1; }
+    &__label { font-size:0.7rem; color:$slate-400; margin-top:0.375rem; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; }
+  }
+
+  .panel {
+    background:$white; border:1px solid $slate-200; border-radius:1.25rem; overflow:hidden;
+    &__header {
+      padding:1.25rem 1.5rem; border-bottom:1px solid $slate-100;
+      display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+    }
+    &__title    { font-size:1rem; font-weight:700; color:$slate-900; }
+    &__subtitle { font-size:0.75rem; color:$slate-400; margin-top:0.125rem; }
+    &__body     { padding:1.5rem; }
+  }
+
+  // ── Filters bar ───────────────────────────────────────────────────
+  .filters-bar {
+    display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center;
+
+    input, select {
+      padding:0.625rem 1rem; border:1px solid $slate-200; border-radius:0.75rem;
+      font-size:0.875rem; color:$slate-700; outline:none; background:$white;
+      transition:border-color 0.15s;
+      &:focus { border-color:$gold; }
+    }
+
+    .search-input { flex:1; min-width:200px; }
+  }
+
+  // ── Claims table ──────────────────────────────────────────────────
+  .claims-table {
+    width:100%; border-collapse:collapse;
+
+    th {
+      text-align:left; padding:0.75rem 1rem; font-size:0.7rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:0.06em; color:$slate-400;
+      border-bottom:1px solid $slate-100; white-space:nowrap;
+    }
+
+    td {
+      padding:0.875rem 1rem; font-size:0.875rem; color:$slate-700;
+      border-bottom:1px solid $slate-50; vertical-align:middle;
+    }
+
+    tr:last-child td { border-bottom:none; }
+
+    tr:hover td { background:$slate-50; }
+
+    &__name   { font-weight:700; color:$slate-900; }
+    &__ref    { font-size:0.7rem; color:$slate-400; font-family:monospace; margin-top:2px; }
+    &__amount { font-weight:800; color:$slate-900; }
+  }
+
+  // ── Action buttons ────────────────────────────────────────────────
+  .action-btn {
+    padding:0.375rem 0.875rem; border-radius:0.5rem; border:none;
+    font-size:0.75rem; font-weight:700; cursor:pointer; transition:all 0.15s;
+
+    &--approve { background:$green-pale; color:#15803d; &:hover { background:$green; color:$white; } }
+    &--reject  { background:$red-pale;   color:#b91c1c; &:hover { background:$red;   color:$white; } }
+    &--view    { background:$slate-100;  color:$slate-700; &:hover { background:$navy; color:$white; } }
+  }
+
+  .status-pill {
+    display:inline-flex; align-items:center; gap:0.3rem;
+    padding:0.25rem 0.65rem; border-radius:9999px; font-size:0.7rem; font-weight:700;
+    &::before { content:''; width:5px; height:5px; border-radius:50%; display:inline-block; }
+    &--approved { background:$green-pale;  color:#15803d; &::before { background:$green;  } }
+    &--pending  { background:$amber-pale;  color:#b45309; &::before { background:$amber;  } }
+    &--rejected { background:$red-pale;    color:#b91c1c; &::before { background:$red;    } }
+    &--review   { background:$blue-pale;   color:#1d4ed8; &::before { background:$blue;   } }
+    &--paid     { background:$purple-pale; color:#6d28d9; &::before { background:$purple; } }
+  }
+
+  .btn-gold {
+    padding:0.5rem 1.25rem; border:none; border-radius:0.625rem; font-size:0.8rem;
+    font-weight:700; color:$navy; background:$gold; cursor:pointer;
+    display:flex; align-items:center; gap:0.375rem; transition:all 0.15s;
+    &:hover { background:$gold-light; transform:translateY(-1px); }
+  }
+}

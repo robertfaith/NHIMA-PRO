@@ -13,44 +13,38 @@ $mobile-w:    288px;
 %sidebar-base {
   display:        flex;
   flex-direction: column;
-  height:         100vh;        // ← was 100%, changed to 100vh
+  height:         100vh;
   background:     $bg;
   color:          #fff;
   border-right:   1px solid $border;
-  overflow:       hidden;       // ← added
+  overflow:       hidden;
 }
 
 // ── Desktop sidebar ───────────────────────────────────────────────
 .sb-desktop {
   @extend %sidebar-base;
-  width:      $sidebar-w;
+  width:       $sidebar-w;
   flex-shrink: 0;
-  position:   sticky;           // ← added
-  top:        0;                // ← added
+  position:    sticky;
+  top:         0;
 
-  @media (max-width: 1024px) {
-    display: none;
-  }
+  @media (max-width: 1024px) { display: none; }
 }
 
 // ── Mobile sidebar ────────────────────────────────────────────────
 .sb-mobile {
   @extend %sidebar-base;
-  position:  fixed;
+  position:    fixed;
   inset-block: 0;
-  left:      0;
-  width:     $mobile-w;
-  z-index:   50;
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
+  left:        0;
+  width:       $mobile-w;
+  z-index:     50;
+  transform:   translateX(-100%);
+  transition:  transform 0.3s ease;
 
-  &--open {
-    transform: translateX(0);
-  }
+  &--open { transform: translateX(0); }
 
-  @media (min-width: 1024px) {
-    display: none;
-  }
+  @media (min-width: 1024px) { display: none; }
 }
 
 // ── Mobile overlay ────────────────────────────────────────────────
@@ -61,35 +55,31 @@ $mobile-w:    288px;
   backdrop-filter: blur(4px);
   z-index:         40;
 
-  @media (min-width: 1024px) {
-    display: none;
-  }
+  @media (min-width: 1024px) { display: none; }
 }
 
 // ── Mobile hamburger ──────────────────────────────────────────────
 .sb-hamburger {
-  position:     fixed;
-  top:          1rem;
-  left:         1rem;
-  z-index:      50;
-  padding:      8px;
-  background:   transparent;
-  border:       1px solid rgba(255, 255, 255, 0.1);
+  position:      fixed;
+  top:           1rem;
+  left:          1rem;
+  z-index:       50;
+  padding:       8px;
+  background:    transparent;
+  border:        1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
-  color:        #fff;
-  cursor:       pointer;
-  box-shadow:   0 2px 8px rgba(0, 0, 0, 0.3);
+  color:         #fff;
+  cursor:        pointer;
+  box-shadow:    0 2px 8px rgba(0, 0, 0, 0.3);
 
-  @media (min-width: 1024px) {
-    display: none;
-  }
+  @media (min-width: 1024px) { display: none; }
 }
 
 // ── Header ────────────────────────────────────────────────────────
 .sb-header {
-  padding:      24px 20px 20px;
+  padding:       24px 20px 20px;
   border-bottom: 1px solid $border;
-  flex-shrink:  0;              // ← never shrinks
+  flex-shrink:   0;
 }
 
 .sb-header__inner {
@@ -99,60 +89,56 @@ $mobile-w:    288px;
 }
 
 .sb-logo {
-  max-width:    100px;
-  height:       auto;
+  max-width:     100px;
+  height:        auto;
   border-radius: 2px;
-  padding:      4px;
+  padding:       4px;
 }
 
 .sb-close {
-  background: none;
-  border:     none;
-  color:      $text-muted;
-  cursor:     pointer;
-  padding:    4px;
-  display:    flex;
+  background:  none;
+  border:      none;
+  color:       $text-muted;
+  cursor:      pointer;
+  padding:     4px;
+  display:     flex;
   align-items: center;
-  transition: color 0.2s;
+  transition:  color 0.2s;
 
   &:hover { color: #fff; }
 
-  @media (min-width: 1024px) {
-    display: none;
-  }
+  @media (min-width: 1024px) { display: none; }
 }
 
 // ── Profile card ──────────────────────────────────────────────────
 .sb-profile {
-  display:      flex;
-  align-items:  center;
-  gap:          12px;
-  margin:       12px 10px 4px;
-  padding:      12px 14px;
-  border-radius: 10px;
-  background:   rgba(255, 255, 255, 0.03);
-  border:       1px solid rgba(255, 255, 255, 0.06);
-  flex-shrink:  0;              // ← never shrinks
-}
-
-.sb-profile__avatar {
-  width:         36px;
-  height:        36px;
-  border-radius: 8px;
-  background:    #1e293b;
-  border:        1px solid rgba(255, 255, 255, 0.07);
   display:       flex;
   align-items:   center;
-  justify-content: center;
-  font-size:     14px;
-  font-weight:   700;
-  color:         #fff;
+  gap:           12px;
+  margin:        12px 10px 4px;
+  padding:       12px 14px;
+  border-radius: 10px;
+  background:    rgba(255, 255, 255, 0.03);
+  border:        1px solid rgba(255, 255, 255, 0.06);
   flex-shrink:   0;
 }
 
-.sb-profile__info {
-  min-width: 0;
+.sb-profile__avatar {
+  width:           36px;
+  height:          36px;
+  border-radius:   8px;
+  background:      #1e293b;
+  border:          1px solid rgba(255, 255, 255, 0.07);
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  font-size:       14px;
+  font-weight:     700;
+  color:           #fff;
+  flex-shrink:     0;
 }
+
+.sb-profile__info  { min-width: 0; }
 
 .sb-profile__name {
   font-size:     13px;
@@ -170,6 +156,24 @@ $mobile-w:    288px;
   text-transform: capitalize;
 }
 
+// ── Role badge ────────────────────────────────────────────────────
+.sb-profile__badge {
+  display:         inline-flex;
+  align-items:     center;
+  margin-top:      4px;
+  padding:         2px 8px;
+  border-radius:   9999px;
+  font-size:       10px;
+  font-weight:     600;
+  letter-spacing:  0.04em;
+  text-transform:  uppercase;
+
+  &--admin    { background: rgba(239, 68,  68,  0.15); color: #fca5a5; }
+  &--employer { background: rgba(234, 179, 8,   0.15); color: #fde68a; }
+  &--agent    { background: rgba(16,  185, 129, 0.15); color: #6ee7b7; }
+  &--member   { background: rgba(99,  102, 241, 0.15); color: #a5b4fc; }
+}
+
 // ── Section label ─────────────────────────────────────────────────
 .sb-section-label {
   padding:        16px 20px 8px;
@@ -178,18 +182,18 @@ $mobile-w:    288px;
   color:          $text-dim;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  flex-shrink:    0;            // ← never shrinks
+  flex-shrink:    0;
 }
 
 // ── Navigation ────────────────────────────────────────────────────
 .sb-nav {
-  flex:           1;            // ← takes all remaining height
-  padding:        0 10px 16px; // ← added bottom padding
+  flex:           1;
+  padding:        0 10px 16px;
   display:        flex;
   flex-direction: column;
   gap:            2px;
-  overflow-y:     auto;         // ← scrolls if links overflow
-  min-height:     0;            // ← critical: allows flex child to shrink
+  overflow-y:     auto;
+  min-height:     0;
 
   &::-webkit-scrollbar       { width: 4px; }
   &::-webkit-scrollbar-track { background: transparent; }
@@ -197,18 +201,18 @@ $mobile-w:    288px;
 }
 
 .sb-nav__item {
-  position:       relative;
-  display:        flex;
-  align-items:    center;
-  gap:            10px;
-  padding:        10px 12px;
-  border-radius:  8px;
-  font-size:      13px;
-  font-weight:    500;
-  color:          $text-muted;
+  position:        relative;
+  display:         flex;
+  align-items:     center;
+  gap:             10px;
+  padding:         10px 12px;
+  border-radius:   8px;
+  font-size:       13px;
+  font-weight:     500;
+  color:           $text-muted;
   text-decoration: none;
-  transition:     all 0.15s ease;
-  flex-shrink:    0;
+  transition:      all 0.15s ease;
+  flex-shrink:     0;
 
   &:hover {
     color:      #fff;
@@ -233,15 +237,15 @@ $mobile-w:    288px;
 }
 
 .sb-nav__icon {
-  width:        18px;
-  height:       18px;
-  flex-shrink:  0;
-  display:      inline-flex;
-  align-items:  center;
+  width:           18px;
+  height:          18px;
+  flex-shrink:     0;
+  display:         inline-flex;
+  align-items:     center;
   justify-content: center;
-  font-size:    15px;
+  font-size:       15px;
 
-  .sb-nav__item--active &             { color: $active-text; }
+  .sb-nav__item--active &                    { color: $active-text; }
   .sb-nav__item:not(.sb-nav__item--active) & { color: #64748b; }
 }
 
@@ -259,4 +263,32 @@ $mobile-w:    288px;
   height:      12px;
   color:       rgba(99, 102, 241, 0.5);
   flex-shrink: 0;
+}
+
+// ── Logout footer ─────────────────────────────────────────────────
+.sb-footer {
+  padding:       12px;
+  border-top:    1px solid $border;
+  flex-shrink:   0;
+}
+
+.sb-logout {
+  display:      flex;
+  align-items:  center;
+  gap:          12px;
+  width:        100%;
+  padding:      10px 12px;
+  border-radius: 8px;
+  border:       none;
+  background:   transparent;
+  font-size:    13px;
+  font-weight:  500;
+  color:        $text-muted;
+  cursor:       pointer;
+  transition:   all 0.15s ease;
+
+  &:hover {
+    color:      #f87171;
+    background: rgba(239, 68, 68, 0.08);
+  }
 }

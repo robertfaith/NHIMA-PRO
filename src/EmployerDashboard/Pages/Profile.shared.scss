@@ -1,0 +1,213 @@
+// ─── Shared design tokens ─────────────────────────────────────────────────────
+$navy:        #0f1f3d;
+$navy-mid:    #1a2f52;
+$navy-light:  #243b66;
+$gold:        #f5a623;
+$gold-light:  #ffd07a;
+$gold-pale:   #fff8ec;
+$green:       #22c55e;
+$green-pale:  #f0fdf4;
+$red:         #ef4444;
+$red-pale:    #fef2f2;
+$amber:       #f59e0b;
+$amber-pale:  #fffbeb;
+$indigo:      #6366f1;
+$indigo-pale: #eef2ff;
+$white:       #ffffff;
+$slate-50:    #f8fafc;
+$slate-100:   #f1f5f9;
+$slate-200:   #e2e8f0;
+$slate-300:   #cbd5e1;
+$slate-400:   #94a3b8;
+$slate-500:   #64748b;
+$slate-600:   #475569;
+$slate-700:   #374151;
+$slate-800:   #1e293b;
+$slate-900:   #0f172a;
+
+// ─── Reusable profile shell ───────────────────────────────────────────────────
+%profile-page {
+  display:        flex;
+  flex-direction: column;
+  gap:            1.75rem;
+}
+
+// ── Hero card (compact, navy gradient) ────────────────────────────────────────
+%hero-card {
+  background:    linear-gradient(135deg, $navy 0%, $navy-mid 55%, $navy-light 100%);
+  border-radius: 1.25rem;
+  padding:       1.5rem 2rem;
+  position:      relative;
+  overflow:      hidden;
+  display:       flex;
+  align-items:   center;
+  justify-content: space-between;
+  gap:           1.5rem;
+
+  &::before {
+    content:       '';
+    position:      absolute;
+    top:           -50px; right: -50px;
+    width:         180px; height: 180px;
+    border-radius: 50%;
+    background:    rgba(245, 166, 35, 0.08);
+    pointer-events: none;
+  }
+
+  &::after {
+    content:       '';
+    position:      absolute;
+    bottom:        -60px; left: 35%;
+    width:         200px; height: 200px;
+    border-radius: 50%;
+    background:    rgba(255, 255, 255, 0.025);
+    pointer-events: none;
+  }
+}
+
+// ── White panel card ───────────────────────────────────────────────────────────
+%panel {
+  background:    $white;
+  border:        1px solid $slate-200;
+  border-radius: 1.25rem;
+  overflow:      hidden;
+}
+
+// ─── Shared mixins ────────────────────────────────────────────────────────────
+@mixin panel-header {
+  padding:         1.125rem 1.5rem;
+  border-bottom:   1px solid $slate-100;
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  gap:             1rem;
+  flex-wrap:       wrap;
+}
+
+@mixin panel-title {
+  font-size:   0.9375rem;
+  font-weight: 700;
+  color:       $slate-900;
+}
+
+@mixin panel-subtitle {
+  font-size:  0.75rem;
+  color:      $slate-400;
+  margin-top: 0.125rem;
+}
+
+@mixin field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
+}
+
+@mixin field-label {
+  font-size:      0.7rem;
+  font-weight:    700;
+  color:          $slate-400;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom:  0.375rem;
+  display:        block;
+}
+
+@mixin field-input {
+  width:         100%;
+  padding:       0.625rem 0.875rem;
+  border:        1.5px solid $slate-200;
+  border-radius: 0.625rem;
+  font-size:     0.875rem;
+  font-weight:   500;
+  color:         $slate-800;
+  background:    $white;
+  outline:       none;
+  transition:    border-color 0.15s, box-shadow 0.15s;
+  box-sizing:    border-box;
+
+  &:focus {
+    border-color: $gold;
+    box-shadow:   0 0 0 3px rgba(245, 166, 35, 0.12);
+  }
+
+  &:disabled {
+    background: $slate-50;
+    color:      $slate-400;
+    cursor:     not-allowed;
+  }
+}
+
+@mixin status-pill($bg, $color, $dot) {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           0.35rem;
+  padding:       0.25rem 0.7rem;
+  border-radius: 9999px;
+  font-size:     0.7rem;
+  font-weight:   700;
+  background:    $bg;
+  color:         $color;
+
+  &::before {
+    content:       '';
+    width:         5px; height: 5px;
+    border-radius: 50%;
+    background:    $dot;
+    display:       inline-block;
+  }
+}
+
+@mixin btn-gold {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           0.4rem;
+  padding:       0.5rem 1.25rem;
+  border:        none;
+  border-radius: 0.625rem;
+  font-size:     0.8rem;
+  font-weight:   700;
+  color:         $navy;
+  background:    $gold;
+  cursor:        pointer;
+  transition:    all 0.15s;
+  white-space:   nowrap;
+
+  &:hover { background: $gold-light; transform: translateY(-1px); }
+  &:active { transform: translateY(0); }
+}
+
+@mixin btn-outline {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           0.4rem;
+  padding:       0.5rem 1rem;
+  border:        1.5px solid $slate-200;
+  border-radius: 0.625rem;
+  font-size:     0.8rem;
+  font-weight:   600;
+  color:         $slate-600;
+  background:    $white;
+  cursor:        pointer;
+  transition:    all 0.15s;
+
+  &:hover { background: $slate-50; border-color: $slate-300; }
+}
+
+@mixin btn-danger {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           0.4rem;
+  padding:       0.5rem 1rem;
+  border:        1.5px solid rgba($red, 0.3);
+  border-radius: 0.625rem;
+  font-size:     0.8rem;
+  font-weight:   600;
+  color:         $red;
+  background:    $red-pale;
+  cursor:        pointer;
+  transition:    all 0.15s;
+
+  &:hover { background: $red; color: $white; border-color: $red; }
+}

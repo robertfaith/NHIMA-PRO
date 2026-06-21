@@ -1,12 +1,12 @@
 
 import Register     from './Register'
 import './Registerlanding.scss'
-import LoginLeft from '../LoginLeft'
+import RegisterLeft from './RegisterLeft'
 
 const Registerlanding = () => {
   return (
     <div className="registerlanding">
-      <LoginLeft />
+      <RegisterLeft />
       <Register />
     </div>
   )

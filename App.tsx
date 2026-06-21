@@ -1,144 +1,94 @@
-
 import {
   createBrowserRouter,
   RouterProvider,
-  Navigate
-} from 'react-router-dom';
+  Navigate,
+} from 'react-router-dom'
 
-
-import Home from './src/Components/Home/Home';
-// Import the necessary components for routing
-import Dashboard from './src/EmployerDashboard/Pages/Dashboard';
-import Loans from './src/Components/Loans/Loans';
-import MemDashboard from './src/MemDashboard/MemDashboard';
-import MemDashboardHome from './src/MemDashboard/Pages/Dashboard';
-import MemProfile from './src/MemDashboard/Pages/Profile';
-import MemContributions from './src/MemDashboard/Pages/Contributions';
-import MemNotifications from './src/MemDashboard/Pages/Notifications';
-import MemSettings from './src/MemDashboard/Pages/Settings';
-import MemSupport from './src/MemDashboard/Pages/Support';
-import MemClaims from './src/MemDashboard/Pages/Claims';
-import MemFacilities from './src/MemDashboard/Pages/Facilities';
-import MemBenefits from './src/MemDashboard/Pages/Benefits';
-import MemDocuments from './src/MemDashboard/Pages/Documents';
-import AboutSection from './src/Components/About/AboutSection';
-import Benefits from './src/Components/Benefits/Benefits';
-import Facility from './src/Components/Facility/Facility';
-import Contact from './src/Components/Contact/Contact';
-import EmployerDashboard from './src/EmployerDashboard/EmployerDashboard';
-import Loginlanding from './src/Components/Auth/Loginlanding';
-import Registerlanding from './src/Components/Auth/Register/Registerlanding';
+import Home         from './src/Components/Home/Home'
+import Loans        from './src/Components/Loans/Loans'
+import AboutSection from './src/Components/About/AboutSection'
+import Benefits     from './src/Components/Benefits/Benefits'
+import Facility     from './src/Components/Facility/Facility'
+import Contact      from './src/Components/Contact/Contact'
+import Loginlanding    from './src/Components/Auth/Loginlanding'
+import Registerlanding from './src/Components/Auth/Register/Registerlanding'
+import EmployerDashboard  from './src/EmployerDashboard/EmployerDashboard'
+import Dashboard          from './src/EmployerDashboard/Pages/Dashboard'
+import EmployerContributions      from './src/EmployerDashboard/Pages/EmployerContributions'
+import MemberContributions      from './src/EmployerDashboard/Pages/MemberContributions'
+import Notifications      from './src/EmployerDashboard/Pages/Notifications'
+import Settings           from './src/EmployerDashboard/Pages/Settings'
+import Support            from './src/EmployerDashboard/Pages/Support'
+import Facilities         from './src/EmployerDashboard/Pages/Facilities'
+import EmployerBenefits   from './src/EmployerDashboard/Pages/Benefits'
+import Payments           from './src/EmployerDashboard/Pages/Payments'
+import Verifications from './src/EmployerDashboard/Pages/Verifications'
+import NRC from './src/EmployerDashboard/Pages/NRC'
+import New from './src/EmployerDashboard/Pages/New'
+import Compliance from './src/MemDashboard/Pages/Compliance'
+import Reports from './src/EmployerDashboard/Pages/Reports'
+import MemberBenefits from './src/EmployerDashboard/Pages/Benefits'
+import AdminProfile from './src/EmployerDashboard/Pages/AdminProfile'
+import MemberProfile from './src/EmployerDashboard/Pages/MemberProfile'
+import AgentProfile from './src/EmployerDashboard/Pages/AgentProfile'
+import EmployerProfile from './src/EmployerDashboard/Pages/EmployerProfile'
+import AdminClaims from './src/EmployerDashboard/Pages/AdminClaims'
+import MemberClaims from './src/EmployerDashboard/Pages/MemberClaims'
+import EmployerClaims from './src/EmployerDashboard/Pages/EmployerClaims'
 
 
 const router = createBrowserRouter([
- 
-    {
-    path: '/Login',
-    element: <Loginlanding />,
-  },
-   {
-    path: '/Register',
-    element: <Registerlanding />,
-  },
+
+  // ── Public routes ───────────────────────────────────────────────
+  { path: '/',         element: <Navigate to="/home" replace /> },
+  { path: '/login',    element: <Loginlanding />    },
+  { path: '/register', element: <Registerlanding /> },
+  { path: '/home',     element: <Home />            },
+  { path: '/benefits', element: <Benefits />        },
+  { path: '/loans',    element: <Loans />           },
+  { path: '/about',    element: <AboutSection />    },
+  { path: '/facility', element: <Facility />        },
+  { path: '/contact',  element: <Contact />         },
+  { path: '/payments',  element: <Payments/>         },
+  { path: '/notifications',  element: <Notifications />},
+
+
+
+
+  // ── Dashboard routes (all nested under /dashboard) ──────────────
   {
-    path: '/EmployerDashboard',
+    path:    '/dashboard',
     element: <EmployerDashboard />,
     children: [
-      { index: true, element: <Dashboard /> },
-    ]
-  },
-  {
-    path: '/Dashboard',
-    element: <Dashboard />,
-  },
-  {
-    path: '/Home',
-    element: <Home />,
-  },
-  {
-    path: '/Benefits',
-    element: <Benefits />,
-  },
-  {
-    path: '/Loans',
-    element: <Loans />
-  },
-  {
-    path: '/memdashboard',
-    element: <MemDashboard />,
-    children: [
-      {
-        index: true,
-        element: <MemDashboardHome />,
-      },
-      {
-        path: 'dashboard',
-        element: <MemDashboardHome />,
-      },
-      {
-        path: 'profile',
-        element: <MemProfile />,
-      },
-      {
-        path: 'contributions',
-        element: <MemContributions />,
-      },
-      {
-        path: 'notifications',
-        element: <MemNotifications />,
-      },
-      {
-        path: 'settings',
-        element: <MemSettings />,
-      },
-      {
-        path: 'support',
-        element: <MemSupport />,
-      },
-      {
-        path: 'claims',
-        element: <MemClaims />,
-      },
-      {
-        path: 'facilities',
-        element: <MemFacilities />,
-      },
-      {
-        path: 'benefits',
-        element: <MemBenefits />,
-      },
-      {
-        path: 'documents',
-        element: <MemDocuments />,
-      },
-      {
-        path: '*',
-        element: <Navigate to="/memdashboard" replace />,
-      },
+      { index: true,                    element: <Dashboard />        },
+      { path: 'EmployerContributions',  element: <EmployerContributions />    },
+      { path: 'contributions',          element: <MemberContributions /> },
+      { path: 'notifications',          element: <Notifications />    },
+      { path: 'settings',               element: <Settings />         },
+      { path: 'support',                element: <Support />          },
+      { path: 'facilities',             element: <Facilities />       },
+      { path: 'emp-benefits',           element: <EmployerBenefits /> },
+      { path: 'nrc',                    element: <NRC />              },
+      { path: 'verifications',          element: <Verifications />    },
+      { path: 'payments',               element: <Payments />         },
+      { path: 'new',                    element: <New />              },
+      { path: 'compliance',             element: <Compliance />       },
+      { path: 'reports',                element: <Reports />          },
+      { path: 'benefits',               element: <MemberBenefits />   },
+      { path: 'admin-profile',          element: <AdminProfile />     },
+      { path: 'memberprofile',          element: <MemberProfile/>     },
+      { path: 'agentprofile',           element: <AgentProfile/>      },
+      { path: 'employerprofile',        element: <EmployerProfile />  },
+      { path: 'adminclaims',            element: <AdminClaims />      },
+      { path: 'employerclaims',         element: <EmployerClaims />   },
+      { path: 'memberclaims',           element: <MemberClaims />     },
     ],
   },
-  {
-    path: '/About',
-    element: <AboutSection />
-  },
-  {
-    path: '/Facility',
-    element: <Facility />
-  },
-  {
-    path: '/Contact',
-    element: <Contact />
-  },
-  {
-    path: '*',
-    element: <Navigate to="/Home" replace />
-  }
-]);
+
+  // ── Catch-all ───────────────────────────────────────────────────
+  { path: '*', element: <Navigate to="/home" replace /> },
+])
 
 export default function App() {
-  return (
-    <div>
-      <RouterProvider router={router} />
-    </div>
-  );
+  return <RouterProvider router={router} />
 }

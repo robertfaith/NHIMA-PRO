@@ -8,8 +8,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-
-  // ── Desktop — side by side ────────────────────────────────────
   flex-direction: row;
 
   & > *:first-child {
@@ -25,20 +23,16 @@
     overflow: hidden;
   }
 
-  // ── Mobile — stacked top/bottom ───────────────────────────────
   @media (max-width: 768px) {
     flex-direction: column;
 
     & > *:first-child {
-      width: 100%;
-      height: 40%;        // ← top 40% for the slider
-      flex-shrink: 0;
-      display: flex;      // ← override the hidden md:flex
+      display: none; // ← hide the slider on mobile
     }
 
     & > *:last-child {
       width: 100%;
-      height: 60%;        // ← bottom 60% for the form
+      height: 100%; // ← form takes full height since slider is hidden
       flex: unset;
       overflow-y: auto;
     }
