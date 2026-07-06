@@ -163,7 +163,11 @@ const Dashboard = () => {
     const timer = setTimeout(() => {
       // ← Change this to test different dashboards:
       // 'ADMIN' | 'EMPLOYER' | 'AGENT' | 'MEMBER'
+<<<<<<< HEAD
       const activeRole: UserRole = 'ADMIN'
+=======
+      const activeRole: UserRole = 'MEMBER'
+>>>>>>> b134d51a19f4c1fe01e30867606b2ec8dd64067c
       setData(MOCK[activeRole])
       setLoading(false)
     }, 1200)
