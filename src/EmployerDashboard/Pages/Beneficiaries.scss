@@ -1,0 +1,497 @@
+// ── Variables ─────────────────────────────────────────────────────
+$primary:       #4f46e5;
+$primary-hover: #4338ca;
+$danger:        #ef4444;
+$danger-hover:  #dc2626;
+$border:        #e2e8f0;
+$radius-sm:     10px;
+$radius-md:     14px;
+$radius-lg:     20px;
+$radius-full:   999px;
+
+// ── Page layout ───────────────────────────────────────────────────
+.ben-page-header {
+  display:         flex;
+  flex-direction:  column;
+  gap:             1rem;
+  margin-bottom:   2rem;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items:    center;
+    justify-content: space-between;
+  }
+}
+
+.ben-page-title {
+  font-size:   1.5rem;
+  font-weight: 700;
+  color:       #1e293b;
+}
+
+.ben-page-subtitle {
+  font-size: 0.875rem;
+  color:     #64748b;
+  margin-top: 2px;
+}
+
+// ── Stats strip ───────────────────────────────────────────────────
+.ben-stats {
+  display:               grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:                   0.75rem;
+  margin-bottom:         1.5rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.ben-stat-card {
+  background:    #fff;
+  border:        1px solid $border;
+  border-radius: $radius-md;
+  padding:       12px 16px;
+
+  &__value {
+    font-size:   1.5rem;
+    font-weight: 700;
+    color:       $primary;
+  }
+
+  &__label {
+    font-size:   0.75rem;
+    color:       #64748b;
+    margin-top:  2px;
+    line-height: 1.3;
+  }
+}
+
+// ── Filters ───────────────────────────────────────────────────────
+.ben-filters {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.75rem;
+  margin-bottom:  1.5rem;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+  }
+}
+
+.ben-search {
+  position: relative;
+  flex:     1;
+
+  &__icon {
+    position:  absolute;
+    left:      14px;
+    top:       50%;
+    transform: translateY(-50%);
+    color:     #94a3b8;
+    width:     16px;
+    height:    16px;
+    pointer-events: none;
+  }
+
+  &__input {
+    width:         100%;
+    padding:       10px 16px 10px 40px;
+    border:        1px solid $border;
+    border-radius: $radius-sm;
+    font-size:     0.875rem;
+    outline:       none;
+
+    &:focus {
+      border-color: $primary;
+      box-shadow:   0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+  }
+}
+
+.ben-filter-select {
+  width: 100%;
+
+  @media (min-width: 640px) {
+    width: 224px;
+  }
+}
+
+// ── Shared form elements ──────────────────────────────────────────
+.ben-field {
+  display:        flex;
+  flex-direction: column;
+  gap:            4px;
+}
+
+.ben-label {
+  font-size:   0.875rem;
+  font-weight: 500;
+  color:       #374151;
+
+  &--optional {
+    font-weight: 400;
+    color:       #94a3b8;
+  }
+}
+
+.ben-input,
+.ben-select {
+  width:         100%;
+  border:        1px solid $border;
+  border-radius: $radius-sm;
+  padding:       10px 12px;
+  font-size:     0.875rem;
+  color:         #374151;
+  background:    #fff;
+  outline:       none;
+  transition:    border-color 0.15s, box-shadow 0.15s;
+
+  &:focus {
+    border-color: $primary;
+    box-shadow:   0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  &--error {
+    border-color: #f87171;
+    background:   #fef2f2;
+  }
+}
+
+.ben-error {
+  font-size: 0.75rem;
+  color:     #ef4444;
+  margin-top: 2px;
+}
+
+.ben-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+// ── Buttons ───────────────────────────────────────────────────────
+.ben-btn {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             6px;
+  padding:         10px 18px;
+  border-radius:   $radius-sm;
+  font-size:       0.875rem;
+  font-weight:     600;
+  cursor:          pointer;
+  transition:      all 0.15s ease;
+  border:          none;
+  width:           100%;
+
+  @media (min-width: 640px) {
+    width: auto;
+  }
+
+  &--primary {
+    background: $primary;
+    color:      #fff;
+
+    &:hover { background: $primary-hover; }
+  }
+
+  &--ghost {
+    background: transparent;
+    border:     1px solid $border;
+    color:      #475569;
+
+    &:hover { background: #f8fafc; }
+  }
+
+  &--danger {
+    background: $danger;
+    color:      #fff;
+
+    &:hover { background: $danger-hover; }
+  }
+}
+
+// ── Modal backdrop ────────────────────────────────────────────────
+.ben-modal-backdrop {
+  position:         fixed;
+  inset:            0;
+  z-index:          50;
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  padding:          1rem;
+  background:       rgba(0, 0, 0, 0.4);
+  backdrop-filter:  blur(4px);
+}
+
+// ── Modal ─────────────────────────────────────────────────────────
+.ben-modal {
+  background:    #fff;
+  border-radius: $radius-lg;
+  box-shadow:    0 25px 60px rgba(0, 0, 0, 0.2);
+  width:         100%;
+  max-width:     520px;
+  animation:     fadeIn 0.2s ease;
+
+  &--sm { max-width: 380px; padding: 2rem; text-align: center; }
+
+  &__header {
+    display:         flex;
+    align-items:     flex-start;
+    justify-content: space-between;
+    padding:         20px 24px;
+    border-bottom:   1px solid #f1f5f9;
+  }
+
+  &__title {
+    font-size:   1.125rem;
+    font-weight: 600;
+    color:       #1e293b;
+  }
+
+  &__subtitle {
+    font-size:  0.875rem;
+    color:      #94a3b8;
+    margin-top: 2px;
+  }
+
+  &__close {
+    padding:       8px;
+    border-radius: $radius-sm;
+    border:        none;
+    background:    transparent;
+    color:         #94a3b8;
+    cursor:        pointer;
+    transition:    all 0.15s;
+
+    &:hover { background: #f1f5f9; color: #475569; }
+  }
+
+  &__body {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__footer {
+    display:          flex;
+    justify-content:  flex-end;
+    gap:              0.75rem;
+    padding:          16px 24px;
+    border-top:       1px solid #f1f5f9;
+    background:       #f8fafc;
+    border-radius:    0 0 $radius-lg $radius-lg;
+  }
+}
+
+// ── Delete modal specifics ────────────────────────────────────────
+.ben-delete-icon {
+  width:           48px;
+  height:          48px;
+  border-radius:   50%;
+  background:      #fee2e2;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  margin:          0 auto 1rem;
+
+  &__svg { color: $danger; }
+}
+
+.ben-delete-title {
+  font-size:     1.125rem;
+  font-weight:   600;
+  color:         #1e293b;
+  margin-bottom: 6px;
+}
+
+.ben-delete-desc {
+  font-size:     0.875rem;
+  color:         #64748b;
+  margin-bottom: 1.5rem;
+  line-height:   1.6;
+
+  strong { color: #374151; }
+}
+
+// ── Beneficiary badge ─────────────────────────────────────────────
+.ben-badge {
+  padding:       2px 10px;
+  border-radius: $radius-full;
+  font-size:     0.75rem;
+  font-weight:   500;
+  white-space:   nowrap;
+
+  &--spouse   { background: #fce7f3; color: #be185d; }
+  &--child    { background: #e0f2fe; color: #0369a1; }
+  &--parent   { background: #fef3c7; color: #92400e; }
+  &--sibling  { background: #ede9fe; color: #6d28d9; }
+  &--guardian { background: #ccfbf1; color: #0f766e; }
+  &--other    { background: #f1f5f9; color: #475569; }
+}
+
+// ── Beneficiary card ──────────────────────────────────────────────
+.ben-card {
+  background:    #fff;
+  border:        1px solid $border;
+  border-radius: $radius-lg;
+  padding:       20px;
+  display:       flex;
+  flex-direction: column;
+  gap:           0.75rem;
+  transition:    box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform:  translateY(-2px);
+  }
+
+  &__top {
+    display:         flex;
+    align-items:     flex-start;
+    justify-content: space-between;
+    gap:             8px;
+  }
+
+  &__avatar-wrap {
+    display:     flex;
+    align-items: center;
+    gap:         12px;
+  }
+
+  &__avatar {
+    width:            40px;
+    height:           40px;
+    border-radius:    50%;
+    background:       #e0e7ff;
+    display:          flex;
+    align-items:      center;
+    justify-content:  center;
+    font-size:        0.875rem;
+    font-weight:      600;
+    color:            $primary;
+    flex-shrink:      0;
+  }
+
+  &__name {
+    font-weight:  600;
+    color:        #1e293b;
+    font-size:    0.9375rem;
+    line-height:  1.2;
+  }
+
+  &__dob {
+    font-size:  0.75rem;
+    color:      #94a3b8;
+    margin-top: 2px;
+  }
+
+  &__meta {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 0.75rem;
+    display:     flex;
+    flex-direction: column;
+    gap:         6px;
+  }
+
+  &__meta-row {
+    display:         flex;
+    justify-content: space-between;
+    font-size:       0.875rem;
+
+    span:first-child { color: #94a3b8; }
+    span:last-child  { color: #374151; font-weight: 500; }
+  }
+
+  &__actions {
+    display: flex;
+    gap:     8px;
+    padding-top: 4px;
+  }
+
+  &__action-btn {
+    flex:            1;
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    gap:             6px;
+    padding:         8px 0;
+    border-radius:   $radius-sm;
+    border:          1px solid $border;
+    font-size:       0.875rem;
+    font-weight:     500;
+    color:           #475569;
+    background:      transparent;
+    cursor:          pointer;
+    transition:      all 0.15s;
+
+    &--edit:hover {
+      background:    #eef2ff;
+      border-color:  #a5b4fc;
+      color:         $primary;
+    }
+
+    &--delete:hover {
+      background:    #fef2f2;
+      border-color:  #fca5a5;
+      color:         $danger;
+    }
+  }
+}
+
+// ── Grid ──────────────────────────────────────────────────────────
+.ben-grid {
+  display:               grid;
+  grid-template-columns: 1fr;
+  gap:                   1rem;
+
+  @media (min-width: 640px)  { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 1024px) { grid-template-columns: repeat(3, 1fr); }
+  @media (min-width: 1280px) { grid-template-columns: repeat(4, 1fr); }
+}
+
+// ── Loading ───────────────────────────────────────────────────────
+.ben-loading {
+  display:         flex;
+  justify-content: center;
+  padding:         4rem;
+}
+
+.ben-spinner {
+  width:        32px;
+  height:       32px;
+  border:       2px solid $primary;
+  border-top:   2px solid transparent;
+  border-radius: 50%;
+  animation:    spin 0.7s linear infinite;
+}
+
+// ── Empty state ───────────────────────────────────────────────────
+.ben-empty {
+  grid-column:     1 / -1;
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  padding:         5rem 1rem;
+  background:      #fff;
+  border-radius:   $radius-lg;
+  border:          1px solid $border;
+  text-align:      center;
+
+  &__icon  { color: #cbd5e1; margin-bottom: 0.75rem; }
+  &__title { font-weight: 500; color: #64748b; font-size: 0.9375rem; }
+  &__sub   { font-size: 0.875rem; color: #94a3b8; margin-top: 4px; }
+}
+
+// ── Animations ────────────────────────────────────────────────────
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

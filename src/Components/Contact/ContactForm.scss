@@ -1,0 +1,158 @@
+.contact {
+  max-width: 1400px;
+  margin: 80px auto;
+  padding: 0 5%;
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+}
+
+.contact-co {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 35px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.contact-co h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #0056a4;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.contact-co p {
+  color: #5f6b7a;
+  line-height: 1.8;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.contact-co ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 25px;
+}
+
+.contact-co ul li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 18px;
+  color: #2f3b4c;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.contact-co ul li svg {
+  color: #0056a4;
+  font-size: 18px;
+}
+
+.contact form {
+  margin-top: 10px;
+}
+
+.contact form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #243447;
+  font-weight: 600;
+}
+
+.contact form input,
+.contact form textarea {
+  width: 100%;
+  background: #f7f9fc;
+  border: 1px solid #dce4ee;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.contact form input:focus,
+.contact form textarea:focus {
+  border-color: #0056a4;
+  box-shadow: 0 0 0 3px rgba(0, 86, 164, 0.15);
+  outline: none;
+  background: #fff;
+}
+
+.contact form textarea {
+  resize: vertical;
+}
+
+.send-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  background: #0056a4;
+  color: white;
+  border: none;
+  border-radius: 10px;
+
+  padding: 14px 30px;
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.send-button:hover {
+  background: #0056a4;
+  transform: translateY(-2px);
+}
+
+.send-button svg {
+  font-size: 18px;
+}
+
+.contact-co span {
+  display: block;
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0056a4;
+}
+
+/* NHIMA Contact Card */
+
+.contact-info-box {
+  background: #f8fbff;
+  border-left: 5px solid #0056a4;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 25px;
+}
+
+.contact-info-box h4 {
+  color: #0056a4;
+  margin-bottom: 15px;
+}
+
+.contact-info-box p {
+  margin: 8px 0;
+}
+
+/* Responsive */
+
+@media (max-width: 992px) {
+  .contact {
+    flex-direction: column;
+  }
+
+  .contact-co {
+    width: 100%;
+  }
+}

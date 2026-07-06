@@ -1,0 +1,367 @@
+// ─── Agent Dashboard ──────────────────────────────────────────────────────────
+
+.agent-dashboard {
+
+  // ─── Page Header ───────────────────────────────────────────────────────────
+  .page-header {
+    margin-bottom: 2rem;
+
+    &__title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    &__subtitle {
+      font-size: 0.875rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+
+    &__date {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 0.125rem;
+    }
+  }
+
+  // ─── Agent Info Strip ──────────────────────────────────────────────────────
+  .agent-strip {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 0.875rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    &__item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: #475569;
+    }
+
+    &__icon { color: #6366f1; flex-shrink: 0; }
+
+    &__key   { font-weight: 600; }
+    &__value { font-family: monospace; }
+  }
+
+  // ─── Statistics Grid ───────────────────────────────────────────────────────
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    @media (min-width: 640px)  { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+    @media (min-width: 1024px) { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .stat-card {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 0.875rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      .stat-card__bar { opacity: 1; }
+    }
+
+    &__bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: 0 9999px 9999px 0;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+
+      &--blue    { background: #3b82f6; }
+      &--indigo  { background: #6366f1; }
+      &--yellow  { background: #eab308; }
+      &--green   { background: #22c55e; }
+      &--red     { background: #ef4444; }
+      &--purple  { background: #a855f7; }
+      &--teal    { background: #14b8a6; }
+      &--emerald { background: #10b981; }
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+    }
+
+    &__label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    &__value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 0.25rem;
+    }
+
+    &__desc {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      margin-top: 0.125rem;
+    }
+
+    &__icon {
+      width: 2.75rem;
+      height: 2.75rem;
+      padding: 0.625rem;
+      border-radius: 0.75rem;
+      flex-shrink: 0;
+      transition: background 0.2s ease, color 0.2s ease;
+
+      &--blue    { background: #dbeafe; color: #2563eb; }
+      &--indigo  { background: #e0e7ff; color: #4f46e5; }
+      &--yellow  { background: #fef9c3; color: #ca8a04; }
+      &--green   { background: #dcfce7; color: #16a34a; }
+      &--red     { background: #fee2e2; color: #dc2626; }
+      &--purple  { background: #f3e8ff; color: #9333ea; }
+      &--teal    { background: #ccfbf1; color: #0f766e; }
+      &--emerald { background: #d1fae5; color: #059669; }
+    }
+  }
+
+  // ─── Performance Progress ──────────────────────────────────────────────────
+  .progress-panel {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 0.875rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    &__title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    &__count {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #4f46e5;
+    }
+
+    &__track {
+      width: 100%;
+      background: #f1f5f9;
+      border-radius: 9999px;
+      height: 0.75rem;
+      overflow: hidden;
+    }
+
+    &__fill {
+      height: 100%;
+      border-radius: 9999px;
+      background: linear-gradient(to right, #6366f1, #3b82f6);
+      transition: width 0.5s ease;
+    }
+
+    &__hint {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 0.5rem;
+    }
+  }
+
+  // ─── Quick Actions ─────────────────────────────────────────────────────────
+  .quick-actions-panel {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 0.875rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+
+    &__title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    &__buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #1d4f91;
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover { background: #2d6ca8; }
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #ffffff;
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover { background: #f8fafc; }
+  }
+
+  // ─── Activity Grid ─────────────────────────────────────────────────────────
+  .activity-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+
+    @media (min-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  // ─── Shared Panel ──────────────────────────────────────────────────────────
+  .panel {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 0.875rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    &__title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    &__view-all {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #1d4f91;
+      text-decoration: none;
+
+      &:hover { text-decoration: underline; }
+    }
+  }
+
+  // ─── Activity rows ─────────────────────────────────────────────────────────
+  .activity-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 0;
+    border-bottom: 1px solid #f8fafc;
+
+    &:last-child { border-bottom: none; }
+
+    &__name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    &__meta {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      margin-top: 0.1rem;
+    }
+  }
+
+  // ─── Status badge ──────────────────────────────────────────────────────────
+  .status-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+
+    &--approved { background: #f0fdf4; color: #16a34a; }
+    &--pending  { background: #fef9c3; color: #ca8a04; }
+    &--rejected { background: #fee2e2; color: #dc2626; }
+    &--review   { background: #dbeafe; color: #2563eb; }
+    &--default  { background: #f1f5f9; color: #475569; }
+  }
+
+  // ─── Pending task rows ─────────────────────────────────────────────────────
+  .task-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.625rem;
+    border-bottom: 1px solid #f8fafc;
+
+    &:last-child { border-bottom: none; padding-bottom: 0; }
+
+    &__label {
+      font-size: 0.875rem;
+      color: #475569;
+      padding-right: 1rem;
+    }
+
+    &__count {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.25rem 0.625rem;
+      border-radius: 9999px;
+      background: #fef9c3;
+      color: #ca8a04;
+      flex-shrink: 0;
+    }
+  }
+}

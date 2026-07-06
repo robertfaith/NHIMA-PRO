@@ -1,0 +1,402 @@
+@use 'Profile.shared' as *;
+
+.member-profile {
+  @extend %profile-page;
+
+  // ── Hero ───────────────────────────────────────────────────────────────────
+  .profile-hero {
+    @extend %hero-card;
+
+    &__left {
+      display:     flex;
+      align-items: center;
+      gap:         1.25rem;
+      z-index:     1;
+    }
+
+    &__avatar-wrap { position: relative; }
+
+    &__avatar {
+      width:           5rem;
+      height:          5rem;
+      border-radius:   50%;
+      background:      rgba(255,255,255,0.1);
+      border:          2px solid rgba(245,166,35,0.5);
+      display:         flex;
+      align-items:     center;
+      justify-content: center;
+      font-size:       1.5rem;
+      font-weight:     800;
+      color:           $gold;
+      letter-spacing:  0.04em;
+      flex-shrink:     0;
+    }
+
+    &__avatar-edit {
+      position:        absolute;
+      bottom:          0; right: 0;
+      width:           1.625rem; height: 1.625rem;
+      border-radius:   50%;
+      background:      $gold;
+      border:          2px solid $navy;
+      display:         flex;
+      align-items:     center;
+      justify-content: center;
+      cursor:          pointer;
+      font-size:       0.7rem;
+      color:           $navy;
+      transition:      transform 0.15s;
+
+      &:hover { transform: scale(1.1); }
+    }
+
+    &__info {
+      display:        flex;
+      flex-direction: column;
+      gap:            0.2rem;
+      z-index:        1;
+    }
+
+    &__role-badge {
+      display:        inline-flex;
+      align-items:    center;
+      gap:            0.35rem;
+      padding:        0.2rem 0.65rem;
+      border-radius:  9999px;
+      font-size:      0.65rem;
+      font-weight:    700;
+      background:     rgba(245,166,35,0.15);
+      color:          $gold;
+      border:         1px solid rgba(245,166,35,0.3);
+      width:          fit-content;
+      margin-bottom:  0.25rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    &__name {
+      font-size:   1.375rem;
+      font-weight: 800;
+      color:       $white;
+      line-height: 1.2;
+    }
+
+    &__meta {
+      font-size:      0.75rem;
+      color:          rgba(255,255,255,0.5);
+      font-family:    monospace;
+      letter-spacing: 0.04em;
+      margin-top:     0.1rem;
+    }
+
+    &__employer {
+      font-size:  0.75rem;
+      color:      rgba(255,255,255,0.4);
+      margin-top: 0.1rem;
+    }
+
+    &__right {
+      z-index:        1;
+      display:        flex;
+      flex-direction: column;
+      align-items:    flex-end;
+      gap:            0.75rem;
+
+      @media (max-width: 640px) { display: none; }
+    }
+
+    &__stat {
+      text-align: right;
+
+      &-value {
+        font-size:   1.25rem;
+        font-weight: 800;
+        color:       $gold;
+        line-height: 1;
+      }
+
+      &-label {
+        font-size:  0.65rem;
+        color:      rgba(255,255,255,0.4);
+        margin-top: 0.2rem;
+        white-space: nowrap;
+      }
+    }
+
+    &__status {
+      @include status-pill(rgba(255,255,255,0.08), $white, $green);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+  }
+
+  // ── Tab bar ────────────────────────────────────────────────────────────────
+  .profile-tabs {
+    display:     flex;
+    gap:         0.25rem;
+    border-bottom: 1px solid $slate-200;
+    overflow-x:  auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .profile-tab {
+    padding:       0.625rem 1.125rem;
+    font-size:     0.8rem;
+    font-weight:   600;
+    background:    none;
+    border:        none;
+    cursor:        pointer;
+    border-bottom: 2px solid transparent;
+    color:         $slate-500;
+    white-space:   nowrap;
+    margin-bottom: -1px;
+    transition:    all 0.15s;
+    display:       flex;
+    align-items:   center;
+    gap:           0.4rem;
+
+    &--active {
+      color:        $gold;
+      border-color: $gold;
+    }
+
+    &:hover:not(&--active) { color: $slate-800; }
+  }
+
+  // ── Panel ─────────────────────────────────────────────────────────────────
+  .panel {
+    @extend %panel;
+
+    &__header { @include panel-header; }
+    &__title  { @include panel-title;  }
+    &__sub    { @include panel-subtitle; }
+    &__body   { padding: 1.5rem; }
+  }
+
+  // ── Form fields ────────────────────────────────────────────────────────────
+  .field-grid    { @include field-grid; }
+  .field-grid-3  {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    @media (max-width: 768px) { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 480px) { grid-template-columns: 1fr;     }
+  }
+
+  .field {
+    display:        flex;
+    flex-direction: column;
+
+    &--full { grid-column: 1 / -1; }
+
+    label { @include field-label; }
+
+    input, select, textarea { @include field-input; }
+
+    textarea {
+      resize:     vertical;
+      min-height: 90px;
+      line-height: 1.6;
+    }
+  }
+
+  // ── Beneficiary cards ──────────────────────────────────────────────────────
+  .bene-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .bene-card {
+    border:        1.5px solid $slate-200;
+    border-radius: 1rem;
+    padding:       1.125rem;
+    position:      relative;
+    background:    $white;
+    transition:    box-shadow 0.2s, border-color 0.2s;
+
+    &:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); border-color: $slate-300; }
+
+    &__avatar {
+      width:           2.5rem; height: 2.5rem;
+      border-radius:   50%;
+      background:      linear-gradient(135deg, $navy-mid, $navy-light);
+      color:           $gold;
+      font-size:       0.8rem;
+      font-weight:     800;
+      display:         flex;
+      align-items:     center;
+      justify-content: center;
+      margin-bottom:   0.75rem;
+    }
+
+    &__name  { font-size: 0.9rem; font-weight: 700; color: $slate-800; }
+    &__rel   {
+      display:       inline-flex;
+      font-size:     0.65rem; font-weight: 700;
+      padding:       0.175rem 0.55rem;
+      border-radius: 9999px;
+      margin-top:    0.25rem;
+
+      &--Spouse   { background: #fdf2f8; color: #be185d; }
+      &--Child    { background: #eff6ff; color: #1d4ed8; }
+      &--Parent   { background: $amber-pale; color: #b45309; }
+      &--Other    { background: $slate-100;  color: $slate-600; }
+    }
+    &__dob   { font-size: 0.7rem; color: $slate-400; margin-top: 0.5rem; }
+
+    &__actions {
+      display:         flex;
+      gap:             0.5rem;
+      margin-top:      0.875rem;
+      padding-top:     0.75rem;
+      border-top:      1px solid $slate-100;
+      justify-content: flex-end;
+    }
+
+    &__btn {
+      padding:       0.3rem 0.7rem;
+      border-radius: 0.5rem;
+      font-size:     0.7rem;
+      font-weight:   600;
+      cursor:        pointer;
+      border:        1px solid $slate-200;
+      background:    $white;
+      color:         $slate-600;
+      transition:    all 0.15s;
+
+      &:hover { background: $slate-50; }
+      &--danger { color: $red; border-color: rgba($red, 0.3); &:hover { background: $red-pale; } }
+    }
+  }
+
+  .bene-add {
+    border:          1.5px dashed $slate-300;
+    border-radius:   1rem;
+    padding:         1.125rem;
+    display:         flex;
+    flex-direction:  column;
+    align-items:     center;
+    justify-content: center;
+    gap:             0.5rem;
+    cursor:          pointer;
+    background:      $slate-50;
+    transition:      all 0.15s;
+    min-height:      140px;
+
+    &:hover { border-color: $gold; background: $gold-pale; }
+
+    &__icon  { font-size: 1.5rem; color: $slate-300; }
+    &__label { font-size: 0.8rem; font-weight: 600; color: $slate-400; }
+
+    &:hover &__icon,
+    &:hover &__label { color: $gold; }
+  }
+
+  // ── Document list ──────────────────────────────────────────────────────────
+  .doc-list {
+    display:        flex;
+    flex-direction: column;
+    gap:            0.75rem;
+  }
+
+  .doc-row {
+    display:       flex;
+    align-items:   center;
+    gap:           1rem;
+    padding:       0.875rem 1rem;
+    border:        1px solid $slate-100;
+    border-radius: 0.875rem;
+    background:    $slate-50;
+    transition:    background 0.15s;
+
+    &:hover { background: $white; }
+
+    &__icon {
+      width:           2.25rem; height: 2.25rem;
+      border-radius:   0.5rem;
+      background:      $navy;
+      display:         flex;
+      align-items:     center;
+      justify-content: center;
+      font-size:       1rem;
+      flex-shrink:     0;
+    }
+
+    &__info { flex: 1; min-width: 0; }
+    &__name {
+      font-size:     0.875rem; font-weight: 600; color: $slate-800;
+      white-space:   nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    &__meta { font-size: 0.7rem; color: $slate-400; margin-top: 0.1rem; }
+
+    &__status {
+      &--verified { @include status-pill($green-pale, #15803d, $green); }
+      &--pending  { @include status-pill($amber-pale, #b45309, $amber); }
+      &--expired  { @include status-pill($red-pale,   #b91c1c, $red);   }
+    }
+
+    &__action {
+      padding:       0.3rem 0.7rem;
+      border:        1px solid $slate-200;
+      border-radius: 0.5rem;
+      font-size:     0.7rem;
+      font-weight:   600;
+      color:         $slate-600;
+      background:    $white;
+      cursor:        pointer;
+      transition:    all 0.15s;
+      flex-shrink:   0;
+
+      &:hover { background: $navy; color: $white; border-color: $navy; }
+    }
+  }
+
+  // ── Security section ───────────────────────────────────────────────────────
+  .security-list {
+    display:        flex;
+    flex-direction: column;
+    gap:            0;
+  }
+
+  .security-row {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    padding:         1rem 0;
+    border-bottom:   1px solid $slate-100;
+    gap:             1rem;
+
+    &:last-child { border-bottom: none; }
+
+    &__left  { display: flex; align-items: center; gap: 0.875rem; }
+    &__icon  {
+      width:           2.25rem; height: 2.25rem;
+      border-radius:   0.625rem;
+      display:         flex; align-items: center; justify-content: center;
+      font-size:       1rem; flex-shrink: 0;
+
+      &--green { background: $green-pale; }
+      &--amber { background: $amber-pale; }
+      &--navy  { background: linear-gradient(135deg, $navy-mid, $navy-light); }
+    }
+    &__label { font-size: 0.875rem; font-weight: 600; color: $slate-800; }
+    &__sub   { font-size: 0.7rem; color: $slate-400; margin-top: 0.1rem; }
+    &__btn   { @include btn-outline; }
+  }
+
+  // ── Save bar ───────────────────────────────────────────────────────────────
+  .save-bar {
+    display:         flex;
+    align-items:     center;
+    justify-content: flex-end;
+    gap:             0.875rem;
+    padding:         1rem 1.5rem;
+    background:      $slate-50;
+    border-top:      1px solid $slate-100;
+  }
+
+  .btn-gold    { @include btn-gold;    }
+  .btn-outline { @include btn-outline; }
+  .btn-danger  { @include btn-danger;  }
+}

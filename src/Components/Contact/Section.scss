@@ -1,0 +1,27 @@
+.hero-dots {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 3;
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dot.active {
+    background: #fff;
+    transform: scale(1.2);
+  }
+  .h1{
+    background-image: url(../../../assets/images/hero-bg.png);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+     background-clip: text;
+  }
+}

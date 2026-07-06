@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap");
+
+:root {
+  --header-bg: #011627;
+  --accent: aquamarine;
+}
+
+/* keep global resets minimal here (avoid styling body if scoped) */
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  background: var(--header-bg);
+  height: 64px;
+  color: var(--accent);
+  box-sizing: border-box;
+  z-index: 1100; /* ensure header sits above page but below sidebar if needed */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  max-width: 100px;
+  height: auto;
+  margin-left: 8px;
+  border-radius: 2px;
+  padding: 6px;
+}
+
+.hamburgerBtn{
+  background: transparent;
+  border: none;
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--accent);
+}
+.hamburgerBtn:focus{ outline: 2px solid rgba(173,216,230,0.25); outline-offset: 2px; }
