@@ -4,7 +4,7 @@ import AdminDashboard          from '../AdminsDashBoard'
 import EmpDashboard            from '../EmpDashboard'
 import AgentDashboard          from '../AgentDashboard'
 import MemberDashboard         from '../MemberDashboard'
-import { api, clearTokens }    from '../../utils/auth'   // ← adjust path if needed
+import { api, clearTokens }    from '../../../nhima-api/src/utils/auth'   // ← adjust path if needed
 import { useNavigate }         from 'react-router-dom'
 
 // ─── Types matching your DB schema field names ────────────────────────────────

@@ -16,7 +16,7 @@ import { BsPeopleFill, BsShieldCheck, BsClipboardCheckFill,
 import { GrLogout }                                              from 'react-icons/gr'
 
 import Logo from '../../assets/2.png'
-import { api, clearTokens, getStoredRole } from '../../../nhima-api/src/utils/' 
+import { api, clearTokens, getStoredRole } from '../../../nhima-api/src/utils/auth' 
 import './Sidebar.scss'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
