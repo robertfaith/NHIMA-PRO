@@ -1,35 +1,74 @@
-import { useState, useEffect }  from 'react'
-import Loading                  from '../Loading'
-import AdminDashboard           from '../AdminsDashBoard'
-import EmpDashboard             from '../EmpDashboard'
-import AgentDashboard           from '../AgentDashboard'
-import MemberDashboard          from '../MemberDashboard'
+import { useState, useEffect } from 'react'
+import Loading                 from '../Loading'
+import AdminDashboard          from '../AdminsDashBoard'
+import EmpDashboard            from '../EmpDashboard'
+import AgentDashboard          from '../AgentDashboard'
+import MemberDashboard         from '../MemberDashboard'
+import { api, clearTokens }    from '../../utils/auth'   // ← adjust path if needed
+import { useNavigate }         from 'react-router-dom'
 
-// ── Types ─────────────────────────────────────────────────────────
+// ─── Types matching your DB schema field names ────────────────────────────────
 type UserRole = 'ADMIN' | 'EMPLOYER' | 'AGENT' | 'MEMBER'
 
-interface DashboardData {
-  name:   string
-  role:   UserRole
+// What GET /api/auth/me returns inside data.user
+interface MeUser {
+  id:        string
+  nhima_id:  string
+  email:     string
+  role:      UserRole
+  status:    string
 
-  // ── Admin fields ──────────────────────────────────────────────
-  totalMembers?:           number
-  totalEmployers?:         number
-  totalAgents?:            number
-  totalContributions?:     number
+  // ADMIN / AGENT / MEMBER fields
+  firstname?: string
+  lastname?:  string
+  phone?:     string
+
+  // EMPLOYER-specific
+  company_name?:      string
+  contact_firstname?: string
+  contact_lastname?:  string
+  contact_phone?:     string
+  tpin?:              string
+  industry?:          string
+
+  // AGENT-specific
+  agent_type?:     string
+  branch?:         string
+  licence_number?: string
+
+  // MEMBER-specific
+  nrc?:       string
+  dob?:       string
+  gender?:    string
+  cover_status?: string
+}
+
+// Shape that each role-dashboard component expects
+export interface DashboardData {
+  name: string
+  role: UserRole
+
+  // ── Shared ────────────────────────────────────────────────────
+  totalContributions?:      number
+  totalClaims?:             number
+  pendingClaims?:           number
+  approvedClaims?:          number
+  totalBenefitsPaid?:       number
+
+  // ── Admin ─────────────────────────────────────────────────────
+  totalMembers?:              number
+  totalEmployers?:            number
+  totalAgents?:               number
   currentMonthContributions?: number
-  totalClaims?:            number
-  pendingClaims?:          number
-  totalBenefitsPaid?:      number
-  pendingRegistrations?:   number
-  compliantEmployers?:     number
-  nonCompliantEmployers?:  number
-  accreditedFacilities?:   number
-  collectionRate?:         string
-  pendingFacilities?:      number
-  pendingAgents?:          number
+  pendingRegistrations?:      number
+  compliantEmployers?:        number
+  nonCompliantEmployers?:     number
+  accreditedFacilities?:      number
+  collectionRate?:            string
+  pendingFacilities?:         number
+  pendingAgents?:             number
 
-  // ── Employer fields ───────────────────────────────────────────
+  // ── Employer ──────────────────────────────────────────────────
   employer?: {
     firstName?:   string
     companyName?: string
@@ -38,11 +77,9 @@ interface DashboardData {
   currentMonthContribution?: number
   totalEmployees?:           number
   pendingEmployees?:         number
-  approvedClaims?:           number
-  totalBenefitsPaid?:        number
   complianceStatus?:         string
 
-  // ── Agent fields ──────────────────────────────────────────────
+  // ── Agent ─────────────────────────────────────────────────────
   agent?: {
     fullName?:      string
     agentNumber?:   string
@@ -59,134 +96,146 @@ interface DashboardData {
   completedTasks?:         number
   performanceRate?:        number
 
-  // ── Member fields ─────────────────────────────────────────────
+  // ── Member ────────────────────────────────────────────────────
   member?: {
     firstName?: string
     lastName?:  string
     memberId?:  string
   }
-  coverStatus?:    string
+  coverStatus?: string
 }
 
-// ── Mock data per role ────────────────────────────────────────────
-const MOCK: Record<UserRole, DashboardData> = {
-  ADMIN: {
-    name:                    'System Admin',
-    role:                    'ADMIN',
-    totalMembers:            148320,
-    totalEmployers:          4210,
-    totalAgents:             312,
-    totalContributions:      28450000,
-    currentMonthContributions: 2845000,
-    totalClaims:             9870,
-    pendingClaims:           8,
-    totalBenefitsPaid:       14200000,
-    pendingRegistrations:    12,
-    compliantEmployers:      3980,
-    nonCompliantEmployers:   230,
-    accreditedFacilities:    512,
-    collectionRate:          '94.2%',
-    pendingFacilities:       3,
-    pendingAgents:           7,
-  },
+// ─── Map raw /me user → DashboardData shape ───────────────────────────────────
+//
+// /me only returns the logged-in user's profile.
+// Stats (totalMembers, contributions, etc.) come from dedicated endpoints.
+// For now we build a DashboardData with the profile fields we DO have,
+// and leave stat fields undefined so each dashboard can fetch them itself
+// — or you can extend this function later to call extra endpoints in parallel.
+//
+const buildDashboardData = (u: MeUser): DashboardData => {
+  const fullName = [u.firstname, u.lastname].filter(Boolean).join(' ') || u.email
 
-  EMPLOYER: {
-    name:                    'ABC Company Ltd',
-    role:                    'EMPLOYER',
-    employer: {
-      firstName:   'Robert',
-      companyName: 'ABC Company Ltd',
-      role:        'Employer',
-    },
-    currentMonthContribution: 45000,
-    totalEmployees:           120,
-    totalContributions:       540000,
-    pendingEmployees:         5,
-    totalClaims:              24,
-    pendingClaims:            3,
-    approvedClaims:           18,
-    totalBenefitsPaid:        210000,
-    complianceStatus:         'Compliant',
-  },
+  switch (u.role) {
 
-  AGENT: {
-    name:  'Grace Phiri',
-    role:  'AGENT',
-    agent: {
-      fullName:      'Grace Phiri',
-      agentNumber:   'AGT-2026-00042',
-      branch:        'Lusaka',
-      licenceNumber: 'NHIMA-AG-00042',
-    },
-    registrationsToday:     4,
-    registrationsThisMonth: 38,
-    registrationsTarget:    50,
-    pendingVerifications:   7,
-    approvedApplications:   28,
-    rejectedApplications:   3,
-    nrcVerifications:       35,
-    completedTasks:         22,
-    performanceRate:        76,
-  },
+    case 'ADMIN':
+      return {
+        name: fullName,
+        role: 'ADMIN',
+        // Stats will come from /api/admin/stats — leave undefined for now
+      }
 
-  MEMBER: {
-    name:  'Robert Mumba',
-    role:  'MEMBER',
-    member: {
-      firstName: 'Robert',
-      lastName:  'Mumba',
-      memberId:  'MEM-2026-000042',
-    },
-    currentMonthContribution: 150,
-    totalContributions:       2500,
-    totalClaims:              5,
-    approvedClaims:           3,
-    pendingClaims:            2,
-    coverStatus:              'Active',
-  },
+    case 'EMPLOYER':
+      return {
+        name: u.company_name ?? fullName,
+        role: 'EMPLOYER',
+        employer: {
+          firstName:   u.contact_firstname,
+          companyName: u.company_name,
+          role:        'Employer',
+        },
+        complianceStatus: 'Compliant', // fetch from /api/employer/compliance later
+      }
+
+    case 'AGENT':
+      return {
+        name: fullName,
+        role: 'AGENT',
+        agent: {
+          fullName:      fullName,
+          agentNumber:   u.nhima_id,
+          branch:        u.branch,
+          licenceNumber: u.licence_number,
+        },
+      }
+
+    case 'MEMBER':
+    default:
+      return {
+        name: fullName,
+        role: 'MEMBER',
+        member: {
+          firstName: u.firstname,
+          lastName:  u.lastname,
+          memberId:  u.nhima_id,
+        },
+        coverStatus: u.cover_status ?? 'Active',
+      }
+  }
 }
 
-// ── Dashboard router ──────────────────────────────────────────────
+// ─── Component ────────────────────────────────────────────────────────────────
 const Dashboard = () => {
   const [data,    setData]    = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error,   setError]   = useState('')
+  const navigate              = useNavigate()
 
   useEffect(() => {
-    setLoading(true)
-    setData(null)
+    let cancelled = false
 
-    // Replace with real API call:
-    // const res  = await fetch('/api/auth/me')
-    // const user = await res.json()
-    // setData(user)
+    const load = async () => {
+      setLoading(true)
+      setError('')
 
-    const timer = setTimeout(() => {
-      // ← Change this to test different dashboards:
-      // 'ADMIN' | 'EMPLOYER' | 'AGENT' | 'MEMBER'
-<<<<<<< HEAD
-      const activeRole: UserRole = 'ADMIN'
-=======
-      const activeRole: UserRole = 'MEMBER'
->>>>>>> b134d51a19f4c1fe01e30867606b2ec8dd64067c
-      setData(MOCK[activeRole])
-      setLoading(false)
-    }, 1200)
+      try {
+        // GET /api/auth/me — Bearer token attached automatically by api instance
+        // Response: { success: true, data: { user: { ... } } }
+        const { data: res } = await api.get('/api/auth/me')
 
-    return () => clearTimeout(timer)
-  }, [])
+        if (cancelled) return
 
-  if (loading)  return <Loading />
-  if (!data)    return (
-    <p className="text-center text-slate-500 py-12">
-      Failed to load dashboard. Please refresh.
-    </p>
+        // Handle both { data: { user } } and flat { user } shapes
+        const raw: MeUser = res.data?.user ?? res.data ?? res
+
+        if (!raw?.role) throw new Error('No role returned from /me')
+
+        setData(buildDashboardData(raw))
+
+      } catch (err: any) {
+        if (cancelled) return
+
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          // Token expired and refresh failed — the interceptor already cleared tokens
+          clearTokens()
+          navigate('/login', { replace: true })
+          return
+        }
+
+        setError(
+          err.response?.data?.message ||
+          err.message ||
+          'Failed to load dashboard.'
+        )
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+
+    load()
+    return () => { cancelled = true }
+  }, [navigate])
+
+  // ── Render states ─────────────────────────────────────────────
+  if (loading) return <Loading />
+
+  if (error || !data) return (
+    <div className="text-center py-12">
+      <p className="text-slate-500 mb-4">{error || 'Failed to load dashboard.'}</p>
+      <button
+        className="text-blue-600 underline text-sm"
+        onClick={() => window.location.reload()}
+      >
+        Try again
+      </button>
+    </div>
   )
 
-  // ── Route to the correct dashboard by role ────────────────────
-  if (data.role === 'ADMIN')    return <AdminDashboard  data={data} />
-  if (data.role === 'EMPLOYER') return <EmpDashboard    data={data} />
-  if (data.role === 'AGENT')    return <AgentDashboard  data={data} />
-  if (data.role === 'MEMBER')   return <MemberDashboard data={data} />
+  // ── Route to correct dashboard by role ────────────────────────
+  if (data.role === 'ADMIN')    return <AdminDashboard    data={data} />
+  if (data.role === 'EMPLOYER') return <EmpDashboard      data={data} />
+  if (data.role === 'AGENT')    return <AgentDashboard    data={data} />
+  if (data.role === 'MEMBER')   return <MemberDashboard   data={data} />
 
   return (
     <p className="text-center text-slate-500 py-12">

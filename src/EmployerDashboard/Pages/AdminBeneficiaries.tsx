@@ -1,14 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {
   BsSearch, BsDownload, BsEyeFill, BsPencil,
   BsTrash, BsX, BsPeopleFill,
 } from 'react-icons/bs'
+import { api } from '../../utils/auth'
 import './AdminBeneficiaries.scss'
 
-// ─── Types ────────────────────────────────────────────────────────
-type Relationship  = 'Spouse' | 'Child' | 'Parent' | 'Sibling' | 'Guardian' | 'Other'
-type CoverStatus   = 'Active' | 'Pending'
-type BenTab        = 'all' | 'pending' | 'spouse' | 'child'
+// ─── Types ────────────────────────────────────────────────────────────────────
+type Relationship = 'Spouse' | 'Child' | 'Parent' | 'Sibling' | 'Guardian' | 'Other'
+type CoverStatus  = 'Active' | 'Pending'
+type BenTab       = 'all' | 'pending' | 'spouse' | 'child'
 
 interface AdminBeneficiary {
   id:           string
@@ -19,22 +20,49 @@ interface AdminBeneficiary {
   nrc:          string
   gender:       string
   coverStatus:  CoverStatus
-  memberId:     string
+  memberId:     string       // UUID (members.id)
+  memberNhimaId: string      // e.g. MEM-2026-000042
   memberName:   string
   addedDate:    string
 }
 
-// ─── Mock ─────────────────────────────────────────────────────────
-const MOCK: AdminBeneficiary[] = [
-  { id:'1', firstName:'Alice',   lastName:'Mwale',  relationship:'Spouse',  dob:'1988-04-12', nrc:'123456/78/1', gender:'Female', coverStatus:'Active',  memberId:'MEM-2026-000051', memberName:'James Mwale',   addedDate:'01 Jan 2026' },
-  { id:'2', firstName:'Liam',    lastName:'Mwale',  relationship:'Child',   dob:'2012-09-05', nrc:'',            gender:'Male',   coverStatus:'Active',  memberId:'MEM-2026-000051', memberName:'James Mwale',   addedDate:'01 Jan 2026' },
-  { id:'3', firstName:'Joseph',  lastName:'Banda',  relationship:'Parent',  dob:'1958-11-20', nrc:'987654/32/1', gender:'Male',   coverStatus:'Pending', memberId:'MEM-2026-000034', memberName:'Grace Banda',   addedDate:'10 Mar 2026' },
-  { id:'4', firstName:'Susan',   lastName:'Tembo',  relationship:'Spouse',  dob:'1990-07-15', nrc:'234567/89/1', gender:'Female', coverStatus:'Active',  memberId:'MEM-2026-000089', memberName:'Peter Tembo',   addedDate:'15 Feb 2026' },
-  { id:'5', firstName:'Mary',    lastName:'Tembo',  relationship:'Child',   dob:'2016-02-28', nrc:'',            gender:'Female', coverStatus:'Pending', memberId:'MEM-2026-000089', memberName:'Peter Tembo',   addedDate:'15 Feb 2026' },
-  { id:'6', firstName:'Paul',    lastName:'Lungu',  relationship:'Child',   dob:'2010-06-14', nrc:'',            gender:'Male',   coverStatus:'Active',  memberId:'MEM-2026-000102', memberName:'Rose Lungu',    addedDate:'20 Apr 2026' },
-  { id:'7', firstName:'Charity', lastName:'Kabwe',  relationship:'Spouse',  dob:'1985-01-09', nrc:'345678/90/1', gender:'Female', coverStatus:'Pending', memberId:'MEM-2026-000144', memberName:'David Kabwe',   addedDate:'05 Jun 2026' },
-]
+// ─── Raw shape from GET /api/admin/beneficiaries ──────────────────────────────
+// Matches exactly what the controller returns after the JOIN
+interface BeneficiaryRaw {
+  id:               string
+  member_id:        string
+  firstname:        string        // ← schema uses firstname, not first_name
+  lastname:         string
+  nrc:              string
+  dob:              string
+  gender:           string
+  phone:            string
+  relationship:     Relationship
+  cover_status:     'Active' | 'Pending'   // controller maps is_active → cover_status
+  member_nhima_id:  string
+  member_name:      string
+  created_at:       string
+}
 
+// Map API response → UI shape
+const mapBen = (r: BeneficiaryRaw): AdminBeneficiary => ({
+  id:            r.id,
+  firstName:     r.firstname,
+  lastName:      r.lastname,
+  relationship:  r.relationship,
+  dob:           r.dob  ?? '',
+  nrc:           r.nrc  ?? '',
+  gender:        r.gender ?? '',
+  coverStatus:   r.cover_status === 'Active' ? 'Active' : 'Pending',
+  memberId:      r.member_id,
+  memberNhimaId: r.member_nhima_id ?? '—',
+  memberName:    r.member_name     ?? '—',
+  addedDate:     r.created_at
+    ? new Date(r.created_at).toLocaleDateString('en-ZM', { day:'2-digit', month:'short', year:'numeric' })
+    : '—',
+})
+
+// ─── Constants ────────────────────────────────────────────────────────────────
 const RELATIONSHIPS: Relationship[] = ['Spouse','Child','Parent','Sibling','Guardian','Other']
 
 const REL_CLASS: Record<Relationship, string> = {
@@ -42,16 +70,30 @@ const REL_CLASS: Record<Relationship, string> = {
   Sibling:'rel-badge--sibling', Guardian:'rel-badge--guardian', Other:'rel-badge--other',
 }
 
-const fmtDOB = (d: string) => d
-  ? new Date(d).toLocaleDateString('en-ZM', { day:'2-digit', month:'short', year:'numeric' })
-  : '—'
+const fmtDOB = (d: string) =>
+  d ? new Date(d).toLocaleDateString('en-ZM', { day:'2-digit', month:'short', year:'numeric' }) : '—'
 
-// ─── Edit modal ───────────────────────────────────────────────────
+// ─── Edit Modal ───────────────────────────────────────────────────────────────
 const EditModal = ({
-  ben, onSave, onClose,
-}: { ben:AdminBeneficiary; onSave:(data:Partial<AdminBeneficiary>)=>void; onClose:()=>void }) => {
-  const [form, setForm] = useState({ firstName:ben.firstName, lastName:ben.lastName, relationship:ben.relationship, dob:ben.dob, nrc:ben.nrc, gender:ben.gender, coverStatus:ben.coverStatus })
-  const set = (k:keyof typeof form) => (e:React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) => setForm(f=>({...f,[k]:e.target.value}))
+  ben, onSave, onClose, saving,
+}: {
+  ben:     AdminBeneficiary
+  onSave:  (data: Partial<AdminBeneficiary>) => void
+  onClose: () => void
+  saving:  boolean
+}) => {
+  const [form, setForm] = useState({
+    firstName:    ben.firstName,
+    lastName:     ben.lastName,
+    relationship: ben.relationship,
+    dob:          ben.dob,
+    nrc:          ben.nrc,
+    gender:       ben.gender,
+    coverStatus:  ben.coverStatus,
+  })
+  const set = (k: keyof typeof form) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+      setForm(f => ({ ...f, [k]: e.target.value }))
 
   return (
     <div className="modal-backdrop">
@@ -59,20 +101,30 @@ const EditModal = ({
         <div className="modal__header">
           <div>
             <h2 className="modal__title">Edit Beneficiary</h2>
-            <p className="modal__subtitle">{ben.memberName} · {ben.memberId}</p>
+            <p className="modal__subtitle">{ben.memberName} · {ben.memberNhimaId}</p>
           </div>
           <button className="modal__close" onClick={onClose}><BsX size={20}/></button>
         </div>
+
         <div className="modal__body">
           <div style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:'1rem' }}>
-            {([['First Name','firstName','text',''],['Last Name','lastName','text',''],['Date of Birth','dob','date',''],['NRC','nrc','text','e.g. 123456/78/1']] as [string,keyof typeof form,string,string][]).map(([label,key,type,ph]) => (
+            {([
+              ['First Name',    'firstName',  'text', ''],
+              ['Last Name',     'lastName',   'text', ''],
+              ['Date of Birth', 'dob',        'date', ''],
+              ['NRC',           'nrc',        'text', 'e.g. 123456/78/1'],
+            ] as [string, keyof typeof form, string, string][]).map(([label, key, type, ph]) => (
               <div key={key} style={{ display:'flex', flexDirection:'column', gap:'4px' }}>
                 <label style={{ fontSize:'0.8rem', fontWeight:700, color:'#475569' }}>{label}</label>
                 <input type={type} value={form[key] as string} onChange={set(key)} placeholder={ph}
                   style={{ padding:'0.75rem 1rem', border:'2px solid #e2e8f0', borderRadius:'0.75rem', fontSize:'0.875rem', outline:'none' }} />
               </div>
             ))}
-            {([['Relationship','relationship',RELATIONSHIPS],['Gender','gender',['Male','Female']],['Cover Status','coverStatus',['Active','Pending']]] as [string,keyof typeof form,string[]][]).map(([label,key,opts]) => (
+            {([
+              ['Relationship', 'relationship', RELATIONSHIPS],
+              ['Gender',       'gender',       ['Male','Female']],
+              ['Cover Status', 'coverStatus',  ['Active','Pending']],
+            ] as [string, keyof typeof form, string[]][]).map(([label, key, opts]) => (
               <div key={key} style={{ display:'flex', flexDirection:'column', gap:'4px' }}>
                 <label style={{ fontSize:'0.8rem', fontWeight:700, color:'#475569' }}>{label}</label>
                 <select value={form[key] as string} onChange={set(key)}
@@ -83,49 +135,141 @@ const EditModal = ({
             ))}
           </div>
         </div>
+
         <div className="modal__footer">
-          <button className="modal-btn modal-btn--ghost" onClick={onClose}>Cancel</button>
-          <button className="modal-btn modal-btn--primary" onClick={() => onSave(form)}>Save Changes</button>
+          <button className="modal-btn modal-btn--ghost" onClick={onClose} disabled={saving}>Cancel</button>
+          <button className="modal-btn modal-btn--primary" onClick={() => onSave(form)} disabled={saving}>
+            {saving ? 'Saving…' : 'Save Changes'}
+          </button>
         </div>
       </div>
     </div>
   )
 }
 
-// ─── Delete modal ─────────────────────────────────────────────────
-const DeleteModal = ({ name, onConfirm, onClose }: { name:string; onConfirm:()=>void; onClose:()=>void }) => (
+// ─── Delete Modal ─────────────────────────────────────────────────────────────
+const DeleteModal = ({
+  name, onConfirm, onClose, deleting,
+}: { name: string; onConfirm: () => void; onClose: () => void; deleting: boolean }) => (
   <div className="modal-backdrop">
     <div className="modal" style={{ maxWidth:'380px', padding:'2rem', textAlign:'center' }}>
       <div className="delete-icon"><BsTrash /></div>
       <h2 style={{ fontSize:'1.0625rem', fontWeight:700, color:'#1e293b', marginBottom:'0.5rem' }}>Remove Beneficiary</h2>
       <p style={{ fontSize:'0.875rem', color:'#64748b', marginBottom:'1.5rem', lineHeight:1.6 }}>
-        Remove <strong style={{color:'#1e293b'}}>{name}</strong> from NHIMA cover? This action cannot be undone.
+        Remove <strong style={{ color:'#1e293b' }}>{name}</strong> from NHIMA cover? This cannot be undone.
       </p>
       <div style={{ display:'flex', gap:'0.75rem' }}>
-        <button className="modal-btn modal-btn--ghost" style={{flex:1}} onClick={onClose}>Cancel</button>
-        <button className="modal-btn modal-btn--danger" style={{flex:1}} onClick={onConfirm}>Remove</button>
+        <button className="modal-btn modal-btn--ghost" style={{ flex:1 }} onClick={onClose} disabled={deleting}>Cancel</button>
+        <button className="modal-btn modal-btn--danger" style={{ flex:1 }} onClick={onConfirm} disabled={deleting}>
+          {deleting ? 'Removing…' : 'Remove'}
+        </button>
       </div>
     </div>
   </div>
 )
 
-// ─── Main ─────────────────────────────────────────────────────────
-const AdminBeneficiaries = () => {
-  const [bens,        setBens]        = useState<AdminBeneficiary[]>(MOCK)
-  const [activeTab,   setActiveTab]   = useState<BenTab>('all')
-  const [search,      setSearch]      = useState('')
-  const [relFilter,   setRelFilter]   = useState('')
-  const [editTarget,  setEditTarget]  = useState<AdminBeneficiary|null>(null)
-  const [deleteTarget,setDeleteTarget]= useState<AdminBeneficiary|null>(null)
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
+const SkeletonRow = () => (
+  <tr>
+    {Array.from({ length: 9 }).map((_, i) => (
+      <td key={i}>
+        <div style={{ height:'14px', borderRadius:'6px', background:'#f1f5f9', animation:'pulse 1.5s infinite' }} />
+      </td>
+    ))}
+  </tr>
+)
 
-  const totalBens  = bens.length
-  const pending    = bens.filter(b => b.coverStatus === 'Pending').length
-  const spouses    = bens.filter(b => b.relationship === 'Spouse').length
-  const children   = bens.filter(b => b.relationship === 'Child').length
+// ─── Main ─────────────────────────────────────────────────────────────────────
+const AdminBeneficiaries = () => {
+  const [bens,         setBens]         = useState<AdminBeneficiary[]>([])
+  const [loading,      setLoading]      = useState(true)
+  const [error,        setError]        = useState('')
+  const [activeTab,    setActiveTab]    = useState<BenTab>('all')
+  const [search,       setSearch]       = useState('')
+  const [relFilter,    setRelFilter]    = useState('')
+  const [editTarget,   setEditTarget]   = useState<AdminBeneficiary | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<AdminBeneficiary | null>(null)
+  const [saving,       setSaving]       = useState(false)
+  const [deleting,     setDeleting]     = useState(false)
+
+  // ── Fetch ──────────────────────────────────────────────────────────────────
+  const fetchBens = useCallback(async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const { data: res } = await api.get('/api/admin/beneficiaries')
+      // Controller returns { success, data: { beneficiaries: [...] } }
+      const raw: BeneficiaryRaw[] = res.data?.beneficiaries ?? []
+      setBens(raw.map(mapBen))
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to load beneficiaries.')
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => { fetchBens() }, [fetchBens])
+
+  // ── Edit ───────────────────────────────────────────────────────────────────
+  const handleEdit = async (data: Partial<AdminBeneficiary>) => {
+    if (!editTarget) return
+    setSaving(true)
+    try {
+      // Map camelCase UI → snake_case backend
+      // Controller accepts: firstname, lastname, relationship, dob, nrc, gender, phone, cover_status
+      await api.patch(`/api/admin/beneficiaries/${editTarget.id}`, {
+        firstname:    data.firstName,
+        lastname:     data.lastName,
+        relationship: data.relationship,
+        dob:          data.dob,
+        nrc:          data.nrc,
+        gender:       data.gender,
+        cover_status: data.coverStatus,   // controller maps → is_active
+      })
+      setBens(prev => prev.map(b => b.id === editTarget.id ? { ...b, ...data } : b))
+      setEditTarget(null)
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to update beneficiary.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  // ── Delete ─────────────────────────────────────────────────────────────────
+  const handleDelete = async () => {
+    if (!deleteTarget) return
+    setDeleting(true)
+    try {
+      await api.delete(`/api/admin/beneficiaries/${deleteTarget.id}`)
+      setBens(prev => prev.filter(b => b.id !== deleteTarget.id))
+      setDeleteTarget(null)
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to remove beneficiary.')
+    } finally {
+      setDeleting(false)
+    }
+  }
+
+  // ── Approve ────────────────────────────────────────────────────────────────
+  const approve = async (id: string) => {
+    try {
+      await api.patch(`/api/admin/beneficiaries/${id}/approve`)
+      setBens(prev => prev.map(b => b.id === id ? { ...b, coverStatus: 'Active' } : b))
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to approve beneficiary.')
+    }
+  }
+
+  // ── Stats ──────────────────────────────────────────────────────────────────
+  const totalBens = bens.length
+  const pending   = bens.filter(b => b.coverStatus === 'Pending').length
+  const spouses   = bens.filter(b => b.relationship === 'Spouse').length
+  const children  = bens.filter(b => b.relationship === 'Child').length
 
   const filtered = bens.filter(b => {
+    const q = search.toLowerCase()
     const matchSearch = search
-      ? `${b.firstName} ${b.lastName} ${b.memberId} ${b.memberName}`.toLowerCase().includes(search.toLowerCase())
+      ? `${b.firstName} ${b.lastName} ${b.memberNhimaId} ${b.memberName}`.toLowerCase().includes(q)
       : true
     const matchRel = relFilter ? b.relationship === relFilter : true
     const matchTab =
@@ -135,21 +279,6 @@ const AdminBeneficiaries = () => {
       b.relationship === 'Child'
     return matchSearch && matchRel && matchTab
   })
-
-  const handleEdit = (data: Partial<AdminBeneficiary>) => {
-    if (!editTarget) return
-    setBens(prev => prev.map(b => b.id === editTarget.id ? { ...b, ...data } : b))
-    setEditTarget(null)
-  }
-
-  const handleDelete = () => {
-    if (!deleteTarget) return
-    setBens(prev => prev.filter(b => b.id !== deleteTarget.id))
-    setDeleteTarget(null)
-  }
-
-  const approve = (id: string) =>
-    setBens(prev => prev.map(b => b.id === id ? { ...b, coverStatus:'Active' } : b))
 
   return (
     <div className="admin-beneficiaries animate-fade-in">
@@ -162,7 +291,7 @@ const AdminBeneficiaries = () => {
           <p className="ben-hero__subtitle">NHIMA Admin Portal · System-wide beneficiary registry</p>
         </div>
         <div className="ben-hero__badge">
-          <p className="ben-hero__badge-value">{totalBens.toLocaleString()}</p>
+          <p className="ben-hero__badge-value">{loading ? '—' : totalBens.toLocaleString()}</p>
           <p className="ben-hero__badge-label">Total Beneficiaries</p>
         </div>
       </div>
@@ -170,10 +299,10 @@ const AdminBeneficiaries = () => {
       {/* Stats */}
       <div className="stats-strip">
         {[
-          { label:'Total Beneficiaries', value:totalBens, accent:'gold'  },
-          { label:'Pending Approval',    value:pending,   accent:'amber' },
-          { label:'Spouses',             value:spouses,   accent:'pink'  },
-          { label:'Children',            value:children,  accent:'blue'  },
+          { label:'Total Beneficiaries', value: loading ? '—' : totalBens, accent:'gold'  },
+          { label:'Pending Approval',    value: loading ? '—' : pending,   accent:'amber' },
+          { label:'Spouses',             value: loading ? '—' : spouses,   accent:'pink'  },
+          { label:'Children',            value: loading ? '—' : children,  accent:'blue'  },
         ].map(s => (
           <div key={s.label} className="stat-card">
             <div className={`stat-card__accent stat-card__accent--${s.accent}`} />
@@ -183,6 +312,16 @@ const AdminBeneficiaries = () => {
         ))}
       </div>
 
+      {/* Error */}
+      {error && (
+        <div style={{ margin:'0 0 1rem', padding:'0.875rem 1.25rem', background:'#fef2f2', border:'1px solid #fecaca', borderRadius:'0.75rem', color:'#dc2626', fontSize:'0.875rem', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+          <span>{error}</span>
+          <button onClick={() => { setError(''); fetchBens() }} style={{ background:'none', border:'none', color:'#dc2626', cursor:'pointer', fontWeight:700, fontSize:'0.8rem' }}>
+            Retry
+          </button>
+        </div>
+      )}
+
       {/* Tabs */}
       <div style={{ display:'flex', gap:'0.5rem', borderBottom:'1px solid #e2e8f0' }}>
         {([
@@ -190,29 +329,29 @@ const AdminBeneficiaries = () => {
           { id:'pending', label:'Pending Approval'  },
           { id:'spouse',  label:'Spouses'           },
           { id:'child',   label:'Children'          },
-        ] as { id:BenTab; label:string }[]).map(tab => (
+        ] as { id: BenTab; label: string }[]).map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
             padding:'0.625rem 1.25rem', fontSize:'0.875rem', fontWeight:600,
             background:'none', border:'none', cursor:'pointer',
-            borderBottom: activeTab===tab.id ? '2px solid #f5a623' : '2px solid transparent',
-            color: activeTab===tab.id ? '#f5a623' : '#64748b',
+            borderBottom: activeTab === tab.id ? '2px solid #f5a623' : '2px solid transparent',
+            color: activeTab === tab.id ? '#f5a623' : '#64748b',
             marginBottom:'-1px', transition:'all 0.15s',
           }}>{tab.label}</button>
         ))}
       </div>
 
-      {/* Table panel */}
+      {/* Panel */}
       <div className="panel">
         <div className="panel__header">
           <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
             <BsPeopleFill style={{ color:'#f5a623', fontSize:'1.25rem' }} />
             <div>
-              <p className="panel__title">{filtered.length} Beneficiaries</p>
+              <p className="panel__title">{loading ? 'Loading…' : `${filtered.length} Beneficiaries`}</p>
               <p className="panel__subtitle">Registered dependants across all NHIMA members</p>
             </div>
           </div>
-          <button className="btn-gold">
-            <BsDownload /> Export
+          <button className="btn-gold" onClick={fetchBens} disabled={loading}>
+            <BsDownload /> {loading ? 'Loading…' : 'Refresh'}
           </button>
         </div>
 
@@ -239,19 +378,15 @@ const AdminBeneficiaries = () => {
           <table className="ben-table">
             <thead>
               <tr>
-                <th>Beneficiary</th>
-                <th>Relationship</th>
-                <th>Gender</th>
-                <th>Date of Birth</th>
-                <th>NRC</th>
-                <th>Member</th>
-                <th>Cover Status</th>
-                <th>Added</th>
-                <th>Actions</th>
+                <th>Beneficiary</th><th>Relationship</th><th>Gender</th>
+                <th>Date of Birth</th><th>NRC</th><th>Member</th>
+                <th>Cover Status</th><th>Added</th><th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filtered.length === 0 ? (
+              {loading ? (
+                Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
+              ) : filtered.length === 0 ? (
                 <tr><td colSpan={9} style={{ textAlign:'center', padding:'3rem', color:'#94a3b8' }}>No beneficiaries found</td></tr>
               ) : filtered.map(b => (
                 <tr key={b.id}>
@@ -272,7 +407,7 @@ const AdminBeneficiaries = () => {
                   <td style={{ fontFamily:'monospace', fontSize:'0.8rem' }}>{b.nrc || '—'}</td>
                   <td>
                     <p className="ben-table__member">{b.memberName}</p>
-                    <p className="ben-table__member-id">{b.memberId}</p>
+                    <p className="ben-table__member-id">{b.memberNhimaId}</p>
                   </td>
                   <td>
                     <span className={`cover-badge cover-badge--${b.coverStatus.toLowerCase()}`}>
@@ -302,14 +437,13 @@ const AdminBeneficiaries = () => {
         <div style={{ padding:'1rem 1.5rem', borderTop:'1px solid #f1f5f9', background:'#f8fafc', display:'flex', justifyContent:'space-between', flexWrap:'wrap', gap:'0.5rem' }}>
           <span style={{ fontSize:'0.8rem', color:'#64748b' }}>Showing {filtered.length} of {bens.length} beneficiaries</span>
           <span style={{ fontSize:'0.8rem', color:'#64748b' }}>
-            Pending approval: <strong style={{ color:'#f59e0b' }}>{filtered.filter(b=>b.coverStatus==='Pending').length}</strong>
+            Pending: <strong style={{ color:'#f59e0b' }}>{filtered.filter(b => b.coverStatus==='Pending').length}</strong>
           </span>
         </div>
       </div>
 
-      {/* Modals */}
-      {editTarget   && <EditModal   ben={editTarget} onSave={handleEdit} onClose={() => setEditTarget(null)} />}
-      {deleteTarget && <DeleteModal name={`${deleteTarget.firstName} ${deleteTarget.lastName}`} onConfirm={handleDelete} onClose={() => setDeleteTarget(null)} />}
+      {editTarget   && <EditModal   ben={editTarget}   onSave={handleEdit}   onClose={() => setEditTarget(null)}   saving={saving}   />}
+      {deleteTarget && <DeleteModal name={`${deleteTarget.firstName} ${deleteTarget.lastName}`} onConfirm={handleDelete} onClose={() => setDeleteTarget(null)} deleting={deleting} />}
     </div>
   )
 }

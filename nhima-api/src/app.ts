@@ -1,13 +1,15 @@
 import 'dotenv/config'
-import express     from 'express'
-import cors        from 'cors'
-import helmet      from 'helmet'
-import rateLimit   from 'express-rate-limit'
-import authRoutes  from './routes/auth.routes'
-import { sendError } from './utils/response'
+import express        from 'express'
+import cors           from 'cors'
+import helmet         from 'helmet'
+import rateLimit      from 'express-rate-limit'
+import authRoutes          from './routes/auth.routes'
+import beneficiariesRouter from './routes/beneficiaries.route'  // ← fixed: ./routes not ../src/routes
+import { sendError }       from './utils/response'
 
-const app = express()
+const app = express()  // ← must be defined BEFORE any app.use()
 
+// ── Core middleware ───────────────────────────────────────────────────────────
 app.use(helmet())
 app.use(cors({
   origin:      process.env.CLIENT_URL || 'http://localhost:5173',
@@ -24,12 +26,13 @@ app.get('/health', (_req, res) => {
 })
 
 // ── Routes ────────────────────────────────────────────────────────────────────
-app.use('/api/auth', authRoutes)
+app.use('/api/auth',               authRoutes)
+app.use('/api/admin/beneficiaries', beneficiariesRouter)  // ← now in the right place
 
 // ── 404 ───────────────────────────────────────────────────────────────────────
 app.use((req, res) => sendError(res, `${req.method} ${req.path} not found`, 404))
 
-// ── Error handler ─────────────────────────────────────────────────────────────
+// ── Global error handler ──────────────────────────────────────────────────────
 app.use((_err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   sendError(res, 'Internal server error', 500)
 })
