@@ -49,6 +49,15 @@ const Navbar: React.FC = () => {
             Register
           </a>
         </li>
+         <li>
+          <a
+            href="/Login"
+            className="btn-primary"
+            onClick={closeMenu}
+          >
+            Login
+          </a>
+        </li>
       </ul>
 
       <button
