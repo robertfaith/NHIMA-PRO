@@ -2,7 +2,7 @@ import './navbar.scss'
 import { useState } from "react"
 import logo from '../../assets/2.png'
 import { GiHamburgerMenu } from "react-icons/gi"
-import MemSideBar from "../SideBar/MemSideBar"
+import Sidebar from "../SideBar/Sidebar"
 
 const Navbar = () => {
   const [showSideBar, setShowSideBar] = useState(false)
@@ -26,7 +26,7 @@ const Navbar = () => {
         </button>
       </header>
 
-      <MemSideBar show={showSideBar} />
+      <Sidebar />
     </div>
   )
 }

@@ -34,9 +34,13 @@ export const registerRules = [
     .isIn(['ADMIN', 'EMPLOYER', 'AGENT', 'MEMBER']).withMessage('Invalid role'),
 ]
 
-// ── Login ─────────────────────────────────────────────────────────────────────
+// ── Login — now by NHIMA ID instead of email ───────────────────────────────────
 export const loginRules = [
-  body('email').isEmail().withMessage('Valid email required').normalizeEmail(),
+  body('nhima_id')
+    .trim()
+    .notEmpty().withMessage('NHIMA ID is required')
+    .matches(/^NHM-(ADM|EMP|AGT|MEM)-\d{6}$/i).withMessage('Invalid NHIMA ID format (e.g. NHM-MEM-000042)')
+    .customSanitizer((v: string) => v.toUpperCase()),
   body('password').notEmpty().withMessage('Password is required'),
 ]
 

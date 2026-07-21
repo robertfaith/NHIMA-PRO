@@ -1,12 +1,8 @@
 import { useState, useMemo } from 'react'
 
 import {
-  BsBuilding, BsDownload, BsCheckCircleFill,
-  BsPeopleFill, BsCurrencyDollar, BsCalendar3,
-  BsSearch, BsCheckAll, BsSendFill,
+  BsSearch,
 } from 'react-icons/bs'
-import { FaUniversity, FaMobileAlt } from 'react-icons/fa'
-import { MdCreditCard, MdReceipt } from 'react-icons/md'
 import './EmployerContributions.scss'
 
 // ─── Types ────────────────────────────────────────────────────────────────────

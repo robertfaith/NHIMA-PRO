@@ -62,7 +62,7 @@ const BenModal = ({
     const e: Partial<typeof form> = {}
     if (!form.firstName.trim())  e.firstName    = 'Required'
     if (!form.lastName.trim())   e.lastName     = 'Required'
-    if (!form.relationship)      e.relationship = 'Required'
+    if (!form.relationship)      e.relationship = 'Required' as Relationship
     if (!form.dob)               e.dob          = 'Required'
     if (!form.gender)            e.gender       = 'Required'
     setErrors(e)

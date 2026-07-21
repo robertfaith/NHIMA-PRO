@@ -30,7 +30,6 @@ import AgentStage4Verification from './Stages/Agent/AgentStage4Verification'
 import AgentStage5Security     from './Stages/Agent/AgentStage5Security'
 import AgentStage6Password     from './Stages/Agent/AgentStage6Password'
 
-// ── Fix 1: correct port 9901 ──────────────────────────────────────────────────
 const API = import.meta.env.VITE_API_URL ?? 'http://localhost:9901'
 
 type Tab = 'member' | 'employer' | 'agent'
@@ -64,7 +63,8 @@ const defaultEmployer: EmployerForm = {
 }
 
 const defaultAgent: AgentForm = {
-  fullName: '', nrc: '', dob: '', gender: '', phone: '', email: '',
+  title: '', firstName: '', middleName: '', lastName: '',
+  nrc: '', dob: '', gender: '', phone: '', email: '',
   address: '', province: '',
   currentEmployer: '', jobTitle: '', employmentDate: '',
   licenseNumber: '', licenseExpiry: '', supervisorName: '',
@@ -74,13 +74,6 @@ const defaultAgent: AgentForm = {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Map form data → backend payload for POST /api/auth/register
-//
-// The backend register controller reads these fields:
-//   email, password, firstname, lastname, role, phone, nrc, dob, gender,
-//   address, province, district, employment_type, employment_date, occupation,
-//   next_of_kin_name, next_of_kin_phone, next_of_kin_relationship,
-//   company_name, tpin, business_reg_no, industry, contact_position,
-//   agent_type, branch, licence_number
 // ─────────────────────────────────────────────────────────────────────────────
 
 const buildMemberPayload = (f: MemberForm) => ({
@@ -128,8 +121,8 @@ const buildEmployerPayload = (f: EmployerForm) => {
 }
 
 const buildAgentPayload = (f: AgentForm) => {
-  const [firstname, ...rest] = (f.fullName ?? '').split(' ')
-  const lastname = rest.join(' ')
+  const firstname = [f.firstName, f.middleName].filter(Boolean).join(' ').trim() || f.firstName
+  const lastname = f.lastName
   return {
     role:           'AGENT',
     email:          f.email,
@@ -199,27 +192,38 @@ const Register = () => {
     setMessage('')
 
     try {
-      // Fix 2: single endpoint  /api/auth/register  with role in payload
+      // Single endpoint /api/auth/register with role in payload
       const payload =
         tab === 'member'   ? buildMemberPayload(memberForm)     :
         tab === 'employer' ? buildEmployerPayload(employerForm) :
                              buildAgentPayload(agentForm)
 
-      await axios.post(`${API}/api/auth/register`, payload)
+      // Response shape: { success, message, data: { user } }
+      const { data: res } = await axios.post(`${API}/api/auth/register`, payload)
 
       // Backend returns 201 with message:
       //   "Registration successful. Pending admin approval." (non-admin)
-      // Redirect to login with a success hint
+      // Redirect to login, carrying the newly generated NHIMA ID so the
+      // login screen can show it to the user (they need it to sign in).
       navigate('/login', {
-        state: { registered: true, role: tab },
+        state: {
+          registered: true,
+          role:       tab,
+          nhimaId:    res.data?.user?.nhima_id,
+        },
       })
 
-    } catch (err: any) {
-      setMessage(
-        err.response?.data?.message ||
-        err.response?.data?.error   ||
-        'Registration failed. Please try again.'
-      )
+    } catch (err: unknown) {
+      const fallbackMessage = 'Registration failed. Please try again.'
+      const message =
+        typeof err === 'object' && err !== null && 'response' in err &&
+        typeof (err as { response?: { data?: { message?: string; error?: string } } }).response?.data?.message === 'string'
+          ? (err as { response?: { data?: { message?: string; error?: string } } }).response?.data?.message
+          : typeof err === 'object' && err !== null && 'response' in err &&
+            typeof (err as { response?: { data?: { message?: string; error?: string } } }).response?.data?.error === 'string'
+            ? (err as { response?: { data?: { message?: string; error?: string } } }).response?.data?.error
+            : fallbackMessage
+      setMessage(message ?? fallbackMessage)
     } finally {
       setLoading(false)
     }
@@ -299,7 +303,7 @@ const Register = () => {
 
           {/* Stage progress bar */}
           <div className="register-stage-bar">
-            {stages.map((label, i) => (
+            {stages.map((_, i) => (
               <div key={i} className="register-stage-step">
                 <div className={`register-stage-dot ${i < stage ? 'done' : i === stage ? 'active' : ''}`}>
                   {i < stage ? '✓' : i + 1}

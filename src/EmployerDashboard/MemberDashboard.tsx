@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom'
 import {
   BsPeopleFill,
-  BsFileTextFill,
-  BsClipboardCheckFill,
-  BsCurrencyDollar,
   BsPlusCircle,
   BsFileEarmarkText,
   BsHospital,

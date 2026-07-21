@@ -3,7 +3,7 @@ import {
   BsPencilFill, BsPersonFill, BsShieldFillCheck,
   BsClockHistory, BsShieldLockFill, BsCheckCircleFill,
 } from 'react-icons/bs'
-import { api } from '../../../nhima-api/src/utils/auth'   // ← adjust path if needed
+import { api } from '../../utils/auth'   // ← adjust path if needed
 import './AdminProfile.scss'
 
 // ─── Types matching your adminsTable schema ───────────────────────────────────

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 interface Slide {
   image: string
   title: string
-  text: string
+  text: React.ReactNode
 }
 
 const slides: Slide[] = [

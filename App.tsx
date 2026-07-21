@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom'
 
 import Home         from './src/Components/Home/Home'
+import FAQ          from './src/Components/Home/FAQ/FAQ'
 import Loans        from './src/Components/Loans/Loans'
 import AboutSection from './src/Components/About/AboutSection'
 import Benefits     from './src/Components/Benefits/Benefits'
@@ -51,6 +52,7 @@ const router = createBrowserRouter([
   { path: '/contact',  element: <Contact />         },
   { path: '/payments',  element: <Payments/>         },
   { path: '/notifications',  element: <Notifications />},
+  { path: '/faq',  element: <FAQ />},
 
 
 

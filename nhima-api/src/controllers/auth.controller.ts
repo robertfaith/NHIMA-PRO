@@ -7,7 +7,7 @@ import {
 } from '../db/schema'
 import { eq, and }                    from 'drizzle-orm'
 import { sendSuccess, sendError }     from '../utils/response'
-import { signAccessToken, generateOpaqueToken, verifyAccessToken } from '../utils/jwt'
+import { signAccessToken, generateOpaqueToken } from '../utils/jwt'
 import { generateNhimaId }            from '../utils/nhimaId'
 import { AuthRequest, UserRole }      from '../types'
 
@@ -23,7 +23,7 @@ const tableFor = (role: UserRole) => {
 
 // ── Strip password from response ──────────────────────────────────────────────
 const sanitize = (user: Record<string, unknown>) => {
-  const { password, otp_code, otp_expires_at, ...safe } = user
+  const { password: _password, otp_code: _otpCode, otp_expires_at: _otpExpiresAt, ...safe } = user
   return safe
 }
 
@@ -140,20 +140,31 @@ export const register = async (req: Request, res: Response) => {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// POST /api/auth/login
+// POST /api/auth/login  — by NHIMA ID
 // ─────────────────────────────────────────────────────────────────────────────
 export const login = async (req: Request, res: Response) => {
   try {
-    const { email, password, role = 'MEMBER' } = req.body
-    const table = tableFor(role as UserRole)
+    const { nhima_id, password } = req.body
 
-    const rows = await db.select().from(table).where(eq(table.email, email)).limit(1)
-    if (!rows.length) return sendError(res, 'Invalid email or password', 401)
+    if (!nhima_id) return sendError(res, 'NHIMA ID is required', 400)
+
+    // Derive role from the ID prefix (NHM-MEM-000042 → MEMBER)
+    const PREFIX_ROLE: Record<string, UserRole> = {
+      ADM: 'ADMIN', EMP: 'EMPLOYER', AGT: 'AGENT', MEM: 'MEMBER',
+    }
+    const match = /^NHM-(ADM|EMP|AGT|MEM)-\d{6}$/i.exec(nhima_id)
+    if (!match) return sendError(res, 'Invalid NHIMA ID format', 400)
+
+    const role  = PREFIX_ROLE[match[1].toUpperCase()]
+    const table = tableFor(role)
+
+    const rows = await db.select().from(table).where(eq(table.nhima_id, nhima_id.toUpperCase())).limit(1)
+    if (!rows.length) return sendError(res, 'Invalid NHIMA ID or password', 401)
 
     const user = rows[0] as Record<string, unknown>
 
     const valid = await bcrypt.compare(password, user.password as string)
-    if (!valid) return sendError(res, 'Invalid email or password', 401)
+    if (!valid) return sendError(res, 'Invalid NHIMA ID or password', 401)
 
     const status = user.status as string
     if (status === 'PENDING')   return sendError(res, 'Account pending approval by an administrator.', 403)
@@ -163,7 +174,7 @@ export const login = async (req: Request, res: Response) => {
     const payload = {
       id:       user.id as string,
       email:    user.email as string,
-      role:     role as UserRole,
+      role,
       nhima_id: user.nhima_id as string,
     }
 
@@ -173,14 +184,14 @@ export const login = async (req: Request, res: Response) => {
 
     await db.insert(refreshTokensTable).values({
       user_id:    user.id as string,
-      user_role:  role as UserRole,
+      user_role:  role,
       token:      refreshToken,
       expires_at: expiresAt,
       user_agent: req.headers['user-agent'],
       ip_address: req.ip,
     })
 
-    await audit(user.id as string, role as UserRole, 'LOGIN', req.ip ?? '', 'users', user.id as string)
+    await audit(user.id as string, role, 'LOGIN', req.ip ?? '', 'users', user.id as string)
 
     return sendSuccess(res, {
       accessToken,

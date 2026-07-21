@@ -10,7 +10,6 @@ const Benefits = () => {
       <Navbar />
       <HeroSect />
       <Tittle subTittle='Benefits' tittle='We ensure that all citizens benefit from our services'/>
-      
       <Footer />
     </div>
   )

@@ -9,8 +9,16 @@ const AgentStage1Personal = ({ form, onChange }: Props) => (
     <div className="form-field field-full">
       <StageInput
         label="Full Name"
-        value={form.fullName}
-        onChange={(e) => onChange('fullName', e.target.value)}
+        value={`${form.firstName} ${form.middleName} ${form.lastName}`.trim()}
+        onChange={(e) => {
+          const parts = e.target.value.trim().split(/\s+/)
+          const [first = '', ...rest] = parts
+          const middle = parts.length > 2 ? parts.slice(1, -1).join(' ') : ''
+          const last = parts.length > 1 ? parts[parts.length - 1] : ''
+          onChange('firstName', first)
+          onChange('middleName', middle)
+          onChange('lastName', last)
+        }}
         placeholder="Robert Mumba"
       />
     </div>

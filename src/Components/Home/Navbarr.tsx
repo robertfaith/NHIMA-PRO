@@ -39,16 +39,9 @@ const Navbar: React.FC = () => {
         <li><a href="/About" onClick={closeMenu}>About</a></li>
         <li><a href="/Benefits" onClick={closeMenu}>Benefits</a></li>
         <li><a href="/Facility" onClick={closeMenu}>Facilities</a></li>
+        <li><a href="/FAQ" onClick={closeMenu}>FAQ</a></li>
         <li><a href="/Contact" onClick={closeMenu}>Contact Us</a></li>
-        <li>
-          <a
-            href="/Register"
-            className="btn-primary"
-            onClick={closeMenu}
-          >
-            Register
-          </a>
-        </li>
+        
          <li>
           <a
             href="/Login"

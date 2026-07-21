@@ -3,7 +3,7 @@ import {
   BsDownload, BsSearch, BsCheckCircleFill,
   BsXCircleFill, BsEyeFill,
 } from 'react-icons/bs'
-import { api } from '../../../nhima-api/src/utils/auth'   // ← adjust path
+import { api } from '../../utils/auth'   // ← adjust path
 import './AdminClaims.scss'
 
 // ─── Types ────────────────────────────────────────────────────────────────────

@@ -1,9 +1,9 @@
 /**
- * auth.ts — centralised token management for NHIMA frontend
+ * src/utils/auth.ts — centralised token management for the NHIMA frontend
  *
- * Your backend uses Bearer tokens (not cookies), so we:
- *   1. Store accessToken + refreshToken in localStorage
- *   2. Send Authorization: Bearer <token> on every request
+ * The backend (nhima-api) uses Bearer tokens (not cookies), so we:
+ *   1. Store accessToken + refreshToken + role in localStorage
+ *   2. Send Authorization: Bearer <token> on every request via `api`
  *   3. Auto-refresh the access token on 401 responses
  */
 
@@ -11,12 +11,12 @@ import axios from 'axios'
 
 const API = import.meta.env.VITE_API_URL ?? 'http://localhost:9901'
 
-// ── Token keys ────────────────────────────────────────────────────────────────
+// ── Token keys ──────────────────────────────────────────────────────────────
 const ACCESS_KEY  = 'nhima_access'
 const REFRESH_KEY = 'nhima_refresh'
 const ROLE_KEY    = 'nhima_role'
 
-// ── Storage helpers ───────────────────────────────────────────────────────────
+// ── Storage helpers ─────────────────────────────────────────────────────────
 export const saveTokens = (accessToken: string, refreshToken: string, role: string) => {
   localStorage.setItem(ACCESS_KEY,  accessToken)
   localStorage.setItem(REFRESH_KEY, refreshToken)
@@ -34,7 +34,7 @@ export const getRefreshToken = () => localStorage.getItem(REFRESH_KEY)
 export const getStoredRole   = () => localStorage.getItem(ROLE_KEY)
 export const isLoggedIn      = () => !!getAccessToken()
 
-// ── Axios instance with Bearer token ─────────────────────────────────────────
+// ── Axios instance with Bearer token ────────────────────────────────────────
 export const api = axios.create({ baseURL: API })
 
 // Attach token to every request
@@ -45,7 +45,7 @@ api.interceptors.request.use((config) => {
 })
 
 // Auto-refresh on 401
-let isRefreshing   = false
+let isRefreshing = false
 let pendingQueue: Array<{ resolve: (v: string) => void; reject: (e: unknown) => void }> = []
 
 const drainQueue = (err: unknown, token: string | null) => {
@@ -64,7 +64,6 @@ api.interceptors.response.use(
       original._retry = true
 
       if (isRefreshing) {
-        // Queue this request until the refresh completes
         return new Promise((resolve, reject) => {
           pendingQueue.push({ resolve, reject })
         }).then((token) => {

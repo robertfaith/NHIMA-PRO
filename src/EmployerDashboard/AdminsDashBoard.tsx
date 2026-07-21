@@ -1,6 +1,5 @@
 import {
   BsPeopleFill,
-  BsFileTextFill,
   BsClipboardCheckFill,
   BsGraphUpArrow,
   BsShieldCheck,

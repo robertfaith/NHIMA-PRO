@@ -4,7 +4,7 @@ import AdminDashboard          from '../AdminsDashBoard'
 import EmpDashboard            from '../EmpDashboard'
 import AgentDashboard          from '../AgentDashboard'
 import MemberDashboard         from '../MemberDashboard'
-import { api, clearTokens }    from '../../../nhima-api/src/utils/auth'   // ← adjust path if needed
+import { api, clearTokens }    from '../../utils/auth'   // ← adjust path if needed
 import { useNavigate }         from 'react-router-dom'
 
 // ─── Types matching your DB schema field names ────────────────────────────────
@@ -232,10 +232,10 @@ const Dashboard = () => {
   )
 
   // ── Route to correct dashboard by role ────────────────────────
-  if (data.role === 'ADMIN')    return <AdminDashboard    data={data} />
-  if (data.role === 'EMPLOYER') return <EmpDashboard      data={data} />
-  if (data.role === 'AGENT')    return <AgentDashboard    data={data} />
-  if (data.role === 'MEMBER')   return <MemberDashboard   data={data} />
+  if (data.role === 'ADMIN')    return <AdminDashboard    data={data as any} />
+  if (data.role === 'EMPLOYER') return <EmpDashboard      data={data as any} />
+  if (data.role === 'AGENT')    return <AgentDashboard    data={data as any} />
+  if (data.role === 'MEMBER')   return <MemberDashboard   data={data as any} />
 
   return (
     <p className="text-center text-slate-500 py-12">
