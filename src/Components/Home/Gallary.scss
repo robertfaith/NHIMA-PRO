@@ -1,19 +1,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-.Gallary{
+.Gallary {
     margin: 70px auto;
+    width: 90%;
+    overflow: hidden;          // hides everything outside the visible strip
+    position: relative;
+
+    // fade the edges so logos don't "pop" in/out abruptly
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.gallary-track {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 60%;
+    width: max-content;
+    animation: scroll 25s linear infinite;
+
+    &:hover {
+        animation-play-state: paused; // optional: pause on hover
+    }
 }
-.Clap{
+
+.gallarys {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 40px;
+    justify-content: center;
+    margin: 0 40px;
+    flex-shrink: 0;
+
+    img {
+        width: 140px;
+        height: 80px;
+        object-fit: contain;
+        border-radius: 10px;
+    }
+
+    span {
+        margin-top: 10px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: #555;
+        white-space: nowrap;
+    }
 }
-.Gallary img{
-    width: 200px;
-    border-radius: 10px;
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        // shift by exactly half the track width (since content is duplicated)
+        transform: translateX(-50%);
+    }
 }

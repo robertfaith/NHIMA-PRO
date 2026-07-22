@@ -19,7 +19,7 @@ const Home: React.FC = () => {
       <Tittle subTittle='OUR PROGRAMS' tittle='What are you interested in today?'/>
       <Programs/>
       <About/>
-      <Tittle subTittle='OUR TEAM' tittle='Members of Staff'/>
+      <Tittle subTittle='OUR PARTNERS' tittle='Trusted by leading institutions across Zambia'/>     
       <Gallary/>
        <Tittle subTittle='TESTIMONIALS' tittle='what People Say'/>
       <Testimonials/>

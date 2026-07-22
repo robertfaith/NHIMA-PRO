@@ -10,21 +10,25 @@
 
 .slider {
   overflow: hidden;
+
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
 }
 
 .slider-track {
   display: flex;
-  transition: transform 0.7s ease;
-}
-
-.slide-page {
-  min-width: 100%;
-  display: flex;
+  width: max-content;
   gap: 25px;
+  animation: scrollTestimonials 40s linear infinite;
+
+  &:hover {
+    animation-play-state: paused;
+  }
 }
 
 .slide {
-  flex: 1;
+  flex: 0 0 auto;
+  width: 380px;
   background: #fff;
   border-radius: 20px;
   padding: 30px;
@@ -76,76 +80,23 @@
   font-size: 1.1rem;
 }
 
-.next-btn,
-.back-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-
-  width: 55px;
-  height: 55px;
-
-  border-radius: 50%;
-  background: #212EA0;
-  color: white;
-
-  padding: 8px;
-  cursor: pointer;
-  z-index: 10;
-
-  transition: .3s;
-}
-
-.next-btn:hover,
-.back-btn:hover {
-  transform: translateY(-50%) scale(1.1);
-}
-
-.back-btn {
-  left: 0;
-}
-
-.next-btn {
-  right: 0;
-}
-
-.dots {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 25px;
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #ccc;
-}
-
-.dot.active {
-  background: #212EA0;
-  transform: scale(1.2);
+@keyframes scrollTestimonials {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    // shift by exactly half the track width (content is duplicated)
+    transform: translateX(-50%);
+  }
 }
 
 @media (max-width: 767px) {
-
   .testimonials {
     padding: 0 20px;
   }
 
-  .slide-page {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .next-btn,
-  .back-btn {
-    width: 45px;
-    height: 45px;
-  }
-
   .slide {
+    width: 280px;
     padding: 25px;
   }
 }

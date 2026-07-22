@@ -1,6 +1,7 @@
 import {
   boolean,
   date,
+  doublePrecision,
   integer,
   pgEnum,
   pgTable,
@@ -28,6 +29,8 @@ export const provinceEnum        = pgEnum('province',        [
   'Lusaka', 'Copperbelt', 'Central', 'Eastern', 'Western',
   'Northern', 'Luapula', 'North-Western', 'Southern', 'Muchinga',
 ])
+export const facilityTypeEnum    = pgEnum('facility_type',   ['Hospital', 'Clinic', 'Pharmacy', 'Specialist', 'Dental', 'Optical'])
+export const ownershipEnum       = pgEnum('ownership',       ['Government', 'Mission', 'Private'])
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ADMINS
@@ -364,4 +367,42 @@ export const passwordResetsTable = pgTable('password_resets', {
   expires_at:  timestamp('expires_at').notNull(),
   used:        boolean('used').default(false),
   created_at:  timestamp('created_at').defaultNow(),
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FACILITIES
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const facilitiesTable = pgTable('facilities', {
+  id:               uuid('id').primaryKey().defaultRandom(),
+  facility_code:    varchar('facility_code', { length: 20 }).unique().notNull(),
+
+  name:             varchar('name', { length: 255 }).notNull(),
+  facility_type:    facilityTypeEnum('facility_type').notNull(),
+  ownership:        ownershipEnum('ownership').notNull(),
+
+  // Location
+  province:         provinceEnum('province').notNull(),
+  district:         varchar('district', { length: 100 }).notNull(),
+  address:          varchar('address', { length: 300 }).notNull(),
+  latitude:         doublePrecision('latitude').notNull(),
+  longitude:        doublePrecision('longitude').notNull(),
+
+  // Contact
+  phone:            varchar('phone', { length: 20 }),
+  email:            varchar('email', { length: 150 }),
+  hours:            varchar('hours', { length: 200 }), // e.g. "Mon–Fri 08:00–17:00"
+
+  // Coverage
+  services_covered: text('services_covered'),  // JSON array of covered service strings
+  accredited:       boolean('accredited').default(true).notNull(),
+  accreditation_expiry: date('accreditation_expiry'),
+
+  // Meta
+  added_by:         uuid('added_by'),    // admin id
+  approved_by:      uuid('approved_by'), // admin id
+  is_active:        boolean('is_active').default(true).notNull(),
+
+  created_at:       timestamp('created_at').defaultNow(),
+  updated_at:       timestamp('updated_at').defaultNow(),
 })

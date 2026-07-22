@@ -5,11 +5,11 @@ import HeroSect from './HeroSect';
 import HeroSearch from './components/heroeSearch';
 import HelpCategories from './components/helpCategories';
 import FAQSidebar from './components/faqSidebar';
-import FAQAccordion from './components/faqAccordion';
+import FAQAccordion from './components/FAQAccordion';
 import SupportBanner from './components/supportBanner';
 import { faqCategories, faqItems, helpTopics, searchChips } from './faqData';
 import type { FAQCategoryId } from './faqType';
-import './FAQ.scss';
+import './Faq.scss';
 
 const matchesQuery = (haystack: string, query: string) =>
   haystack.toLowerCase().includes(query.trim().toLowerCase());

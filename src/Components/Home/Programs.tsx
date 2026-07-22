@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './Programs.scss'
 import program_1 from '../../assets/New-ABZ-Thumbnails.jpg'
 import program_2 from '../../assets/New-ABZ-Thumbnails2.jpg'
@@ -11,17 +12,20 @@ const programsData = [
   {
     image: program_1,
     icon: program_icon_1,
-    label: 'Personal Banking'
+    label: 'Benefits',
+    path: '/benefits'
   },
   {
     image: program_2,
     icon: program_icon_2,
-    label: 'Business Banking'
+    label: 'Facilities',
+    path: '/facilities'
   },
   {
     image: program_3,
     icon: program_icon_3,
-    label: 'Education Loans'
+    label: 'FAQ',
+    path: '/faq'
   }
 ]
 
@@ -29,13 +33,13 @@ const Programs = () => {
   return (
     <div className='programs'>
       {programsData.map((program, idx) => (
-        <div className="program" key={idx}>
+        <Link to={program.path} className="program" key={idx}>
           <img src={program.image} alt={program.label} />
           <div className="caption">
             <img src={program.icon} alt={program.label + " icon"} />
             <p>{program.label}</p>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   )

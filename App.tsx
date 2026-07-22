@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom'
 
 import Home         from './src/Components/Home/Home'
-import FAQ          from './src/Components/Home/FAQ/FAQ'
+import FAQ          from './src/Components/Home/FAQ/Faq'
 import Loans        from './src/Components/Loans/Loans'
 import AboutSection from './src/Components/About/AboutSection'
 import Benefits     from './src/Components/Benefits/Benefits'
