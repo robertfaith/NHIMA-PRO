@@ -1,4 +1,4 @@
-import './Footer.scss'
+import React from "react";
 import { FaFacebook } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
@@ -8,9 +8,175 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { MdAccessTime } from "react-icons/md";
 
-const Footer = () => {
+const footerStyles = `
+.footer {
+  background-color: #1a1a2e;
+  color: #ccc;
+  font-family: 'Inter', sans-serif;
+}
+
+.section_padding {
+  padding: 60px 40px 20px;
+}
+
+.sb_footer_links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.sb_footer-link_div {
+  flex: 1 1 160px;
+  min-width: 140px;
+}
+
+.sb_footer-link_div h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #2e75b6;
+  padding-bottom: 6px;
+}
+
+.sb_footer-link_div a {
+  text-decoration: none;
+  display: block;
+}
+
+.sb_footer-link_div a p {
+  font-size: 13px;
+  color: #aab4c2;
+  margin: 6px 0;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sb_footer-link_div a p svg {
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.sb_footer-link_div a p:hover {
+  color: #ffffff;
+  padding-left: 4px;
+}
+
+.sb_footer-link_div a p:hover svg {
+  transform: scale(1.1);
+}
+
+.footer_contact_info {
+  font-size: 13px;
+  color: #aab4c2;
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer_contact_info svg {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.sb_footer_partners {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.sb_footer_partners p {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sb_footer_partner_logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.sb_footer_partner_logos span {
+  font-size: 13px;
+  color: #aab4c2;
+  font-weight: 500;
+}
+
+.footer hr {
+  border: none;
+  border-top: 1px solid #2a2a3e;
+  margin: 16px 0;
+}
+
+.sb_footer_below {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+}
+
+.sb_footer_copyright p {
+  font-size: 12px;
+  color: #666;
+  max-width: 600px;
+}
+
+.sb_footer_below_links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.sb_footer_below_links a p {
+  font-size: 12px;
+  color: #888;
+  margin: 0;
+  transition: color 0.2s;
+}
+
+.sb_footer_below_links a p:hover {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .sb_footer_links {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .sb_footer_below {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .sb_footer_below_links {
+    justify-content: center;
+  }
+
+  .sb_footer_partner_logos {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+`;
+
+const Footer: React.FC = () => {
   return (
     <div className="footer">
+      <style>{footerStyles}</style>
       <div className="sb_footer section_padding">
         <div className="sb_footer_links">
 

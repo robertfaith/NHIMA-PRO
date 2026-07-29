@@ -3,6 +3,7 @@ import Section from './Section'
 import ContactForm from './ContactForm'
 import Footer from '../Home/Footer'
 import Tittle from '../Home/Tittle';
+import Gallary from '../Home/Gallary';
 
 
 const Contact = () => {
@@ -12,6 +13,8 @@ const Contact = () => {
       <Section />
       <Tittle subTittle='CONTACT US' tittle='Get in Touch'/>
       <ContactForm />
+      <Tittle subTittle='TUSTED BY' tittle='Organisations that trust us'/>
+      <Gallary />
       <Footer/>
     </div>
   )

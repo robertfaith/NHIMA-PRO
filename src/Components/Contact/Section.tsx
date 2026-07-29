@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import './Section.scss'
+import React, { useState, useEffect } from 'react';
 import img1 from "../../assets/Careers-Thumbnails2.jpg";
 import img4 from "../../assets/Careers-Thumbnails3.jpg";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+
 interface Slide {
-  image: string
-  title: string
-  text: React.ReactNode
+  image: string;
+  title: string;
+  text: React.ReactNode;
 }
 
 const slides: Slide[] = [
@@ -19,7 +19,6 @@ const slides: Slide[] = [
       </>
     )
   },
-
   {
     image: img1,
     title: 'Contact',
@@ -29,23 +28,23 @@ const slides: Slide[] = [
       </>
     )
   }
-]
+];
 
 const HeroSect: React.FC = () => {
-  const [current, setCurrent] = useState<number>(0)
+  const [current, setCurrent] = useState<number>(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrent(prev => (prev + 1) % slides.length)
-    }, 4000)
+      setCurrent(prev => (prev + 1) % slides.length);
+    }, 4000);
 
-    return () => clearInterval(timer)
-  }, [])
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <section className="hero">
+    <section className="hero relative">
       <div
-        key={current}   // for animation reset
+        key={current}
         className="hero-slide"
         style={{ backgroundImage: `url(${slides[current].image})` }}
       >
@@ -55,17 +54,19 @@ const HeroSect: React.FC = () => {
         </div>
       </div>
 
-      <div className="hero-dots">
+      <div className="absolute bottom-5 flex gap-2.5 z-[3]">
         {slides.map((_, index) => (
           <span
             key={index}
-            className={index === current ? 'dot active' : 'dot'}
             onClick={() => setCurrent(index)}
+            className={`w-2.5 h-2.5 rounded-full cursor-pointer transition-all duration-300 ${
+              index === current ? 'bg-white scale-[1.2]' : 'bg-white/50'
+            }`}
           />
         ))}
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default HeroSect
+export default HeroSect;

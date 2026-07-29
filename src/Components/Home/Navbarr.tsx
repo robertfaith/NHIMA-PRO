@@ -1,7 +1,189 @@
 import React, { useEffect, useState } from 'react';
-import './Navbarr.scss';
 import ABLogo from '../../assets/2.png';
 import { FaBars, FaTimes } from "react-icons/fa";
+
+const navbarStyles = `
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+.navbar {
+  width: 100%;
+  height: 70px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 5%;
+
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+/* Sticky Navbar */
+.dark-nav {
+  background: rgba(105, 157, 224, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo */
+.navbar-header img {
+  height: 50px;
+  width: auto;
+  display: block;
+}
+
+/* Desktop Navigation */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #003f6b;
+}
+
+/* Register Button */
+.btn-primary {
+  background: #1c8ee0;
+  color: #fff !important;
+
+  padding: 10px 22px;
+  border-radius: 30px;
+
+  font-weight: 600;
+
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #003f6b;
+  transform: translateY(-2px);
+}
+
+/* Mobile Menu Button */
+.menu-icon {
+  display: none;
+
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
+  color: #fff;
+
+  font-size: 1.8rem;
+}
+
+/* ========================= */
+/* MOBILE */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+  .navbar {
+    height: 70px;
+    padding: 0 20px;
+  }
+
+  .navbar-header img {
+    height: 42px;
+  }
+
+  .menu-icon {
+    display: block;
+    z-index: 1001;
+  }
+
+  .nav-links {
+    position: absolute;
+
+    top: 70px;
+    right: -100%;
+
+    width: 280px;
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+
+    gap: 8px;
+    padding: 20px;
+
+    background: rgba(105, 157, 224, 0.75);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+    border-radius: 0 0 0 20px;
+
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.15);
+
+    transition: right 0.35s ease;
+
+    z-index: 999;
+  }
+
+  .nav-links.active {
+    right: 0;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links li a {
+    display: block;
+
+    width: 100%;
+    padding: 14px 18px;
+
+    border-radius: 12px;
+
+    color: #fff;
+    text-align: left;
+
+    transition: all 0.3s ease;
+  }
+
+  .nav-links li a:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(5px);
+    color: #fff;
+  }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+`;
 
 const Navbar: React.FC = () => {
   const [sticky, setSticky] = useState(false);
@@ -29,6 +211,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className={`navbar ${sticky ? 'dark-nav' : ''}`}>
+      <style>{navbarStyles}</style>
 
       <div className="navbar-header">
         <img src={ABLogo} alt="NHIMA Logo" />
@@ -41,9 +224,10 @@ const Navbar: React.FC = () => {
         <li><a href="/Facility" onClick={closeMenu}>Facilities</a></li>
         <li><a href="/FAQ" onClick={closeMenu}>FAQ</a></li>
         <li><a href="/Contact" onClick={closeMenu}>Contact Us</a></li>
-        
-         <li>
+
+        <li>
           <a
+          
             href="/Login"
             className="btn-primary"
             onClick={closeMenu}

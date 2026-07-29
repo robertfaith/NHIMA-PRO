@@ -7,7 +7,7 @@ import Tittle from './Tittle';
 import About from "./About";
 import Gallary from "./Gallary";
 import Testimonials from "./Testimonials"
-import Contact from "./Contact";
+import ContactForm from "../Contact/ContactForm";
 
 
 
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
        <Tittle subTittle='TESTIMONIALS' tittle='what People Say'/>
       <Testimonials/>
       <Tittle subTittle='CONTACT US' tittle='Get in Touch'/>
-      <Contact/>
+      <ContactForm/>
       <Footer/>
     </>
   );
