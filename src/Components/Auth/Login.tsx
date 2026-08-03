@@ -8,23 +8,24 @@ import './Login.scss'
 
 const API = import.meta.env.VITE_API_URL ?? 'http://localhost:9901'
 
-type Tab = 'member' | 'employer' | 'agent'
+type Tab = 'member' | 'employer' | 'agent' | 'admin'
 
 const TAB_PREFIX: Record<Tab, string> = {
   member:   'MEM',
   employer: 'EMP',
   agent:    'AGT',
+  admin:    'ADM',
 }
 
 const TAB_TITLE: Record<Tab, string> = {
-  employer: 'Employer Portal',
   member:   'Member Portal',
+  employer: 'Employer Portal',
   agent:    'Agent Portal',
+  admin:    'Admin Portal',
 }
 
-// Role → redirect after login
 const ROLE_REDIRECT: Record<string, string> = {
-  ADMIN:    '/dashboard',
+  ADMIN:    '/admin',       // ← Admin goes to /admin, not /dashboard
   EMPLOYER: '/dashboard',
   AGENT:    '/dashboard',
   MEMBER:   '/dashboard',
@@ -36,18 +37,13 @@ const Login = () => {
   const [loading,      setLoading]      = useState(false)
   const [message,      setMessage]      = useState('')
 
-  const [values, setValues] = useState({
-    nhimaId:  '',
-    password: '',
-  })
+  const [values, setValues] = useState({ nhimaId: '', password: '' })
 
   const navigate = useNavigate()
   const location = useLocation()
 
-  // Show a one-time banner with the NHIMA ID after a fresh registration
   const registeredState = location.state as { registered?: boolean; nhimaId?: string } | null
 
-  // Reset form on tab switch
   useEffect(() => {
     setValues({ nhimaId: '', password: '' })
     setMessage('')
@@ -65,14 +61,10 @@ const Login = () => {
         password: values.password,
       }
 
-      // POST /api/auth/login
-      // Response shape: { success, message, data: { accessToken, refreshToken, user } }
       const { data: res } = await axios.post(`${API}/api/auth/login`, payload)
-
       const { accessToken, refreshToken, user } = res.data
 
       saveTokens(accessToken, refreshToken, user.role)
-
       navigate(ROLE_REDIRECT[user.role] ?? '/dashboard', { replace: true })
 
     } catch (err: any) {
@@ -85,6 +77,8 @@ const Login = () => {
       setLoading(false)
     }
   }
+
+  const TABS: Tab[] = ['member', 'employer', 'agent', 'admin']
 
   return (
     <div className="login-panel">
@@ -101,24 +95,45 @@ const Login = () => {
 
         <div className="login-card">
 
+          {/* Header */}
           <div className="login-welcome">
             <h2>{TAB_TITLE[activeTab]}</h2>
-            <p>Sign in with your NHIMA ID and password</p>
+            <p>
+              {activeTab === 'admin'
+                ? 'Sign in with your NHIMA Admin ID and password'
+                : 'Sign in with your NHIMA ID and password'}
+            </p>
           </div>
 
+          {/* Tabs */}
           <div className="login-tabs">
-            {(['member', 'employer', 'agent'] as Tab[]).map((tab) => (
+            {TABS.map((tab) => (
               <button
                 key={tab}
                 type="button"
                 onClick={() => setActiveTab(tab)}
-                className={`login-tab ${activeTab === tab ? 'login-tab--active' : ''}`}
+                className={`login-tab ${
+                  activeTab === tab
+                    ? tab === 'admin'
+                      ? 'login-tab--active login-tab--admin'
+                      : 'login-tab--active'
+                    : ''
+                }`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
           </div>
 
+          {/* Admin warning */}
+          {activeTab === 'admin' && (
+            <div className="login-admin-warning" role="note">
+              ⚠️ Admin access is restricted and monitored.
+              Unauthorised login attempts are logged.
+            </div>
+          )}
+
+          {/* Registration success banner */}
           {registeredState?.registered && registeredState?.nhimaId && (
             <div className="login-success" role="status">
               Registration successful! Your NHIMA ID is{' '}
@@ -127,10 +142,12 @@ const Login = () => {
             </div>
           )}
 
+          {/* Error */}
           {message && (
             <div className="login-error" role="alert">{message}</div>
           )}
 
+          {/* Form */}
           <form onSubmit={handleLogin} className="login-form">
 
             <input
@@ -153,7 +170,6 @@ const Login = () => {
                 required
                 autoComplete="current-password"
               />
-
               <button
                 type="button"
                 className="login-eye"
@@ -164,21 +180,39 @@ const Login = () => {
               </button>
             </div>
 
-            <button type="submit" disabled={loading} className="login-btn">
-              {loading ? 'Signing In...' : 'Login →'}
+            <button
+              type="submit"
+              disabled={loading}
+              className={`login-btn ${activeTab === 'admin' ? 'login-btn--admin' : ''}`}
+            >
+              {loading
+                ? 'Signing In…'
+                : activeTab === 'admin'
+                  ? '🔐 Admin Sign In'
+                  : 'Sign In →'}
             </button>
 
+            {/* Register link — hidden for admin */}
             <div className="login-links">
               <Link to="/forgot-password" className="login-link">
                 Forgot Password?
               </Link>
-              <Link to="/register" className="login-link">
-                Need an account? Sign up
-              </Link>
+              {activeTab !== 'admin' && (
+                <Link to="/register" className="login-link">
+                  Need an account? Sign up
+                </Link>
+              )}
             </div>
 
-          </form>
+            {/* Admin support note */}
+            {activeTab === 'admin' && (
+              <p className="login-admin-note">
+                Admin accounts are created by NHIMA IT.
+                Contact <strong>support@nhima.co.zm</strong> for access.
+              </p>
+            )}
 
+          </form>
         </div>
       </div>
     </div>

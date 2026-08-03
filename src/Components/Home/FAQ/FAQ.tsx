@@ -9,7 +9,6 @@ import FAQAccordion from './components/FAQAccordion';
 import SupportBanner from './components/supportBanner';
 import { faqCategories, faqItems, helpTopics, searchChips } from './faqData';
 import type { FAQCategoryId } from './faqType';
-import './Faq.scss';
 
 const matchesQuery = (haystack: string, query: string) =>
   haystack.toLowerCase().includes(query.trim().toLowerCase());
@@ -27,8 +26,6 @@ const FAQ = () => {
     setActiveCategory((current) => (current === category ? 'all' : category));
   };
 
-  // Items filtered by search only — used to compute per-category counts
-  // so the sidebar reflects the current search term.
   const searchFiltered = useMemo(() => {
     if (!query.trim()) return faqItems;
     return faqItems.filter((item) => {
@@ -62,14 +59,19 @@ const FAQ = () => {
   }, [searchFiltered]);
 
   return (
-    <div className="faq-page">
+    <div className="font-['Inter','Segoe_UI',sans-serif] text-[#0a2e1d] bg-white scroll-smooth motion-reduce:scroll-auto">
       <Navbar />
 
       <HeroSect />
 
-      <section className="faq-search-band" aria-label="Search the help center">
-        <div className="faq-search-band__inner">
-          <span className="eyebrow">NHIMA Help Center</span>
+      <section
+        className="bg-gradient-to-br from-[#0d8a43] to-[#2fae66] py-16 lg:py-20"
+        aria-label="Search the help center"
+      >
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-12 text-center">
+          <span className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] uppercase font-medium text-white/80 mb-4 before:content-[''] before:w-2 before:h-2 before:rounded-full before:bg-[#f4b400]">
+            NHIMA Help Center
+          </span>
           <HeroSearch
             query={query}
             onQueryChange={setQuery}
@@ -83,14 +85,26 @@ const FAQ = () => {
 
       <HelpCategories topics={helpTopics} onSelect={handleCategorySelect} />
 
-      <section aria-labelledby="faq-section-heading">
-        <div className="faq-page__section-head">
-          <span className="eyebrow">Help center</span>
-          <h2 id="faq-section-heading">Browse frequently asked questions</h2>
-          <p>Filter by category or search above to find what you need.</p>
+      <section aria-labelledby="faq-section-heading" className="py-16 lg:py-24">
+        <div className="max-w-[640px] mx-auto text-center mb-12 px-6">
+          <span className="block font-mono text-xs tracking-[0.14em] uppercase font-medium text-[#0d8a43] mb-2">
+            Help center
+          </span>
+          <h2
+            id="faq-section-heading"
+            className="font-['Sora','Segoe_UI',sans-serif] text-[clamp(1.7rem,3vw,2.4rem)] font-bold mb-3"
+          >
+            Browse frequently asked questions
+          </h2>
+          <p className="text-[#3c5049] text-[1.05rem] leading-[1.6]">
+            Filter by category or search above to find what you need.
+          </p>
         </div>
 
-        <div className="faq-body">
+        <div
+          id="faq-results"
+          className="max-w-[1200px] mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-16 items-start"
+        >
           <FAQSidebar
             categories={faqCategories}
             activeCategory={activeCategory}

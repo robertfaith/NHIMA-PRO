@@ -159,12 +159,20 @@ export const login = async (req: Request, res: Response) => {
     const table = tableFor(role)
 
     const rows = await db.select().from(table).where(eq(table.nhima_id, nhima_id.toUpperCase())).limit(1)
-    if (!rows.length) return sendError(res, 'Invalid NHIMA ID or password', 401)
+    if (!rows.length) {
+      return sendError(
+        res,
+        `No account was found for NHIMA ID ${nhima_id.toUpperCase()}. Make sure you are using the correct portal tab and the same ID you registered with.`,
+        401,
+      )
+    }
 
     const user = rows[0] as Record<string, unknown>
 
     const valid = await bcrypt.compare(password, user.password as string)
-    if (!valid) return sendError(res, 'Invalid NHIMA ID or password', 401)
+    if (!valid) {
+      return sendError(res, 'The password you entered is incorrect for this NHIMA ID.', 401)
+    }
 
     const status = user.status as string
     if (status === 'PENDING')   return sendError(res, 'Account pending approval by an administrator.', 403)

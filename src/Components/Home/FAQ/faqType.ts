@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 export type FAQCategoryId =
   | 'all'
   | 'registration'
@@ -13,28 +15,25 @@ export type FAQCategoryId =
 export interface FAQCategory {
   id: FAQCategoryId;
   label: string;
-  count?: number;
 }
 
 export interface FAQItem {
   id: string;
-  category: FAQCategoryId;
   question: string;
   answer: string;
-  /** Optional extra keywords to widen search matching beyond question/answer text */
+  category: FAQCategoryId;
   keywords?: string[];
 }
 
 export interface HelpTopic {
   id: string;
+  icon: ReactNode;
   title: string;
   description: string;
-  icon: string;
-  /** Category to jump to when the card is clicked */
-  targetCategory: FAQCategoryId;
+  category: FAQCategoryId;
 }
 
 export interface SearchChip {
   label: string;
-  targetCategory: FAQCategoryId;
+  category: FAQCategoryId;
 }

@@ -267,6 +267,51 @@
   }
 }
 
+ ── Add these to the bottom of your existing Login.scss ──────────────────────
+ 
+// Admin tab — navy highlight instead of gold
+.login-tab--admin {
+  background-color: #1a3a5c !important;
+  color:            #ffffff !important;
+  border-color:     #1a3a5c !important;
+}
+ 
+// Admin sign-in button — navy instead of gold
+.login-btn--admin {
+  background-color: #1a3a5c;
+ 
+  &:hover:not(:disabled) {
+    background-color: #2a5298;
+  }
+}
+ 
+// Warning banner shown on admin tab
+.login-admin-warning {
+  margin-bottom:    1rem;
+  padding:          0.75rem 1rem;
+  background:       #fffbeb;
+  border:           1px solid rgba(245, 158, 11, 0.35);
+  border-radius:    0.75rem;
+  font-size:        0.8rem;
+  font-weight:      600;
+  color:            #b45309;
+  line-height:      1.5;
+}
+ 
+// Small note below admin form
+.login-admin-note {
+  margin-top:  0.75rem;
+  text-align:  center;
+  font-size:   0.75rem;
+  color:       #94a3b8;
+  line-height: 1.6;
+ 
+  strong {
+    color: #1a3a5c;
+  }
+}
+ 
+
 // ── OTP hint ──────────────────────────────────────────────────────
 .login-otp-hint {
   font-size: 0.8125rem;

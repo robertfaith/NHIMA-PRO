@@ -373,3 +373,8 @@ a{
   opacity: 1;
   padding: 15px;
 }
+
+@keyframes heroFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
