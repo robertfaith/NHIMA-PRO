@@ -4,6 +4,9 @@ import {
   Navigate,
 } from 'react-router-dom'
 
+import { ThemeProvider } from './src/Context/ThemeContext'
+import './src/Theme.css'
+
 import Home         from './src/Components/Home/Home'
 import FAQ          from './src/Components/Home/FAQ/Faq'
 import Loans        from './src/Components/Loans/Loans'
@@ -36,6 +39,9 @@ import EmployerProfile from './src/EmployerDashboard/Pages/EmployerProfile'
 import AdminClaims from './src/EmployerDashboard/Pages/AdminClaims'
 import MemberClaims from './src/EmployerDashboard/Pages/MemberClaims'
 import EmployerClaims from './src/EmployerDashboard/Pages/EmployerClaims'
+
+
+
 
 
 const router = createBrowserRouter([
@@ -92,5 +98,9 @@ const router = createBrowserRouter([
 ])
 
 export default function App() {
-  return <RouterProvider router={router} />
+  return (
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  )
 }

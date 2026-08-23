@@ -1,0 +1,24 @@
+:root,
+[data-theme='light'] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f6f8;
+  --text-primary: #1a1a1a;
+  --text-secondary: #5a5a5a;
+  --border-color: #e2e2e2;
+  --accent: #2563eb;
+}
+
+[data-theme='dark'] {
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --text-primary: #f0f0f0;
+  --text-secondary: #b0b0b0;
+  --border-color: #333333;
+  --accent: #60a5fa;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}

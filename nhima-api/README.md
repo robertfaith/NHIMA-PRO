@@ -1,19 +1,30 @@
-# NHIMA API — TypeScript + Express + Drizzle ORM + Neon PostgreSQL
+# NHIMA API — TypeScript + Express + Drizzle ORM + Local PostgreSQL
 
 ## Setup
 
-### 1. Install dependencies
+### 1. Install PostgreSQL locally (if you haven't already)
+macOS: `brew install postgresql@16 && brew services start postgresql@16`
+Windows/Linux: install via postgresql.org and ensure the service is running.
+
+### 2. Create the database
+Match the name exactly to what's set in `.env` (`nhima_local` by default) —
+or create it under whatever name you prefer and update `DATABASE_URL` to match.
+```bash
+createdb nhima_local
+```
+
+### 3. Install dependencies
 ```bash
 npm install
 ```
 
-### 2. Configure environment
+### 4. Configure environment
 ```bash
 cp .env.example .env
-# Fill in your DATABASE_URL, JWT secrets etc.
+# Fill in your local DATABASE_URL, JWT secrets etc.
 ```
 
-### 3. Push schema to Neon (creates all tables)
+### 5. Push schema to your local database (creates all tables)
 ```bash
 npm run db:push
 ```
