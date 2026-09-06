@@ -5,14 +5,13 @@ import { GiHamburgerMenu, GiMoneyStack }                          from 'react-ic
 import { SiHomebridge }                                           from 'react-icons/si'
 import { PiUserCircleCheckDuotone, PiXCircleDuotone }            from 'react-icons/pi'
 import { AiOutlineNotification }                                  from 'react-icons/ai'
-import { MdOutlineSettingsSuggest, MdPolicy, MdAddHomeWork,
+import { MdOutlineSettingsSuggest, MdAddHomeWork,
          MdVerified, MdPendingActions, MdHealthAndSafety }        from 'react-icons/md'
-import { FaUsersCog, FaUsers, FaHospital, FaIdCard }             from 'react-icons/fa'
+import { FaUsersCog, FaHospital, FaIdCard }                       from 'react-icons/fa'
 import { FaChevronRight }                                         from 'react-icons/fa6'
 import { TbReport }                                               from 'react-icons/tb'
 import { BsPeopleFill, BsShieldCheck, BsClipboardCheckFill,
-         BsGraphUpArrow, BsBuildingsFill, BsPersonPlusFill,
-         BsFileEarmarkCheckFill }                                 from 'react-icons/bs'
+         BsBuildingsFill, BsPersonPlusFill }                      from 'react-icons/bs'
 import { GrLogout }                                              from 'react-icons/gr'
 
 import Logo from '../../assets/2.png'
@@ -31,21 +30,18 @@ interface NavItem {
 // ─── Nav maps ─────────────────────────────────────────────────────────────────
 const NAV_LINKS: Record<UserRole, NavItem[]> = {
   ADMIN: [
-    { label: 'Dashboard',     icon: <SiHomebridge />,             to: '/admin'               },
-    { label: 'Profile',       icon: <PiUserCircleCheckDuotone />, to: '/admin/adminprofile'  },
-    { label: 'Members',       icon: <BsPeopleFill />,             to: '/admin/members'       },
-    { label: 'Employers',     icon: <BsBuildingsFill />,          to: '/admin/employers'     },
-    { label: 'Agents',        icon: <FaUsersCog />,               to: '/admin/agents'        },
-    { label: 'Claims',        icon: <BsClipboardCheckFill />,     to: '/admin/adminclaims'   },
-    { label: 'Contributions', icon: <GiMoneyStack />,             to: '/admin/contributions' },
-    { label: 'Benefits',      icon: <MdHealthAndSafety />,        to: '/admin/benefits'      },
-    { label: 'Facilities',    icon: <FaHospital />,               to: '/admin/facilities'    },
-    { label: 'Compliance',    icon: <BsShieldCheck />,            to: '/admin/compliance'    },
-    { label: 'Reports',       icon: <TbReport />,                 to: '/admin/reports'       },
-    { label: 'Audit Logs',    icon: <BsGraphUpArrow />,           to: '/admin/audit'         },
-    { label: 'Users',         icon: <FaUsers />,                  to: '/admin/users'         },
-    { label: 'Policies',      icon: <MdPolicy />,                 to: '/admin/policies'      },
-    { label: 'Settings',      icon: <MdOutlineSettingsSuggest />, to: '/admin/settings'      },
+    { label: 'Dashboard',     icon: <SiHomebridge />,             to: '/dashboard'                    },
+    { label: 'Profile',       icon: <PiUserCircleCheckDuotone />, to: '/dashboard/admin-profile'       },
+    { label: 'Members',       icon: <BsPeopleFill />,             to: '/dashboard/members'             },
+    { label: 'Employers',     icon: <BsBuildingsFill />,          to: '/dashboard/employers'           },
+    { label: 'Agents',        icon: <FaUsersCog />,               to: '/dashboard/applications'        },
+    { label: 'Claims',        icon: <BsClipboardCheckFill />,     to: '/dashboard/adminclaims'         },
+    { label: 'Contributions', icon: <GiMoneyStack />,             to: '/dashboard/contributions'       },
+    { label: 'Benefits',      icon: <MdHealthAndSafety />,        to: '/dashboard/beneficiaries'       },
+    { label: 'Facilities',    icon: <FaHospital />,               to: '/dashboard/facilities'          },
+    { label: 'Compliance',    icon: <BsShieldCheck />,            to: '/dashboard/compliance'          },
+    { label: 'Reports',       icon: <TbReport />,                 to: '/dashboard/reports'             },
+    { label: 'Settings',      icon: <MdOutlineSettingsSuggest />, to: '/dashboard/settings'            },
   ],
   EMPLOYER: [
     { label: 'Dashboard',     icon: <SiHomebridge />,             to: '/dashboard'                       },
@@ -57,7 +53,6 @@ const NAV_LINKS: Record<UserRole, NavItem[]> = {
     { label: 'Payments',      icon: <GiMoneyStack />,             to: '/dashboard/payments'              },
     { label: 'Compliance',    icon: <BsShieldCheck />,            to: '/dashboard/compliance'            },
     { label: 'Reports',       icon: <TbReport />,                 to: '/dashboard/reports'               },
-    { label: 'Policies',      icon: <MdPolicy />,                 to: '/dashboard/policies'              },
     { label: 'Settings',      icon: <MdOutlineSettingsSuggest />, to: '/dashboard/settings'              },
   ],
   AGENT: [
@@ -68,7 +63,6 @@ const NAV_LINKS: Record<UserRole, NavItem[]> = {
     { label: 'Verifications',   icon: <MdVerified />,               to: '/dashboard/verifications' },
     { label: 'Applications',    icon: <MdPendingActions />,         to: '/dashboard/applications'  },
     { label: 'NRC Checks',      icon: <FaIdCard />,                 to: '/dashboard/nrc'           },
-    { label: 'Tasks',           icon: <BsFileEarmarkCheckFill />,   to: '/dashboard/tasks'         },
     { label: 'Reports',         icon: <TbReport />,                 to: '/dashboard/reports'       },
     { label: 'Settings',        icon: <MdOutlineSettingsSuggest />, to: '/dashboard/settings'      },
   ],
@@ -77,10 +71,8 @@ const NAV_LINKS: Record<UserRole, NavItem[]> = {
     { label: 'Profile',       icon: <PiUserCircleCheckDuotone />, to: '/dashboard/memberprofile' },
     { label: 'Contributions', icon: <MdAddHomeWork />,            to: '/dashboard/contributions' },
     { label: 'Claims',        icon: <AiOutlineNotification />,    to: '/dashboard/memberclaims'  },
-    { label: 'Benefits',      icon: <MdHealthAndSafety />,        to: '/dashboard/Benefits'      },
-    { label: 'Providers',     icon: <FaHospital />,               to: '/dashboard/Providers'     },
-    { label: 'Policies',      icon: <MdPolicy />,                 to: '/dashboard/Policies'      },
-    { label: 'Reports',       icon: <TbReport />,                 to: '/dashboard/Reports'       },
+    { label: 'Benefits',      icon: <MdHealthAndSafety />,        to: '/dashboard/benefits'       },
+    { label: 'Reports',       icon: <TbReport />,                 to: '/dashboard/reports'       },
     { label: 'Settings',      icon: <MdOutlineSettingsSuggest />, to: '/dashboard/settings'      },
   ],
 }

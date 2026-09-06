@@ -100,11 +100,14 @@ const Login = () => {
       saveTokens(accessToken, refreshToken, user.role)
       navigate(ROLE_REDIRECT[user.role] ?? '/dashboard', { replace: true })
 
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const response = axios.isAxiosError(err) ? err.response : undefined
       setMessage(
-        err.response?.data?.message ||
-        err.response?.data?.error   ||
-        'Invalid NHIMA ID or password.'
+        response?.data?.message ||
+        response?.data?.error   ||
+        (response
+          ? 'Invalid NHIMA ID or password.'
+          : 'Unable to reach the NHIMA API. Make sure the backend is running on port 9901.')
       )
     } finally {
       setLoading(false)

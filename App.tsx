@@ -29,7 +29,7 @@ import Payments           from './src/EmployerDashboard/Pages/Payments'
 import Verifications from './src/EmployerDashboard/Pages/Verifications'
 import NRC from './src/EmployerDashboard/Pages/NRC'
 import New from './src/EmployerDashboard/Pages/New'
-import Compliance from './src/MemDashboard/Pages/Compliance'
+import Compliance from './src/EmployerDashboard/Pages/Compliance'
 import Reports from './src/EmployerDashboard/Pages/Reports'
 import MemberBenefits from './src/EmployerDashboard/Pages/Benefits'
 import AdminProfile from './src/EmployerDashboard/Pages/AdminProfile'
@@ -39,6 +39,10 @@ import EmployerProfile from './src/EmployerDashboard/Pages/EmployerProfile'
 import AdminClaims from './src/EmployerDashboard/Pages/AdminClaims'
 import MemberClaims from './src/EmployerDashboard/Pages/MemberClaims'
 import EmployerClaims from './src/EmployerDashboard/Pages/EmployerClaims'
+import AdminBeneficiaries from './src/EmployerDashboard/Pages/AdminBeneficiaries'
+import EmployeeManagement from './src/EmployerDashboard/Pages/EmployeeManagement'
+import Member from './src/EmployerDashboard/Pages/Member'
+import Applications from './src/EmployerDashboard/Pages/Applications'
 
 
 
@@ -75,6 +79,11 @@ const router = createBrowserRouter([
       { path: 'settings',               element: <Settings />         },
       { path: 'support',                element: <Support />          },
       { path: 'facilities',             element: <Facilities />       },
+      { path: 'members',                element: <Member />            },
+      { path: 'employees',              element: <EmployeeManagement /> },
+      { path: 'employers',              element: <EmployeeManagement /> },
+      { path: 'applications',           element: <Applications />       },
+      { path: 'beneficiaries',          element: <AdminBeneficiaries />  },
       { path: 'emp-benefits',           element: <EmployerBenefits /> },
       { path: 'nrc',                    element: <NRC />              },
       { path: 'verifications',          element: <Verifications />    },
