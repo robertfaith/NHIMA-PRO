@@ -190,7 +190,19 @@ const Dashboard = () => {
 
         if (!raw?.role) throw new Error('No role returned from /me')
 
-        setData(buildDashboardData(raw))
+        const dashboardData = buildDashboardData(raw)
+
+        if (raw.role === 'ADMIN') {
+          try {
+            const { data: adminRes } = await api.get('/api/admin/dashboard')
+            const adminSummary = adminRes.data ?? adminRes
+            Object.assign(dashboardData, adminSummary)
+          } catch (adminErr) {
+            console.warn('Admin dashboard summary unavailable:', adminErr)
+          }
+        }
+
+        setData(dashboardData)
 
       } catch (err: any) {
         if (cancelled) return

@@ -4,10 +4,13 @@ import cors           from 'cors'
 import helmet         from 'helmet'
 import rateLimit      from 'express-rate-limit'
 import authRoutes          from './routes/auth.routes'
-import beneficiariesRouter from './routes/beneficiaries.route'  // ← fixed: ./routes not ../src/routes
+import beneficiariesRouter from './routes/beneficiaries.route'
+import adminMembersRouter from './routes/admin.members.routes'
+import adminEmployersRouter from './routes/admin.employers.routes'
+import adminDashboardRouter from './routes/admin.dashboard.routes'
 import { sendError }       from './utils/response'
 
-const app = express()  // ← must be defined BEFORE any app.use()
+const app = express()
 
 // ── Core middleware ───────────────────────────────────────────────────────────
 app.use(helmet())
@@ -27,7 +30,10 @@ app.get('/health', (_req, res) => {
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.use('/api/auth',               authRoutes)
-app.use('/api/admin/beneficiaries', beneficiariesRouter)  // ← now in the right place
+app.use('/api/admin/beneficiaries', beneficiariesRouter)
+app.use('/api/admin/members',      adminMembersRouter)
+app.use('/api/admin/employers',    adminEmployersRouter)
+app.use('/api/admin/dashboard',    adminDashboardRouter)
 
 // ── 404 ───────────────────────────────────────────────────────────────────────
 app.use((req, res) => sendError(res, `${req.method} ${req.path} not found`, 404))

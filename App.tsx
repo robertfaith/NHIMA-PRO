@@ -43,7 +43,8 @@ import AdminBeneficiaries from './src/EmployerDashboard/Pages/AdminBeneficiaries
 import EmployeeManagement from './src/EmployerDashboard/Pages/EmployeeManagement'
 import Member from './src/EmployerDashboard/Pages/Member'
 import Applications from './src/EmployerDashboard/Pages/Applications'
-
+import AdminMember from './src/EmployerDashboard/Pages/Admin/Members/AdminMember'
+import AdminEmployer from './src/EmployerDashboard/Pages/Admin/Employers/AdminEmployer'
 
 
 
@@ -99,6 +100,8 @@ const router = createBrowserRouter([
       { path: 'adminclaims',            element: <AdminClaims />      },
       { path: 'employerclaims',         element: <EmployerClaims />   },
       { path: 'memberclaims',           element: <MemberClaims />     },
+      { path: 'AdminMembers',            element: <AdminMember />      },
+      { path: 'AdminEmployers',          element: <AdminEmployer />    },
     ],
   },
 

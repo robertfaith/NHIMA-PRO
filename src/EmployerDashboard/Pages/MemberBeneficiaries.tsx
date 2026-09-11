@@ -225,9 +225,12 @@ const MemberBeneficiaries = () => {
 
       {/* Success toast */}
       {saved && (
-        <div style={{ background:'#f0fdf4', border:'1px solid #86efac', borderRadius:'1.25rem', padding:'1rem 1.5rem', display:'flex', alignItems:'center', gap:'0.875rem' }}>
-          <BsCheckCircleFill style={{ color:'#16a34a', fontSize:'1.25rem', flexShrink:0 }} />
-          <p style={{ fontWeight:700, color:'#15803d', fontSize:'0.9rem' }}>Beneficiary added successfully! Coverage is pending NHIMA verification.</p>
+        <div className="message-box message-box--success">
+          <span className="message-box__icon"><BsCheckCircleFill size={22} /></span>
+          <div className="message-box__content">
+            <span className="message-box__title">Success</span>
+            <p className="message-box__text">Beneficiary added successfully! Coverage is pending NHIMA verification.</p>
+          </div>
         </div>
       )}
 

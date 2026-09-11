@@ -94,7 +94,8 @@ export const register = async (req: Request, res: Response) => {
     } else if (role === 'AGENT') {
       if (!nrc) return sendError(res, 'NRC is required for Agent', 400)
       const [u] = await db.insert(agentsTable).values({
-        nhima_id, email, password: password_hash,
+        nhima_id, agent_number: nhima_id.replace('NHM-AGT-', 'AGT-'),
+        email, password: password_hash,
         firstname, lastname, phone, nrc,
         dob, gender: gender as 'Male' | 'Female',
         agent_type: agent_type ?? 'FIELD',

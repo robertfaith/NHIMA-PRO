@@ -32,8 +32,8 @@ const NAV_LINKS: Record<UserRole, NavItem[]> = {
   ADMIN: [
     { label: 'Dashboard',     icon: <SiHomebridge />,             to: '/dashboard'                    },
     { label: 'Profile',       icon: <PiUserCircleCheckDuotone />, to: '/dashboard/admin-profile'       },
-    { label: 'Members',       icon: <BsPeopleFill />,             to: '/dashboard/members'             },
-    { label: 'Employers',     icon: <BsBuildingsFill />,          to: '/dashboard/employers'           },
+    { label: 'Members',       icon: <BsPeopleFill />,             to: '/dashboard/AdminMembers'             },
+    { label: 'Employers',     icon: <BsBuildingsFill />,          to: '/dashboard/AdminEmployers'           },
     { label: 'Agents',        icon: <FaUsersCog />,               to: '/dashboard/applications'        },
     { label: 'Claims',        icon: <BsClipboardCheckFill />,     to: '/dashboard/adminclaims'         },
     { label: 'Contributions', icon: <GiMoneyStack />,             to: '/dashboard/contributions'       },
